@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_LineAxis" Id="{b1eab20f-524e-4969-82ec-b988eb20465a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LineAxis
+VAR_INPUT
+	Execute:				ST_TriggerMode;
+	System:					REFERENCE TO ST_System;
+END_VAR
+VAR_OUTPUT
+	Moving:					BOOL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Moving:=FALSE;
+
+IF System.stInput.bReset  THEN
+	Moving:=FALSE;
+	Execute.bAuto:=Execute.bManual:=FALSE;
+END_IF
+
+IF System.stMode.stDeviceRest.bAuto THEN
+	Execute.bAuto:=FALSE;
+END_IF
+IF System.stMode.stDeviceRest.bManual THEN
+	Execute.bManual:=FALSE;
+END_IF
+
+IF System.stMode.bAutoRunning THEN
+	Moving:=Execute.bAuto;
+END_IF
+IF System.stMode.bManual THEN
+	Moving:=Execute.bManual;
+END_IF
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="M_Jog" Id="{6e33dc88-29fd-4fd1-9c1a-76be6353004c}">
+      <Declaration><![CDATA[METHOD M_Jog : BOOL
+VAR_INPUT
+	In:				INT;//0 停止 1正转
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE In OF
+	0:
+		Execute.bAuto:=FALSE;
+	1:
+		Execute.bAuto:=TRUE;
+END_CASE
+M_Jog:=true;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_LineAxis">
+      <LineId Id="29" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="5" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LineAxis.M_Jog">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="2" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

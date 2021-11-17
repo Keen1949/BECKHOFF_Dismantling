@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_System" Id="{ad3eb28e-c698-41e7-a998-ab791339b3bf}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_System
+VAR
+	_arrFbButton:			ARRAY[0..10] OF FB_Button;
+	_arrTon:				ARRAY[0..10] OF TON;
+	_fbCT:					FB_CycleTime1;
+	_cttime:				REAL;
+	
+	_rTRIG:					R_TRIG;
+	_iProductionCount:      INT;//产能计数
+	_bCountZero:			BOOL;//产能计数清零
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[A_Machine();
+A_System();
+
+
+]]></ST>
+    </Implementation>
+    <Action Name="A_Machine" Id="{bad766d9-b53e-4b69-8971-767e1991fe7c}">
+      <Implementation>
+        <ST><![CDATA[//CT测试
+_fbCT(Execute:=G_arrCylinder[E_Cylinder.TakeUcLift].stOutput.bWork, CycleTime=> );
+_cttime:=TIME_TO_REAL(_fbCT.CycleTime)/1000;
+//复位 退出空跑模式
+IF G_stSystem.stInput.bReset THEN
+	GVL.stSetting.bDryRun:=FALSE;
+END_IF
+
+//产能计数
+_rTRIG(CLK:= G_arrCylinder[E_Cylinder.OpenLockLift].stOutput.bWork, Q=> );
+IF G_stSystem.stMode.bAutoRunning AND NOT GVL.stSetting.bDryRun AND _rTRIG.Q THEN
+	_iProductionCount:=_iProductionCount+1;
+END_IF
+IF NOT G_stSystem.stMode.bAutoRunning  AND  _bCountZero THEN
+	_iProductionCount:=0;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_System" Id="{ac834835-5c48-436c-baed-30b007fe8f96}">
+      <Implementation>
+        <ST><![CDATA[G_stSystem.stInput.bEStop:=NOT GVL.I.bEStop;
+_arrTon[0](IN:=GVL.I.bResetAlarm,PT:=T#3S , Q=>G_stSystem.stInput.bInit , ET=> );
+
+
+GVL.Q.bBeacon_Buzzer:=G_stSystem.stOutput.bLightRed AND NOT MachineManage.G_stSystem.stInput.bQuiet;
+GVL.Q.bRuning:=GVL.Q.bBeacon_Green:=G_stSystem.stOutput.bLightGreen;
+GVL.Q.bStop:=GVL.Q.bBeacon_Red:=G_stSystem.stOutput.bLightRed;
+GVL.Q.bBeacon_Yellow:=G_stSystem.stOutput.bLightYellow;
+
+_arrFbButton[0](In:=G_stSystem.stInput.bStart, CLK:=GVL.I.bStart );
+_arrFbButton[1](In:= G_stSystem.stInput.bStop, CLK:=GVL.I.bStop );
+_arrFbButton[2](In:=G_stSystem.stInput.bResetAlarm , CLK:= GVL.I.bResetAlarm  );
+
+G_stSystem.stLogConfig.bExecute:=TRUE;
+G_stSystem.stLogConfig.sFilePath:='D:\PLC\Log\System';
+
+P_Machine(StationCount:=E_Station.Length);]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P_System">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="23" Count="0" />
+    </LineIds>
+    <LineIds Name="P_System.A_Machine">
+      <LineId Id="27" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="6" />
+    </LineIds>
+    <LineIds Name="P_System.A_System">
+      <LineId Id="2" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="6" Count="10" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

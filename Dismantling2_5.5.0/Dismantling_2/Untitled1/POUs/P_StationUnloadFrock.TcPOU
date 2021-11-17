@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_StationUnloadFrock" Id="{9497729d-8cdf-4848-881d-fd11e119bea8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_StationUnloadFrock
+VAR
+	_station:					REFERENCE TO ST_SystemStation;
+	_bEnable: 					BOOL;
+	
+	_UnloadFrockCheck0FTrig:         Tc2_Standard.F_TRIG;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_station REF= G_arrStation[E_Station.UnloadFrock];
+_station.arrName[E_Language.Chinese]:="下工装";
+_station.arrName[E_Language.Vietnamese]:="Công cụ tiếp theo";
+_bEnable:=NOT GVL.stSetting.arrStationShield[E_Station.UnloadFrock];
+A_Auto();
+A_Home();
+
+_UnloadFrockCheck0FTrig(CLK:= GVL.I.bUnloadFrockCheck0, Q=> );
+]]></ST>
+    </Implementation>
+    <Action Name="A_Auto" Id="{f1e2ca40-b87a-42dc-b45a-e0e165fa195e}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	1000:
+		_station.arrInfo[E_Language.Chinese]:="初始化完成等待启动";
+		IF _bEnable THEN
+			_station.iStepNext:=1101;
+		END_IF
+	1101:
+		_station.arrInfo[E_Language.Chinese]:="判断是否有料";
+		IF NOT GVL.I.bUnloadFrockCheck1 THEN
+			_station.iStepNext:=1201;
+		END_IF
+	1201:
+		_station.arrInfo[E_Language.Chinese]:="请求取Uc站放料";
+		 GVL.stHandshake.bUnloadFrockToTakeUc:=TRUE;
+		 IF  GVL.stHandshake.bTakeUcToUnloadFrock THEN
+			 _station.iStepNext:=1301;
+		 END_IF
+	1301://安装了下工装站流入传感器但未移至阻挡气缸后侧启用此条
+		_station.arrInfo[E_Language.Chinese]:="等待产品流入";
+		GVL.stOverTime.bUnloadFrockCheck1:=TRUE; 
+		IF NOT GVL.I.bTakeUcCheck1 AND GVL.I.bUnloadFrockCheck0 THEN
+			GVL.stOverTime.bUnloadFrockCheck1:=FALSE; 
+			_station.iStepNext:=1401;
+		END_IF
+		
+(*	1301://安装了下工装站流入传感器并且移到了阻挡气缸后侧启用此条
+		_station.arrInfo[E_Language.Chinese]:="等待产品从取UC站流出";
+		GVL.stOverTime.bUnloadFrockCheck1:=TRUE; 
+		IF NOT GVL.I.bTakeUcCheck1 THEN
+			GVL.stOverTime.bUnloadFrockCheck1:=FALSE; 
+			_station.iStepNext:=1311;
+		END_IF		
+	1311:		
+		_station.arrInfo[E_Language.Chinese]:="产品从取UC站流出确认";
+		IF _UnloadFrockCheck0FTrig.Q THEN
+			_station.iStepNext:=1401;
+		END_IF	*)	
+	
+	1401:
+		_station.arrInfo[E_Language.Chinese]:="复位请求信号";
+		 GVL.stHandshake.bUnloadFrockToTakeUc:=FALSE;
+		 IF NOT GVL.stHandshake.bTakeUcToUnloadFrock THEN
+			 _station.iStepNext:=1501;
+		 END_IF
+	1501:
+		_station.arrInfo[E_Language.Chinese]:="等待产品到位";
+		GVL.stOverTime.bUnloadFrockCheck1:=TRUE; 
+		IF GVL.I.bUnloadFrockCheck1 THEN
+			GVL.stOverTime.bUnloadFrockCheck1:=FALSE; 
+			_station.iStepNext:=1601;
+		END_IF
+	1601:
+		_station.arrInfo[E_Language.Chinese]:="顶升模组上升";
+		IF M_LiftWork() THEN
+			_station.iStepNext:=1651;
+		END_IF
+	1651:
+		_station.arrInfo[E_Language.Chinese]:="向下工装线体请求放料";
+		GVL.stHandshake.bUnloadFrockToUnloadFrock_L:=TRUE;
+		IF  GVL.stHandshake.bUnloadFrock_LToUnloadFrock THEN
+			_station.iStepNext:=1701;
+		END_IF
+	1701:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸至后位";
+		IF G_arrFbCylinder[E_Cylinder.UnloadFrockPush].M_WorkRequest()THEN
+			_station.iStepNext:=1801;
+		END_IF
+	1801:
+		_station.arrInfo[E_Language.Chinese]:="顶升模组下降 拨料气缸至前位";
+		IF M_LiftHome() AND G_arrFbCylinder[E_Cylinder.UnloadFrockPush].M_HomeRequest() THEN
+			_station.iStepNext:=2501;
+		END_IF
+	2501:
+		_station.arrInfo[E_Language.Chinese]:="复位请求信号";
+		GVL.stHandshake.bUnloadFrockToUnloadFrock_L:=FALSE;
+		IF NOT GVL.stHandshake.bUnloadFrock_LToUnloadFrock THEN
+			_station.iStepNext:=1101;
+		END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Home" Id="{8677d524-58f9-4716-a22a-726ac66971a6}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	0:
+		_station.arrInfo[E_Language.Chinese]:="等待初始化";
+		_station.iStepNext:=SEL(_bEnable,1000,100);;
+	100:
+		_station.arrInfo[E_Language.Chinese]:="设备类型判断";
+		_station.iStepNext:=200;
+	200:
+		_station.arrInfo[E_Language.Chinese]:="阻挡气缸伸出";
+		CASE GVL_Data.stRecipe.eMachineType OF
+			E_MachineType._200:
+				IF G_arrFbCylinder[E_Cylinder.UnloadFrockPrevent].M_WorkRequest() THEN
+					_station.iStepNext:=300;
+				END_IF
+			ELSE
+				_station.iStepNext:=300;
+		END_CASE
+	300:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸缩回";
+		IF G_arrFbCylinder[E_Cylinder.UnloadFrockPush].M_HomeRequest() THEN
+			_station.iStepNext:=350;
+		END_IF		
+	350:
+		_station.arrInfo[E_Language.Chinese]:="顶升模组初始化";
+		IF M_LiftInit() THEN
+			_station.iStepNext:=400;
+		END_IF
+	400:		
+		_station.arrInfo[E_Language.Chinese]:="顶升模组至下位";
+		IF M_LiftHome() THEN
+			_station.iStepNext:=1000;
+		END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="M_LiftHome" Id="{3f373aa1-ed8e-4079-8d49-fb2a1c733509}">
+      <Declaration><![CDATA[METHOD M_LiftHome : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._200:
+		M_LiftHome:=G_arrFbCylinder[E_Cylinder.UnloadFrockLift].M_HomeRequest();
+	ELSE
+		M_LiftHome:=G_arrFbAxis[E_Axis.Z].M_MoveAbs(1);
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_LiftInit" Id="{53ce9c5f-b588-4176-a235-c5b4d2936533}">
+      <Declaration><![CDATA[METHOD M_LiftInit : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._200:
+		M_LiftInit:=G_arrFbCylinder[E_Cylinder.UnloadFrockLift].M_HomeRequest();
+	ELSE
+		M_LiftInit:=G_arrFbAxis[E_Axis.Z].M_Home();
+END_CASE
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_LiftWork" Id="{7edb8240-3491-4b85-b523-d024cf6468d0}">
+      <Declaration><![CDATA[METHOD M_LiftWork : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._200:
+		M_LiftWork:=G_arrFbCylinder[E_Cylinder.UnloadFrockLift].M_WorkRequest();
+	ELSE
+		M_LiftWork:=G_arrFbAxis[E_Axis.Z].M_MoveAbs(2);
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="P_StationUnloadFrock">
+      <LineId Id="13" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="41" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadFrock.A_Auto">
+      <LineId Id="2" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="107" Count="2" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="17" Count="3" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="23" Count="3" />
+      <LineId Id="147" Count="4" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="160" Count="5" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="166" Count="3" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="49" Count="3" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="142" Count="4" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="54" Count="2" />
+      <LineId Id="92" Count="4" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="57" Count="9" />
+      <LineId Id="88" Count="1" />
+      <LineId Id="104" Count="2" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadFrock.A_Home">
+      <LineId Id="2" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="50" Count="1" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="56" Count="2" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="66" Count="2" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="63" Count="2" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadFrock.M_LiftHome">
+      <LineId Id="6" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadFrock.M_LiftInit">
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadFrock.M_LiftWork">
+      <LineId Id="6" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

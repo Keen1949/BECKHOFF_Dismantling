@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="ST_Recipe" Id="{03776b51-6c63-4d68-8a9e-ba9f930c10db}">
+    <Declaration><![CDATA[TYPE ST_Recipe :
+STRUCT
+	arrInputTon:				ARRAY[0..7,0..15] OF UINT;
+	arrOutputTon:				ARRAY[0..6,0..15] OF UINT;
+	arrAutoTon:				    ARRAY[0..19] OF UINT;	
+	
+	eMachineType:				E_MachineType;
+	eProductType:               E_ProductType;//产品类型（左，右）
+	eLoadClass:					E_LoadClass;
+	eLoadClose:					E_LoadClose;
+	
+	bLuxshardict:				BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

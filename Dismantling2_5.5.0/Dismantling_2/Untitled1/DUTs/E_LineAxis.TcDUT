@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="E_LineAxis" Id="{69f34d41-f463-4f02-87a8-8a0786bff376}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_LineAxis :
+(
+	UnloadUc := 1,// 下Uc线体
+	UnloadForck,// 下工装线条
+	Acquire,// 接驳站线体
+	Dismantling,// 拆解站线体
+	AcquireFront // 接驳站前线体
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

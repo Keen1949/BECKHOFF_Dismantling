@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="E_LoadClass" Id="{b747dc3c-61b4-457f-93dd-7a14c840d8ef}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_LoadClass :
+(
+	None:=0,
+	Line0,// 优先Line0
+	Acquire,// 优先接驳站
+	Sensor // 优先传感器检测
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

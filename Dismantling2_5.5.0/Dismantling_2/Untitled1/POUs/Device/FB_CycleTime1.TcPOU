@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="FB_CycleTime1" Id="{d5f7d6ba-fb56-4faa-bb35-b59b024faa2e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CycleTime1
+VAR_INPUT
+	Execute:			BOOL;
+END_VAR
+VAR_OUTPUT
+	CycleTime:			TIME;
+END_VAR
+VAR
+	_rTRIG:				R_TRIG;
+	_fTRIG:				F_TRIG;
+	_arrTon:			ARRAY[0..2] OF TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_rTRIG(CLK:= Execute, Q=> );
+
+IF _rTRIG.Q THEN
+	IF _arrTon[0].IN THEN
+		CycleTime:=_arrTon[0].ET;	
+	END_IF
+	IF _arrTon[1].IN THEN
+		CycleTime:=_arrTon[1].ET;
+	END_IF
+	IF _arrTon[0].IN THEN
+		_arrTon[0].IN:=FALSE;
+		_arrTon[1].IN:=TRUE;
+	ELSE
+		_arrTon[0].IN:=TRUE;
+		_arrTon[1].IN:=FALSE;
+	END_IF
+END_IF
+
+_arrTon[0](IN:= , PT:=T#1100H , Q=> , ET=> );
+_arrTon[1](IN:= , PT:=T#1100H , Q=> , ET=> );]]></ST>
+    </Implementation>
+    <LineIds Name="FB_CycleTime1">
+      <LineId Id="9" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="74" Count="11" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

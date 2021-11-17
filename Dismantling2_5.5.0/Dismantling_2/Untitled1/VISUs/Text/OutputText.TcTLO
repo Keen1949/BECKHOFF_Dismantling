@@ -1,0 +1,1046 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <TextList Name="OutputText" Id="{3e72ff28-dbe1-48a8-be85-75c7936f53c1}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">"OUT00 三色灯红"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT00 三色灯红</v>
+                <v>OUT00 Beacon_Red</v>
+                <v>OUT00 ?èn ?? ba màu ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"1"</v>
+              <v n="TextDefault">"OUT01 三色灯黄"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT01 三色灯黄</v>
+                <v>OUT01 Beacon_Yellow</v>
+                <v>OUT01 ?èn màu vàng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"2"</v>
+              <v n="TextDefault">"OUT02 三色灯绿"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT02 三色灯绿</v>
+                <v>OUT02 Beacon_Green</v>
+                <v>OUT02 Màu xanh lá c?y ?èn ba màu ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"3"</v>
+              <v n="TextDefault">"OUT03 蜂鸣器"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT03 蜂鸣器</v>
+                <v>OUT03 Beacon_Buzzer</v>
+                <v>OUT03 buzzer ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"4"</v>
+              <v n="TextDefault">"OUT04 运行指示灯"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT04 运行指示灯</v>
+                <v>OUT04 Runing</v>
+                <v>OUT04 Ch?y ánh sáng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"5"</v>
+              <v n="TextDefault">"OUT05 停止指示灯"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT05 停止指示灯</v>
+                <v>OUT05 Stop</v>
+                <v>OUT05 D?ng ?èn ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"6"</v>
+              <v n="TextDefault">"OUT06 照明灯"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT06 照明灯</v>
+                <v>OUT06 LED</v>
+                <v>OUT06 ?nh sáng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"7"</v>
+              <v n="TextDefault">"OUT07 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT07 预留</v>
+                <v>OUT07 None1</v>
+                <v>OUT07 Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"8"</v>
+              <v n="TextDefault">"OUT08 解锁站解压侧推气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT08 解锁站解压侧推气缸到原位</v>
+                <v>OUT08 OpenLockPressPush_Cyl_H</v>
+                <v>OUT08 OpenLockPressPush_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"9"</v>
+              <v n="TextDefault">"OUT09 解锁站解压侧推气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT09 解锁站解压侧推气缸到工作位</v>
+                <v>OUT09 OpenLockPressPush_Cyl_W</v>
+                <v>OUT09 OpenLockPressPush_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"10"</v>
+              <v n="TextDefault">"OUT0A 解锁站解压旋转气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT0A 解锁站解压旋转气缸到原位</v>
+                <v>OUT0A OpenLockPressRotate_Cyl_H</v>
+                <v>OUT0A OpenLockPressRotate_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"11"</v>
+              <v n="TextDefault">"OUT0B 解锁站解压旋转气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT0B 解锁站解压旋转气缸到工作位</v>
+                <v>OUT0B OpenLockPressRotate_Cyl_W</v>
+                <v>OUT0B OpenLockPressRotate_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"12"</v>
+              <v n="TextDefault">"OUT0C 主流线拨料升降气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT0C 主流线拨料升降气缸到原位</v>
+                <v>OUT0C Line0PushElevator_Cyl_H</v>
+                <v>OUT0C Line0PushElevator_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"13"</v>
+              <v n="TextDefault">"OUT0D 主流线拨料升降气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT0D 主流线拨料升降气缸到工作位</v>
+                <v>OUT0D Line0PushElevator_Cyl_W</v>
+                <v>OUT0D Line0PushElevator_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"14"</v>
+              <v n="TextDefault">"OUT0E 接驳线前前阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT0E 接驳线前前阻挡气缸缩回</v>
+                <v>OUT0E AcquirePrevent2_Cyl_H</v>
+                <v>OUT0E AcquirePrevent2_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"15"</v>
+              <v n="TextDefault">"OUT0F 接驳线前前阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT0F 接驳线前前阻挡气缸伸出</v>
+                <v>OUT0F AcquirePrevent2_Cyl_W</v>
+                <v>OUT0F AcquirePrevent2_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"16"</v>
+              <v n="TextDefault">"OUT10 主流线分料气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT10 主流线分料气缸缩回</v>
+                <v>OUT10 Line0Part_Cyl_H</v>
+                <v>OUT10 Xi lanh c?a dòng chính rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"17"</v>
+              <v n="TextDefault">"OUT11 主流线分料气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT11 主流线分料气缸伸出</v>
+                <v>OUT11 Line0Part_Cyl_W</v>
+                <v>OUT11 Xi lanh dòng chính ra ngoài ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"18"</v>
+              <v n="TextDefault">"OUT12 主流线阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT12 主流线阻挡气缸缩回</v>
+                <v>OUT12 Line0Prevent_Cyl_H</v>
+                <v>OUT12 Dòng chính ng?n ch?n s? rút l?i c?a xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"19"</v>
+              <v n="TextDefault">"OUT13 主流线阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT13 主流线阻挡气缸伸出</v>
+                <v>OUT13 Line0Prevent_Cyl_W</v>
+                <v>OUT13 Dòng chính ng?n các xi lanh thoát ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"20"</v>
+              <v n="TextDefault">"OUT14 主流线拨料气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT14 主流线拨料气缸缩回</v>
+                <v>OUT14 Line0Push_Cyl_H</v>
+                <v>OUT14 Xi lanh quay dòng chính rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"21"</v>
+              <v n="TextDefault">"OUT15 主流线拨料气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT15 主流线拨料气缸伸出</v>
+                <v>OUT15 Line0Push_Cyl_W</v>
+                <v>OUT15 Xi lanh cu?n dòng chính thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"22"</v>
+              <v n="TextDefault">"OUT16 接驳线前阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT16 接驳线前阻挡气缸缩回</v>
+                <v>OUT16 AcquirePrevent0_Cyl_H</v>
+                <v>OUT16 Khóa xi lanh tr??c d?y n?i rút l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"23"</v>
+              <v n="TextDefault">"OUT17 接驳线前阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT17 接驳线前阻挡气缸伸出</v>
+                <v>OUT17 AcquirePrevent0_Cyl_W</v>
+                <v>OUT17 Ch?n xi lanh tr??c d?y n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"24"</v>
+              <v n="TextDefault">"OUT18 接驳线后阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT18 接驳线后阻挡气缸缩回</v>
+                <v>OUT18 AcquirePrevent1_Cyl_H</v>
+                <v>OUT18 Khóa xi lanh l?i sau khi k?t n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"25"</v>
+              <v n="TextDefault">"OUT19 接驳线后阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT19 接驳线后阻挡气缸伸出</v>
+                <v>OUT19 AcquirePrevent1_Cyl_W</v>
+                <v>OUT19 Ch?n xi lanh ra sau d?y n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"26"</v>
+              <v n="TextDefault">"OUT1A 接驳线顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT1A 接驳线顶升气缸缩回</v>
+                <v>OUT1A AcquireLift_Cyl_H</v>
+                <v>OUT1A Xi lanh n?ng d?y n?i rút l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"27"</v>
+              <v n="TextDefault">"OUT1B 接驳线顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT1B 接驳线顶升气缸伸出</v>
+                <v>OUT1B AcquireLift_Cyl_W</v>
+                <v>OUT1B Xi lanh c?m trên d?y d?n ra ngoài ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"28"</v>
+              <v n="TextDefault">"OUT1C 接驳模组拨料气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT1C 接驳模组拨料气缸缩回</v>
+                <v>OUT1C AcquirePush_Cyl_H</v>
+                <v>OUT1C Xi lanh k?t n?i m?-?un quay l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"29"</v>
+              <v n="TextDefault">"OUT1D 接驳模组拨料气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT1D 接驳模组拨料气缸伸出</v>
+                <v>OUT1D AcquirePush_Cyl_W</v>
+                <v>OUT1D Xi lanh k?t n?i m?-?un phát ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"30"</v>
+              <v n="TextDefault">"OUT1E 接驳模组升降气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT1E 接驳模组升降气缸缩回</v>
+                <v>OUT1E AcquireElevator_Cyl_H</v>
+                <v>OUT1E Xi lanh n?ng m?-?un n?i rút l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"31"</v>
+              <v n="TextDefault">"OUT1F 接驳模组升降气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT1F 接驳模组升降气缸伸出</v>
+                <v>OUT1F AcquireElevator_Cyl_W</v>
+                <v>OUT1F Xi lanh n?ng m?-?un n?i thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"32"</v>
+              <v n="TextDefault">"OUT20 转向站顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT20 转向站顶升气缸缩回</v>
+                <v>OUT20 SteeringLift_Cyl_H</v>
+                <v>OUT20 Quay tr? l?i xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"33"</v>
+              <v n="TextDefault">"OUT21 转向站顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT21 转向站顶升气缸伸出</v>
+                <v>OUT21 SteeringLift_Cyl_W</v>
+                <v>OUT21 Các xi lanh m? ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"34"</v>
+              <v n="TextDefault">"OUT22 转向站接驳升降气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT22 转向站接驳升降气缸缩回</v>
+                <v>OUT22 SteeringAcquireElevator_Cyl_H</v>
+                <v>OUT22 Quay l?i v?i xi lanh n?ng t?i tr?m lái ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"35"</v>
+              <v n="TextDefault">"OUT23 转向站接驳升降气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT23 转向站接驳升降气缸伸出</v>
+                <v>OUT23 SteeringAcquireElevator_Cyl_W</v>
+                <v>OUT23 Các xi lanh n?ng ???c n?i v?i các tr?m r? ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"36"</v>
+              <v n="TextDefault">"OUT24 转向站旋转气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT24 转向站旋转气缸缩回</v>
+                <v>OUT24 SteeringRotate_Cyl_H</v>
+                <v>OUT24 Quay tr?m quay xi lanh ?? rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"37"</v>
+              <v n="TextDefault">"OUT25 转向站旋转气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT25 转向站旋转气缸伸出</v>
+                <v>OUT25 SteeringRotate_Cyl_W</v>
+                <v>OUT25 Các xi lanh xoay ? v? trí quay thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"38"</v>
+              <v n="TextDefault">"OUT26 转向站接驳限位气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT26 转向站接驳限位气缸缩回</v>
+                <v>OUT26 SteeringAcquireLimit_Cyl_H</v>
+                <v>OUT26 Quay l?i xi lanh gi?i h?n k?t n?i tr?m r? ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"39"</v>
+              <v n="TextDefault">"OUT27 转向站接驳限位气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT27 转向站接驳限位气缸伸出</v>
+                <v>OUT27 SteeringAcquireLimit_Cyl_W</v>
+                <v>OUT27 Xi lanh gi?i h?n k?t n?i v?i tr?m lái xe ???c thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"40"</v>
+              <v n="TextDefault">"OUT28 解锁站阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT28 解锁站阻挡气缸缩回</v>
+                <v>OUT28 OpenLockPrevent_Cyl_H</v>
+                <v>OUT28 Tr?m m? khóa ng?n ch?n s? rút lui xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"41"</v>
+              <v n="TextDefault">"OUT29 解锁站阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT29 解锁站阻挡气缸伸出</v>
+                <v>OUT29 OpenLockPrevent_Cyl_W</v>
+                <v>OUT29 Tr?m m? khóa ng?n ch?n các xi lanh thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"42"</v>
+              <v n="TextDefault">"OUT2A 解锁站顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT2A 解锁站顶升气缸缩回</v>
+                <v>OUT2A OpenLockLift_Cyl_H</v>
+                <v>OUT2A M? khóa tr?m n?ng xi lanh rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"43"</v>
+              <v n="TextDefault">"OUT2B 解锁站顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT2B 解锁站顶升气缸伸出</v>
+                <v>OUT2B OpenLockLift_Cyl_W</v>
+                <v>OUT2B Xi lanh m? khóa tr? n?ng thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"44"</v>
+              <v n="TextDefault">"OUT2C 解锁站侧推气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT2C 解锁站侧推气缸缩回</v>
+                <v>OUT2C OpenLockPush_Cyl_H</v>
+                <v>OUT2C M? khóa các xi lanh ??y ga ?? rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"45"</v>
+              <v n="TextDefault">"OUT2D 解锁站侧推气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT2D 解锁站侧推气缸伸出</v>
+                <v>OUT2D OpenLockPush_Cyl_W</v>
+                <v>OUT2D M? khóa ga ??y xi lanh thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"46"</v>
+              <v n="TextDefault">"OUT2E 解锁站旋转气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT2E 解锁站旋转气缸缩回</v>
+                <v>OUT2E OpenLockRotate_Cyl_H</v>
+                <v>OUT2E M? khóa tr?m quay xi lanh rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"47"</v>
+              <v n="TextDefault">"OUT2F 解锁站旋转气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT2F 解锁站旋转气缸伸出</v>
+                <v>OUT2F OpenLockRotate_Cyl_W</v>
+                <v>OUT2F Xi lanh xoay ? v? trí m? khóa thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"48"</v>
+              <v n="TextDefault">"OUT30 解锁站侧推气缸2缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT30 解锁站侧推气缸2缩回</v>
+                <v>OUT30 OpenLockPush2_Cyl_H</v>
+                <v>OUT30 M? khóa ga bên ??y xi lanh 2 rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"49"</v>
+              <v n="TextDefault">"OUT31 解锁站侧推气缸2伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT31 解锁站侧推气缸2伸出</v>
+                <v>OUT31 OpenLockPush2_Cyl_W</v>
+                <v>OUT31 M? khóa ga ??y xi lanh 2 thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"50"</v>
+              <v n="TextDefault">"OUT32 取UC站阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT32 取UC站阻挡气缸缩回</v>
+                <v>OUT32 TakeUcPrevent_Cyl_H</v>
+                <v>OUT32 L?y các tr?m ng?n ch?n và rút l?i xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"51"</v>
+              <v n="TextDefault">"OUT33 取UC站阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT33 取UC站阻挡气缸伸出</v>
+                <v>OUT33 TakeUcPrevent_Cyl_W</v>
+                <v>OUT33 L?y ga ng?n ch?n lít ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"52"</v>
+              <v n="TextDefault">"OUT34 取UC站顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT34 取UC站顶升气缸缩回</v>
+                <v>OUT34 TakeUcLift_Cyl_H</v>
+                <v>OUT34 L?y xi lanh n?ng lên c?a tr?m UC và rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"53"</v>
+              <v n="TextDefault">"OUT35 取UC站顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT35 取UC站顶升气缸伸出</v>
+                <v>OUT35 TakeUcLift_Cyl_W</v>
+                <v>OUT35 L?y xi lanh n?ng lên t? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"54"</v>
+              <v n="TextDefault">"OUT36 取UC站侧推气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT36 取UC站侧推气缸缩回</v>
+                <v>OUT36 TakeUcPush_Cyl_H</v>
+                <v>OUT36 L?y xi lanh ??y bên tàu và rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"55"</v>
+              <v n="TextDefault">"OUT37 取UC站侧推气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT37 取UC站侧推气缸伸出</v>
+                <v>OUT37 TakeUcPush_Cyl_W</v>
+                <v>OUT37 L?y ga bên ??y ra kh?i xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"56"</v>
+              <v n="TextDefault">"OUT38 取UC站旋转气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT38 取UC站旋转气缸缩回</v>
+                <v>OUT38 TakeUcRotate_Cyl_H</v>
+                <v>OUT38 L?y xi lanh quay ? tr?m UC và rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"57"</v>
+              <v n="TextDefault">"OUT39 取UC站旋转气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT39 取UC站旋转气缸伸出</v>
+                <v>OUT39 TakeUcRotate_Cyl_W</v>
+                <v>OUT39 L?y các xi lanh quay t? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"58"</v>
+              <v n="TextDefault">"OUT3A 取UC站校平气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT3A 取UC站校平气缸原位</v>
+                <v>OUT3A TakeUcStandard_Cyl_H</v>
+                <v>OUT3A L?y xi lanh ph?ng ? ga UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"59"</v>
+              <v n="TextDefault">"OUT3B 取UC站校平气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT3B 取UC站校平气缸工作位</v>
+                <v>OUT3B TakeUcStandard_Cyl_W</v>
+                <v>OUT3B Tr?m ki?m tra xi lanh b?ng ph?ng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"60"</v>
+              <v n="TextDefault">"OUT3C 取UC站工装夹紧气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT3C 取UC站工装夹紧气缸原位</v>
+                <v>OUT3C TakeUcFrockClamp_Cyl_H</v>
+                <v>OUT3C L?y xi lanh k?p vào v? trí c?a tr?m UC</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"61"</v>
+              <v n="TextDefault">"OUT3D 取UC站工装夹紧气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT3D 取UC站工装夹紧气缸工作位</v>
+                <v>OUT3D TakeUcFrockClamp_Cyl_W</v>
+                <v>OUT3D L?y v? trí làm vi?c xi lanh cài ??t ? ga UC</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"62"</v>
+              <v n="TextDefault">"OUT3E 下工装站阻挡气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT3E 下工装站阻挡气缸缩回</v>
+                <v>OUT3E UnloadFrockPrevent_Cyl_H</v>
+                <v>OUT3E Ng?n ch?n các xi lanh rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"63"</v>
+              <v n="TextDefault">"OUT3F 下工装站阻挡气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT3F 下工装站阻挡气缸伸出</v>
+                <v>OUT3F UnloadFrockPrevent_Cyl_W</v>
+                <v>OUT3F Ng?n ch?n các xi lanh ra ngoài ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"64"</v>
+              <v n="TextDefault">"OUT40 下工装站顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT40 下工装站顶升气缸缩回</v>
+                <v>OUT40 UnloadFrockLift_Cyl_H</v>
+                <v>OUT40 Xi lanh n?ng xu?ng ga xu?ng rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"65"</v>
+              <v n="TextDefault">"OUT41 下工装站顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT41 下工装站顶升气缸伸出</v>
+                <v>OUT41 UnloadFrockLift_Cyl_W</v>
+                <v>OUT41 Xi lanh n?ng lên t? tr?m t?i xu?ng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"66"</v>
+              <v n="TextDefault">"OUT42 下工装站拨料气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT42 下工装站拨料气缸缩回</v>
+                <v>OUT42 UnloadFrockPush_Cyl_H</v>
+                <v>OUT42 Xi lanh xi lanh quay tr? l?i tr?m t?i xu?ng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"67"</v>
+              <v n="TextDefault">"OUT43 下工装站拨料气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT43 下工装站拨料气缸伸出</v>
+                <v>OUT43 UnloadFrockPush_Cyl_W</v>
+                <v>OUT43 Xi lanh ngu?n l?c ti?p theo ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"68"</v>
+              <v n="TextDefault">"OUT44 取UC模组平移Y气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT44 取UC模组平移Y气缸缩回</v>
+                <v>OUT44 TakeUc1Y_Cyl_H</v>
+                <v>OUT44 L?y m?-?un UC chuy?n xi lanh Y và rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"69"</v>
+              <v n="TextDefault">"OUT45 取UC模组平移Y气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT45 取UC模组平移Y气缸伸出</v>
+                <v>OUT45 TakeUc1Y_Cyl_W</v>
+                <v>OUT45 L?y m?-?un UC và di chuy?n xi lanh Y ra ngoài ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"70"</v>
+              <v n="TextDefault">"OUT46 取UC模组升降Z1气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT46 取UC模组升降Z1气缸缩回</v>
+                <v>OUT46 TakeUc1Z1_Cyl_H</v>
+                <v>OUT46 L?y m?-?un UC n?ng xi lanh Z1 ?? rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"71"</v>
+              <v n="TextDefault">"OUT47 取UC模组升降Z1气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT47 取UC模组升降Z1气缸伸出</v>
+                <v>OUT47 TakeUc1Z1_Cyl_W</v>
+                <v>OUT47 N?ng xi lanh ra kh?i m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"72"</v>
+              <v n="TextDefault">"OUT48 取UC模组升降Z2气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT48 取UC模组升降Z2气缸缩回</v>
+                <v>OUT48 TakeUc1Z2_Cyl_H</v>
+                <v>OUT48 L?y m?-?un UC n?ng xi lanh Z2 ?? rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"73"</v>
+              <v n="TextDefault">"OUT49 取UC模组升降Z2气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT49 取UC模组升降Z2气缸伸出</v>
+                <v>OUT49 TakeUc1Z2_Cyl_W</v>
+                <v>OUT49 ??a ?ng n?ng Z2 ra kh?i m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"74"</v>
+              <v n="TextDefault">"OUT4A 取UC模组旋转气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT4A 取UC模组旋转气缸缩回</v>
+                <v>OUT4A TakeUc1Rotate_Cyl_H</v>
+                <v>OUT4A Thu h?i xi lanh quay b?ng m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"75"</v>
+              <v n="TextDefault">"OUT4B 取UC模组旋转气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT4B 取UC模组旋转气缸伸出</v>
+                <v>OUT4B TakeUc1Rotate_Cyl_W</v>
+                <v>OUT4B L?y m?-?un UC xoay xi lanh ra ngoài ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"76"</v>
+              <v n="TextDefault">"OUT4C 取UC模组夹紧气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT4C 取UC模组夹紧气缸缩回</v>
+                <v>OUT4C TakeUc1Clamp_Cyl_H</v>
+                <v>OUT4C L?y m?-?un UC k?p xi lanh ?? rút lui ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"77"</v>
+              <v n="TextDefault">"OUT4D 取UC模组夹紧气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT4D 取UC模组夹紧气缸伸出</v>
+                <v>OUT4D TakeUc1Clamp_Cyl_W</v>
+                <v>OUT4D L?y m?-?un và k?p ?ng ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"78"</v>
+              <v n="TextDefault">"OUT4E 下UC皮带升降气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT4E 下UC皮带升降气缸缩回</v>
+                <v>OUT4E UnloadUcElevator_Cyl_H</v>
+                <v>OUT4E Thu h?i xi lanh n?ng d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"79"</v>
+              <v n="TextDefault">"OUT4F 下UC皮带升降气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT4F 下UC皮带升降气缸伸出</v>
+                <v>OUT4F UnloadUcElevator_Cyl_W</v>
+                <v>OUT4F Xi lanh n?ng d??i vành ?ai UC thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"80"</v>
+              <v n="TextDefault">"OUT50 下UC皮带拨料气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT50 下UC皮带拨料气缸缩回</v>
+                <v>OUT50 UnloadUcConveyorPush_Cyl_H</v>
+                <v>OUT50 Quay l?i xi lanh quay d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"81"</v>
+              <v n="TextDefault">"OUT51 下UC皮带拨料气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT51 下UC皮带拨料气缸伸出</v>
+                <v>OUT51 UnloadUcConveyorPush_Cyl_W</v>
+                <v>OUT51 Cái xi lanh d??i vành ?ai UC thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"82"</v>
+              <v n="TextDefault">"OUT52 下工装皮带升降气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT52 下工装皮带升降气缸缩回</v>
+                <v>OUT52 UnloadFrockConveyorPrevent_Cyl_H</v>
+                <v>OUT52 Th?t l?ng n?ng xi lanh kéo xu?ng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"83"</v>
+              <v n="TextDefault">"OUT53 下工装皮带升降气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT53 下工装皮带升降气缸伸出</v>
+                <v>OUT53 UnloadFrockConveyorPrevent_Cyl_W</v>
+                <v>OUT53 Xi lanh n?ng vành ?ai c?ng vi?c thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"84"</v>
+              <v n="TextDefault">"OUT54 下工装皮带拨料气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT54 下工装皮带拨料气缸缩回</v>
+                <v>OUT54 UnloadFrockConveyorPush_Cyl_H</v>
+                <v>OUT54 ?óng gói vành ?ai xi lanh quay l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"85"</v>
+              <v n="TextDefault">"OUT55 下工装皮带拨料气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT55 下工装皮带拨料气缸伸出</v>
+                <v>OUT55 UnloadFrockConveyorPush_Cyl_W</v>
+                <v>OUT55 Xi lanh vành ?ai c?ng c? thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"86"</v>
+              <v n="TextDefault">"OUT56 接驳线前步进"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT56 接驳线前步进</v>
+                <v>OUT56 AcquireFrontAxis</v>
+                <v>OUT56 AcquireFrontAxis</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"87"</v>
+              <v n="TextDefault">"OUT57 接驳线步进"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT57 接驳线步进</v>
+                <v>OUT57 AcquireAxis</v>
+                <v>OUT57 B??c trên d?y n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"88"</v>
+              <v n="TextDefault">"OUT58 拆解线步进"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT58 拆解线步进</v>
+                <v>OUT58 DismantlingAxis</v>
+                <v>OUT58 B??c c?t d?y ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"89"</v>
+              <v n="TextDefault">"OUT59 下UC皮带步进"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT59 下UC皮带步进</v>
+                <v>OUT59 UnloadUcAxis</v>
+                <v>OUT59 B??c xu?ng d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"90"</v>
+              <v n="TextDefault">"OUT5A 下工装皮带步进"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT5A 下工装皮带步进</v>
+                <v>OUT5A UnloadFrock</v>
+                <v>OUT5A D?y n?t di chuy?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"91"</v>
+              <v n="TextDefault">"OUT5B 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT5B 预留</v>
+                <v>OUT5B None21</v>
+                <v>OUT5B Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"92"</v>
+              <v n="TextDefault">"OUT5C 下UC皮带翻转气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT5C 下UC皮带翻转气缸缩回</v>
+                <v>OUT5C UnloadUcBeltTipper_Cyl_H</v>
+                <v>OUT5C Quay ng??c xi lanh l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"93"</v>
+              <v n="TextDefault">"OUT5D 下UC皮带翻转气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT5D 下UC皮带翻转气缸伸出</v>
+                <v>OUT5D UnloadUcBeltTipper_Cyl_W</v>
+                <v>OUT5D Cái xi lanh xoay d??i vành ?ai UC thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"94"</v>
+              <v n="TextDefault">"OUT5E 下UC皮带顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT5E 下UC皮带顶升气缸缩回</v>
+                <v>OUT5E UnloadUcBeltLift_Cyl_H</v>
+                <v>OUT5E Co l?i xi lanh n?ng lên d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"95"</v>
+              <v n="TextDefault">"OUT5F 下UC皮带顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT5F 下UC皮带顶升气缸伸出</v>
+                <v>OUT5F UnloadUcBeltLift_Cyl_W</v>
+                <v>OUT5F Cái xi lanh n?ng lên d??i vành ?ai UC thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"96"</v>
+              <v n="TextDefault">"OUT60 解锁站升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT60 解锁站升降气缸原位</v>
+                <v>OUT60 OpenLockElevator_Cyl_H</v>
+                <v>OUT60 M? khóa tr?m n?ng xi lanh v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"97"</v>
+              <v n="TextDefault">"OUT61 解锁站升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT61 解锁站升降气缸工作位</v>
+                <v>OUT61 OpenLockElevator_Cyl_W</v>
+                <v>OUT61 M? khóa tr?m n?ng xi lanh v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"98"</v>
+              <v n="TextDefault">"OUT62 解锁站解锁平移原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT62 解锁站解锁平移原位</v>
+                <v>OUT62 OpenLockTranslation_Cyl_H</v>
+                <v>OUT62 Tr?m m? khóa m? khóa chuy?n v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"99"</v>
+              <v n="TextDefault">"OUT63 解锁站解锁平移工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT63 解锁站解锁平移工作位</v>
+                <v>OUT63 OpenLockTranslation_Cyl_W</v>
+                <v>OUT63 Tr?m m? khóa m? khóa chuy?n v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"100"</v>
+              <v n="TextDefault">"OUT64 解锁站按压气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT64 解锁站按压气缸到原位</v>
+                <v>OUT64 OpenLockPin_Cyl_H</v>
+                <v>OUT64 M? khóa tr?m nh?n xi lanh vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"101"</v>
+              <v n="TextDefault">"OUT65 解锁站按压气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT65 解锁站按压气缸到工作位</v>
+                <v>OUT65 OpenLockPin_Cyl_W</v>
+                <v>OUT65 M? khóa tr?m nh?n xi lanh ??n v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"102"</v>
+              <v n="TextDefault">"OUT66 取UC站升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT66 取UC站升降气缸原位</v>
+                <v>OUT66 TakeUcElevator_Cyl_H</v>
+                <v>OUT66 L?y xi lanh n?ng t? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"103"</v>
+              <v n="TextDefault">"OUT67 取UC站升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT67 取UC站升降气缸工作位</v>
+                <v>OUT67 TakeUcElevator_Cyl_W</v>
+                <v>OUT67 Tr? UC n?ng xi lanh v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"104"</v>
+              <v n="TextDefault">"OUT68 取UC站侧推1气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT68 取UC站侧推1气缸到原位</v>
+                <v>OUT68 TakeUcPush1_Cyl_H</v>
+                <v>OUT68 L?y ga UC ??y 1 xi lanh vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"105"</v>
+              <v n="TextDefault">"OUT69 取UC站侧推1气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT69 取UC站侧推1气缸到工作位</v>
+                <v>OUT69 TakeUcPush1_Cyl_W</v>
+                <v>OUT69 L?y ga bên ??y 1 xi lanh t?i v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"106"</v>
+              <v n="TextDefault">"OUT6A 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT6A 预留</v>
+                <v>OUT6A None35</v>
+                <v>OUT6A Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"107"</v>
+              <v n="TextDefault">"OUT6B 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT6B 预留</v>
+                <v>OUT6B None36</v>
+                <v>OUT6B Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"108"</v>
+              <v n="TextDefault">"OUT6C 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT6C 预留</v>
+                <v>OUT6C None37</v>
+                <v>OUT6C Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"109"</v>
+              <v n="TextDefault">"OUT6D 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT6D 预留</v>
+                <v>OUT6D None38</v>
+                <v>OUT6D Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"110"</v>
+              <v n="TextDefault">"OUT6E 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT6E 预留</v>
+                <v>OUT6E None39</v>
+                <v>OUT6E Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"111"</v>
+              <v n="TextDefault">"OUT6F 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OUT6F 预留</v>
+                <v>OUT6F None40</v>
+                <v>OUT6F Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{f47abab9-572b-4917-a5c7-6e16742d2cb0}</v>
+          <v n="GuidReInit">{931e2b6e-1a58-4f85-a57c-368ce7b98864}</v>
+          <v n="GuidExitX">{6a242830-6b8d-4bd3-a5f9-0601d944565c}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </TextList>
+</TcPlcObject>

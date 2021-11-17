@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GVL Name="GVL_IO" Id="{01de67bf-b67d-40bb-a735-5040d3f8cbe7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	I_Temp :				ARRAY[0..7,0..15] OF  BOOL;//由绝对点位的字节数组 转化成的布尔数组
+	Q_Temp :				ARRAY[0..6,0..15] OF  BOOL;//由绝对点位的字节数组 转化成的布尔数组
+	
+	I AT %I*:				ARRAY[0..15] OF BYTE;//绝对点位 输入
+	Q AT %Q*:				ARRAY[0..13] OF BYTE;//绝对点位 输出
+
+	EIP_I_ConnState AT %I*:				UDINT;// 输入
+	EIP_I_Var4090   AT %I*:				WORD;// 输入	
+	EIP_Q_ConnCtrl  AT %Q*:				UDINT;// 输出
+	EIP_Q_Var4091   AT %Q*:				WORD;// 输出	
+	
+	
+	AxisInput AT %I*:		UDINT;			
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <TextList Name="LineLoadClase" Id="{c338f25a-dd3d-4a81-a9bd-0921cc96e445}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">"不选择"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>不选择</v>
+                <v>None</v>
+                <v>None</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"1"</v>
+              <v n="TextDefault">"优先主流线"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>优先主流线</v>
+                <v>Priority Line0</v>
+                <v>Priority Line0</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"2"</v>
+              <v n="TextDefault">"优先接驳站"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>优先接驳站</v>
+                <v>Priority Acquire</v>
+                <v>Priority Acquire</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"3"</v>
+              <v n="TextDefault">"优先传感器"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>优先传感器</v>
+                <v>Priority Sensor</v>
+                <v>Priority Sensor</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{6ed8c046-7e58-4de9-ac8a-174d96e2c09c}</v>
+          <v n="GuidReInit">{1f4ab892-dc3d-4a61-bc23-ce78fb0dbbf8}</v>
+          <v n="GuidExitX">{6d3cc6a3-4997-448f-baee-b1806470202c}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </TextList>
+</TcPlcObject>

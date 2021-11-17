@@ -1,0 +1,1190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <TextList Name="InputText" Id="{a47183f6-45cc-4246-831a-883b90f1de4c}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">"IN00 启动"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN00 启动</v>
+                <v>IN00 Start</v>
+                <v>IN00 Kh?i ??ng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"1"</v>
+              <v n="TextDefault">"IN01 停止"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN01 停止</v>
+                <v>IN01 Stop</v>
+                <v>IN01 D?ng l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"2"</v>
+              <v n="TextDefault">"IN02 复位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN02 复位</v>
+                <v>IN02 ResetAlarm</v>
+                <v>IN02 Tuy nhiên ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"3"</v>
+              <v n="TextDefault">"IN03 急停"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN03 急停</v>
+                <v>IN03 EStop</v>
+                <v>IN03 V?i d?ng l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"4"</v>
+              <v n="TextDefault">"IN04 安全门开关"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN04 安全门开关</v>
+                <v>IN04 Door</v>
+                <v>IN04 Chuy?n ??i c?a an toàn ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"5"</v>
+              <v n="TextDefault">"IN05 工装误合盖检测光电 "</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN05 工装误合盖检测光电 </v>
+                <v>IN05 FrockCloseCheck</v>
+                <v>IN05 FrockCloseCheck</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"6"</v>
+              <v n="TextDefault">"IN06 解锁站流入光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN06 解锁站流入光电</v>
+                <v>IN06 OpenLockCheck0</v>
+                <v>IN06 OpenLockCheck0</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"7"</v>
+              <v n="TextDefault">"IN07 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN07 预留</v>
+                <v>IN07 None3</v>
+                <v>IN07 Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"8"</v>
+              <v n="TextDefault">"IN08 主流线拨料升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN08 主流线拨料升降气缸原位</v>
+                <v>IN08 Line0PushElevator_Cyl_H</v>
+                <v>IN08 Line0PushElevator_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"9"</v>
+              <v n="TextDefault">"IN09 主流线拨料升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN09 主流线拨料升降气缸工作位</v>
+                <v>IN09 Line0PushElevator_Cyl_W</v>
+                <v>IN09 Line0PushElevator_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"10"</v>
+              <v n="TextDefault">"IN0A 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN0A 预留</v>
+                <v>IN0A None6</v>
+                <v>IN0A Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"11"</v>
+              <v n="TextDefault">"IN0B 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN0B 预留</v>
+                <v>IN0B None7</v>
+                <v>IN0B Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"12"</v>
+              <v n="TextDefault">"IN0C 主流线拨料气缸安全位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN0C 主流线拨料气缸安全位</v>
+                <v>IN0C Line0Push_Cyl_Safe</v>
+                <v>IN0C Line0Push_Cyl_Safe</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"13"</v>
+              <v n="TextDefault">"IN0D 接驳线前阻挡光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN0D 接驳线前阻挡光电</v>
+                <v>IN0D AcquireCheck3</v>
+                <v>IN0D AcquireCheck3</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"14"</v>
+              <v n="TextDefault">"IN0E 接驳线前前阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN0E 接驳线前前阻挡气缸原位</v>
+                <v>IN0E AcquirePrevent2_Cyl_H</v>
+                <v>IN0E AcquirePrevent2_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"15"</v>
+              <v n="TextDefault">"IN0F 接驳线前前阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN0F 接驳线前前阻挡气缸工作位</v>
+                <v>IN0F AcquirePrevent2_Cyl_W</v>
+                <v>IN0F AcquirePrevent2_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"16"</v>
+              <v n="TextDefault">"IN10 主流线分料气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN10 主流线分料气缸原位</v>
+                <v>IN10 Line0Part_Cyl_H</v>
+                <v>IN10 Xi lanh ph?n ph?i dòng chính ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"17"</v>
+              <v n="TextDefault">"IN11 主流线分料气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN11 主流线分料气缸工作位</v>
+                <v>IN11 Line0Part_Cyl_W</v>
+                <v>IN11 Xi lanh làm vi?c dòng chính ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"18"</v>
+              <v n="TextDefault">"IN12 主流线阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN12 主流线阻挡气缸原位</v>
+                <v>IN12 Line0Prevent_Cyl_H</v>
+                <v>IN12 Dòng chính ch?n xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"19"</v>
+              <v n="TextDefault">"IN13 主流线阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN13 主流线阻挡气缸工作位</v>
+                <v>IN13 Line0Prevent_Cyl_W</v>
+                <v>IN13 Dòng chính ch?n v? trí làm vi?c c?a xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"20"</v>
+              <v n="TextDefault">"IN14 主流线拨料气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN14 主流线拨料气缸原位</v>
+                <v>IN14 Line0Push_Cyl_H</v>
+                <v>IN14 Xi lanh ?i?u ch?nh dòng chính ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"21"</v>
+              <v n="TextDefault">"IN15 主流线拨料气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN15 主流线拨料气缸工作位</v>
+                <v>IN15 Line0Push_Cyl_W</v>
+                <v>IN15 Xi lanh dòng chính dòng v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"22"</v>
+              <v n="TextDefault">"IN16 接驳线前阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN16 接驳线前阻挡气缸原位</v>
+                <v>IN16 AcquirePrevent0_Cyl_H</v>
+                <v>IN16 Ch?n xi lanh tr??c d?y n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"23"</v>
+              <v n="TextDefault">"IN17 接驳线前阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN17 接驳线前阻挡气缸工作位</v>
+                <v>IN17 AcquirePrevent0_Cyl_W</v>
+                <v>IN17 Ch?n xi lanh tr??c d?y n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"24"</v>
+              <v n="TextDefault">"IN18 接驳线后阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN18 接驳线后阻挡气缸原位</v>
+                <v>IN18 AcquirePrevent1_Cyl_H</v>
+                <v>IN18 Ch?n xi lanh t?i v? trí sau khi k?t n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"25"</v>
+              <v n="TextDefault">"IN19 接驳线后阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN19 接驳线后阻挡气缸工作位</v>
+                <v>IN19 AcquirePrevent1_Cyl_W</v>
+                <v>IN19 Ch?n xi lanh sau khi k?t n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"26"</v>
+              <v n="TextDefault">"IN1A 接驳线顶升气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN1A 接驳线顶升气缸原位</v>
+                <v>IN1A AcquireLift_Cyl_H</v>
+                <v>IN1A Xi lanh Leo lên d?y ?i?n v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"27"</v>
+              <v n="TextDefault">"IN1B 接驳线顶升气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN1B 接驳线顶升气缸工作位</v>
+                <v>IN1B AcquireLift_Cyl_W</v>
+                <v>IN1B Xi lanh làm vi?c trên d?y n?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"28"</v>
+              <v n="TextDefault">"IN1C 接驳模组拨料气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN1C 接驳模组拨料气缸原位</v>
+                <v>IN1C AcquirePush_Cyl_H</v>
+                <v>IN1C Xi lanh kh?p n?i m?-?un v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"29"</v>
+              <v n="TextDefault">"IN1D 接驳模组拨料气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN1D 接驳模组拨料气缸工作位</v>
+                <v>IN1D AcquirePush_Cyl_W</v>
+                <v>IN1D Xi lanh làm vi?c k?t n?i m?-?un ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"30"</v>
+              <v n="TextDefault">"IN1E 接驳模组升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN1E 接驳模组升降气缸原位</v>
+                <v>IN1E AcquireElevator_Cyl_H</v>
+                <v>IN1E Xi lanh n?ng m?-?un k?t n?i v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"31"</v>
+              <v n="TextDefault">"IN1F 接驳模组升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN1F 接驳模组升降气缸工作位</v>
+                <v>IN1F AcquireElevator_Cyl_W</v>
+                <v>IN1F K?t n?i m?-?un n?ng xi lanh v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"32"</v>
+              <v n="TextDefault">"IN20 转向站顶升气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN20 转向站顶升气缸原位</v>
+                <v>IN20 SteeringLift_Cyl_H</v>
+                <v>IN20 H??ng v? v? trí xi lanh n?ng lên ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"33"</v>
+              <v n="TextDefault">"IN21 转向站顶升气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN21 转向站顶升气缸工作位</v>
+                <v>IN21 SteeringLift_Cyl_W</v>
+                <v>IN21 V? trí làm vi?c c?a xi lanh n?ng lên ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"34"</v>
+              <v n="TextDefault">"IN22 转向站接驳升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN22 转向站接驳升降气缸原位</v>
+                <v>IN22 SteeringAcquireElevator_Cyl_H</v>
+                <v>IN22 Chuy?n h??ng k?t n?i v?i xi lanh n?ng t?i v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"35"</v>
+              <v n="TextDefault">"IN23 转向站接驳升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN23 转向站接驳升降气缸工作位</v>
+                <v>IN23 SteeringAcquireElevator_Cyl_W</v>
+                <v>IN23 Chuy?n h??ng tr?m n?i xi lanh n?ng v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"36"</v>
+              <v n="TextDefault">"IN24 转向站旋转气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN24 转向站旋转气缸原位</v>
+                <v>IN24 SteeringRotate_Cyl_H</v>
+                <v>IN24 Tr?m quay quay xi lanh v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"37"</v>
+              <v n="TextDefault">"IN25 转向站旋转气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN25 转向站旋转气缸工作位</v>
+                <v>IN25 SteeringRotate_Cyl_W</v>
+                <v>IN25 Tr?m quay quay xi lanh v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"38"</v>
+              <v n="TextDefault">"IN26 转向站接驳限位气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN26 转向站接驳限位气缸原位</v>
+                <v>IN26 SteeringAcquireLimit_Cyl_H</v>
+                <v>IN26 Xi lanh gi?i h?n k?t n?i tr?m lái ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"39"</v>
+              <v n="TextDefault">"IN27 转向站接驳限位气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN27 转向站接驳限位气缸工作位</v>
+                <v>IN27 SteeringAcquireLimit_Cyl_W</v>
+                <v>IN27 V? trí làm vi?c c?a xi lanh gi?i h?n k?t n?i tr?m lái ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"40"</v>
+              <v n="TextDefault">"IN28 解锁站阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN28 解锁站阻挡气缸原位</v>
+                <v>IN28 OpenLockPrevent_Cyl_H</v>
+                <v>IN28 M? khóa tr?m ?? ng?n ch?n xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"41"</v>
+              <v n="TextDefault">"IN29 解锁站阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN29 解锁站阻挡气缸工作位</v>
+                <v>IN29 OpenLockPrevent_Cyl_W</v>
+                <v>IN29 M? khóa tr?m ?? ch?n v? trí làm vi?c c?a xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"42"</v>
+              <v n="TextDefault">"IN2A 解锁站顶升气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN2A 解锁站顶升气缸原位</v>
+                <v>IN2A OpenLockLift_Cyl_H</v>
+                <v>IN2A M? khóa tr?m n?ng xi lanh v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"43"</v>
+              <v n="TextDefault">"IN2B 解锁站顶升气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN2B 解锁站顶升气缸工作位</v>
+                <v>IN2B OpenLockLift_Cyl_W</v>
+                <v>IN2B Xi lanh m? khóa tr?m làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"44"</v>
+              <v n="TextDefault">"IN2C 解锁站侧推气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN2C 解锁站侧推气缸原位</v>
+                <v>IN2C OpenLockPush_Cyl_H</v>
+                <v>IN2C M? khóa xi lanh ??y ga ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"45"</v>
+              <v n="TextDefault">"IN2D 解锁站侧推气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN2D 解锁站侧推气缸工作位</v>
+                <v>IN2D OpenLockPush_Cyl_W</v>
+                <v>IN2D M? khóa v? trí làm vi?c xi lanh ??y ga ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"46"</v>
+              <v n="TextDefault">"IN2E 解锁站旋转气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN2E 解锁站旋转气缸原位</v>
+                <v>IN2E OpenLockRotate_Cyl_H</v>
+                <v>IN2E M? khóa tr?m quay xi lanh v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"47"</v>
+              <v n="TextDefault">"IN2F 解锁站旋转气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN2F 解锁站旋转气缸工作位</v>
+                <v>IN2F OpenLockRotate_Cyl_W</v>
+                <v>IN2F Tr?m m? khóa xi lanh quay v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"48"</v>
+              <v n="TextDefault">"IN30 解锁站侧推气缸2原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN30 解锁站侧推气缸2原位</v>
+                <v>IN30 OpenLockPush2_Cyl_H</v>
+                <v>IN30 M? khóa xi lanh 2 ??y ga ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"49"</v>
+              <v n="TextDefault">"IN31 解锁站侧推气缸2工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN31 解锁站侧推气缸2工作位</v>
+                <v>IN31 OpenLockPush2_Cyl_W</v>
+                <v>IN31 M? khóa xi lanh bên ga ??y v? trí làm vi?c 2 ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"50"</v>
+              <v n="TextDefault">"IN32 取UC站阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN32 取UC站阻挡气缸原位</v>
+                <v>IN32 TakeUcPrevent_Cyl_H</v>
+                <v>IN32 L?y tr? UC ?? ch?n xi lanh ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"51"</v>
+              <v n="TextDefault">"IN33 取UC站阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN33 取UC站阻挡气缸工作位</v>
+                <v>IN33 TakeUcPrevent_Cyl_W</v>
+                <v>IN33 L?y v? trí làm vi?c c?a xi lanh t? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"52"</v>
+              <v n="TextDefault">"IN34 取UC站顶升气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN34 取UC站顶升气缸原位</v>
+                <v>IN34 TakeUcLift_Cyl_H</v>
+                <v>IN34 L?y xi lanh n?ng lên ? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"53"</v>
+              <v n="TextDefault">"IN35 取UC站顶升气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN35 取UC站顶升气缸工作位</v>
+                <v>IN35 TakeUcLift_Cyl_W</v>
+                <v>IN35 L?y v? trí làm vi?c c?a xi lanh n?ng lên t? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"54"</v>
+              <v n="TextDefault">"IN36 取UC站侧推气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN36 取UC站侧推气缸原位</v>
+                <v>IN36 TakeUcPush_Cyl_H</v>
+                <v>IN36 L?y xi lanh ??y bên ga UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"55"</v>
+              <v n="TextDefault">"IN37 取UC站侧推气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN37 取UC站侧推气缸工作位</v>
+                <v>IN37 TakeUcPush_Cyl_W</v>
+                <v>IN37 L?y v? trí làm vi?c c?a xi lanh ??y bên ga UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"56"</v>
+              <v n="TextDefault">"IN38 取UC站旋转气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN38 取UC站旋转气缸原位</v>
+                <v>IN38 TakeUcRotate_Cyl_H</v>
+                <v>IN38 L?y xi lanh quay ? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"57"</v>
+              <v n="TextDefault">"IN39 取UC站旋转气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN39 取UC站旋转气缸工作位</v>
+                <v>IN39 TakeUcRotate_Cyl_W</v>
+                <v>IN39 L?y v? trí quay xi lanh c?a tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"58"</v>
+              <v n="TextDefault">"IN3A 取UC站校平气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN3A 取UC站校平气缸原位</v>
+                <v>IN3A TakeUcStandard_Cyl_H</v>
+                <v>IN3A L?y xi lanh ph?ng ? ga UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"59"</v>
+              <v n="TextDefault">"IN3B 取UC站校平气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN3B 取UC站校平气缸工作位</v>
+                <v>IN3B TakeUcStandard_Cyl_W</v>
+                <v>IN3B Tr?m ki?m tra xi lanh b?ng ph?ng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"60"</v>
+              <v n="TextDefault">"IN3C 取UC站工装夹紧气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN3C 取UC站工装夹紧气缸原位</v>
+                <v>IN3C TakeUcFrockClamp_Cyl_H</v>
+                <v>IN3C L?y xi lanh k?p vào v? trí c?a tr?m UC</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"61"</v>
+              <v n="TextDefault">"IN3D 取UC站工装夹紧气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN3D 取UC站工装夹紧气缸工作位</v>
+                <v>IN3D TakeUcFrockClamp_Cyl_W</v>
+                <v>IN3D L?y v? trí làm vi?c xi lanh cài ??t ? ga UC</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"62"</v>
+              <v n="TextDefault">"IN3E 下工装站阻挡气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN3E 下工装站阻挡气缸原位</v>
+                <v>IN3E UnloadFrockPrevent_Cyl_H</v>
+                <v>IN3E Ng?n ch?n xi lanh ? v? trí c?ng c? ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"63"</v>
+              <v n="TextDefault">"IN3F 下工装站阻挡气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN3F 下工装站阻挡气缸工作位</v>
+                <v>IN3F UnloadFrockPrevent_Cyl_W</v>
+                <v>IN3F Tr?m d?ng xi lanh làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"64"</v>
+              <v n="TextDefault">"IN40 下工装站顶升气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN40 下工装站顶升气缸原位</v>
+                <v>IN40 UnloadFrockLift_Cyl_H</v>
+                <v>IN40 Xi lanh n?ng lên xu?ng ga v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"65"</v>
+              <v n="TextDefault">"IN41 下工装站顶升气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN41 下工装站顶升气缸工作位</v>
+                <v>IN41 UnloadFrockLift_Cyl_W</v>
+                <v>IN41 Xi lanh n?ng lên các tr?m làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"66"</v>
+              <v n="TextDefault">"IN42 下工装站拨料气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN42 下工装站拨料气缸原位</v>
+                <v>IN42 UnloadFrockPush_Cyl_H</v>
+                <v>IN42 Xi lanh xi lanh ? v? trí ti?p theo ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"67"</v>
+              <v n="TextDefault">"IN43 下工装站拨料气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN43 下工装站拨料气缸工作位</v>
+                <v>IN43 UnloadFrockPush_Cyl_W</v>
+                <v>IN43 Xi lanh theo tr?m làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"68"</v>
+              <v n="TextDefault">"IN44 取UC模组平移Y气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN44 取UC模组平移Y气缸原位</v>
+                <v>IN44 TakeUc1Y_Cyl_H</v>
+                <v>IN44 L?y m?-?un UC và chuy?n xi lanh Y vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"69"</v>
+              <v n="TextDefault">"IN45 取UC模组平移Y气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN45 取UC模组平移Y气缸工作位</v>
+                <v>IN45 TakeUc1Y_Cyl_W</v>
+                <v>IN45 Thay ??i xi lanh Y b?ng m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"70"</v>
+              <v n="TextDefault">"IN46 取UC模组升降Z1气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN46 取UC模组升降Z1气缸原位</v>
+                <v>IN46 TakeUc1Z1_Cyl_H</v>
+                <v>IN46 N?ng xi lanh Z1 b?ng m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"71"</v>
+              <v n="TextDefault">"IN47 取UC模组升降Z1气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN47 取UC模组升降Z1气缸工作位</v>
+                <v>IN47 TakeUc1Z1_Cyl_W</v>
+                <v>IN47 L?y m?-?un n?ng xi lanh Z1 ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"72"</v>
+              <v n="TextDefault">"IN48 取UC模组升降Z2气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN48 取UC模组升降Z2气缸原位</v>
+                <v>IN48 TakeUc1Z2_Cyl_H</v>
+                <v>IN48 L?y m?-?un UC n?ng xi lanh Z2 ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"73"</v>
+              <v n="TextDefault">"IN49 取UC模组升降Z2气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN49 取UC模组升降Z2气缸工作位</v>
+                <v>IN49 TakeUc1Z2_Cyl_W</v>
+                <v>IN49 L?y m?-?un UC n?ng xi lanh Z2 v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"74"</v>
+              <v n="TextDefault">"IN4A 取UC模组旋转气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN4A 取UC模组旋转气缸原位</v>
+                <v>IN4A TakeUc1Rotate_Cyl_H</v>
+                <v>IN4A L?y xi lanh quay c?a m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"75"</v>
+              <v n="TextDefault">"IN4B 取UC模组旋转气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN4B 取UC模组旋转气缸工作位</v>
+                <v>IN4B TakeUc1Rotate_Cyl_W</v>
+                <v>IN4B L?y v? trí làm vi?c c?a xi lanh xoay m?-?un UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"76"</v>
+              <v n="TextDefault">"IN4C 取UC模组夹紧气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN4C 取UC模组夹紧气缸原位</v>
+                <v>IN4C TakeUc1Clamp_Cyl_H</v>
+                <v>IN4C L?y m?-?un UC k?p xi lanh vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"77"</v>
+              <v n="TextDefault">"IN4D 取UC模组夹紧气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN4D 取UC模组夹紧气缸工作位</v>
+                <v>IN4D TakeUc1Clamp_Cyl_W</v>
+                <v>IN4D L?y m?-?un UC k?p xi lanh vào v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"78"</v>
+              <v n="TextDefault">"IN4E 下UC皮带升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN4E 下UC皮带升降气缸原位</v>
+                <v>IN4E UnloadUcElevator_Cyl_H</v>
+                <v>IN4E Xi lanh n?ng d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"79"</v>
+              <v n="TextDefault">"IN4F 下UC皮带升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN4F 下UC皮带升降气缸工作位</v>
+                <v>IN4F UnloadUcElevator_Cyl_W</v>
+                <v>IN4F V? trí làm vi?c c?a xi lanh n?ng d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"80"</v>
+              <v n="TextDefault">"IN50 下UC皮带拨料气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN50 下UC皮带拨料气缸原位</v>
+                <v>IN50 UnloadUcConveyorPush_Cyl_H</v>
+                <v>IN50 Xi lanh ?i?u ch?nh d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"81"</v>
+              <v n="TextDefault">"IN51 下UC皮带拨料气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN51 下UC皮带拨料气缸工作位</v>
+                <v>IN51 UnloadUcConveyorPush_Cyl_W</v>
+                <v>IN51 Xi lanh làm vi?c d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"82"</v>
+              <v n="TextDefault">"IN52 下工装皮带升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN52 下工装皮带升降气缸原位</v>
+                <v>IN52 UnloadFrockConveyorPrevent_Cyl_H</v>
+                <v>IN52 D?y chuy?n n?ng xi lanh cài ??t ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"83"</v>
+              <v n="TextDefault">"IN53 下工装皮带升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN53 下工装皮带升降气缸工作位</v>
+                <v>IN53 UnloadFrockConveyorPrevent_Cyl_W</v>
+                <v>IN53 D?y chuy?n n?ng xi lanh làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"84"</v>
+              <v n="TextDefault">"IN54 下工装皮带拨料气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN54 下工装皮带拨料气缸原位</v>
+                <v>IN54 UnloadFrockConveyorPush_Cyl_H</v>
+                <v>IN54 Xi lanh d?y chuy?n theo v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"85"</v>
+              <v n="TextDefault">"IN55 下工装皮带拨料气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN55 下工装皮带拨料气缸工作位</v>
+                <v>IN55 UnloadFrockConveyorPush_Cyl_W</v>
+                <v>IN55 Xi lanh d?y chuy?n làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"86"</v>
+              <v n="TextDefault">"IN56 解锁站解压侧推气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN56 解锁站解压侧推气缸原位</v>
+                <v>IN56 OpenLockPressPush_Cyl_H</v>
+                <v>IN56 OpenLockPressPush_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"87"</v>
+              <v n="TextDefault">"IN57 解锁站解压侧推气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN57 解锁站解压侧推气缸工作位</v>
+                <v>IN57 OpenLockPressPush_Cyl_W</v>
+                <v>IN57 OpenLockPressPush_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"88"</v>
+              <v n="TextDefault">"IN58 解锁站解压旋转气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN58 解锁站解压旋转气缸原位</v>
+                <v>IN58 OpenLockPressRotate_Cyl_H</v>
+                <v>IN58 OpenLockPressRotate_Cyl_H</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"89"</v>
+              <v n="TextDefault">"IN59 解锁站解压旋转气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN59 解锁站解压旋转气缸工作位</v>
+                <v>IN59 OpenLockPressRotate_Cyl_W</v>
+                <v>IN59 OpenLockPressRotate_Cyl_W</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"90"</v>
+              <v n="TextDefault">"IN5A 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN5A 预留</v>
+                <v>IN5A None34</v>
+                <v>IN5A Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"91"</v>
+              <v n="TextDefault">"IN5B 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN5B 预留</v>
+                <v>IN5B None35</v>
+                <v>IN5B Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"92"</v>
+              <v n="TextDefault">"IN5C 下UC皮带翻转气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN5C 下UC皮带翻转气缸缩回</v>
+                <v>IN5C UnloadUcBeltTipper_Cyl_H</v>
+                <v>IN5C Quay ng??c xi lanh l?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"93"</v>
+              <v n="TextDefault">"IN5D 下UC皮带翻转气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN5D 下UC皮带翻转气缸伸出</v>
+                <v>IN5D UnloadUcBeltTipper_Cyl_W</v>
+                <v>IN5D Cái xi lanh xoay d??i vành ?ai UC thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"94"</v>
+              <v n="TextDefault">"IN5E 下UC皮带顶升气缸缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN5E 下UC皮带顶升气缸缩回</v>
+                <v>IN5E UnloadUcBeltLift_Cyl_H</v>
+                <v>IN5E Co l?i xi lanh n?ng lên d??i vành ?ai UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"95"</v>
+              <v n="TextDefault">"IN5F 下UC皮带顶升气缸伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN5F 下UC皮带顶升气缸伸出</v>
+                <v>IN5F UnloadUcBeltLift_Cyl_W</v>
+                <v>IN5F Cái xi lanh n?ng lên d??i vành ?ai UC thò ra ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"96"</v>
+              <v n="TextDefault">"IN60 主流线分料光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN60 主流线分料光电</v>
+                <v>IN60 Line0Check1</v>
+                <v>IN60 Dòng chính ph?n ph?i quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"97"</v>
+              <v n="TextDefault">"IN61 主流线阻挡光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN61 主流线阻挡光电</v>
+                <v>IN61 Line0Check2</v>
+                <v>IN61 Dòng chính ng?n ch?n quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"98"</v>
+              <v n="TextDefault">"IN62 主流线到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN62 主流线到位光电</v>
+                <v>IN62 Line0Check3</v>
+                <v>IN62 Dòng chính vào v? trí quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"99"</v>
+              <v n="TextDefault">"IN63 接驳线流入光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN63 接驳线流入光电</v>
+                <v>IN63 AcquireCheck1</v>
+                <v>IN63 ???ng d?n d?n vào quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"100"</v>
+              <v n="TextDefault">"IN64 接驳线到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN64 接驳线到位光电</v>
+                <v>IN64 AcquireCheck2</v>
+                <v>IN64 K?t n?i ??n v? trí quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"101"</v>
+              <v n="TextDefault">"IN65 转向站到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN65 转向站到位光电</v>
+                <v>IN65 SteeringCheck1</v>
+                <v>IN65 Chuy?n sang v? trí quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"102"</v>
+              <v n="TextDefault">"IN66 解锁站到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN66 解锁站到位光电</v>
+                <v>IN66 OpenLockCheck</v>
+                <v>IN66 M? khóa v? trí quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"103"</v>
+              <v n="TextDefault">"IN67 取UC站到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN67 取UC站到位光电</v>
+                <v>IN67 TakeUcCheck1</v>
+                <v>IN67 Cho tr?m n?ng l??ng m?t tr?i vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"104"</v>
+              <v n="TextDefault">"IN68 下工装站到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN68 下工装站到位光电</v>
+                <v>IN68 UnloadFrockCheck1</v>
+                <v>IN68 Thi?t b? ??t t?i v? trí quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"105"</v>
+              <v n="TextDefault">"IN69 下UC皮带流入光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN69 下UC皮带流入光电</v>
+                <v>IN69 UnloadUcCheck1</v>
+                <v>IN69 Vành ?ai d??i UC ?ang ch?y vào quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"106"</v>
+              <v n="TextDefault">"IN6A 下UC皮带到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN6A 下UC皮带到位光电</v>
+                <v>IN6A UnloadUcCheck2</v>
+                <v>IN6A Phía d??i vành ?ai n?ng l??ng m?t tr?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"107"</v>
+              <v n="TextDefault">"IN6B 下工装站流入光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN6B 下工装站流入光电</v>
+                <v>IN6B UnloadFrockStationCheck1</v>
+                <v>IN6B Vành ?ai c?ng c? ch?y vào quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"108"</v>
+              <v n="TextDefault">"IN6C 下工装皮带到位光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN6C 下工装皮带到位光电</v>
+                <v>IN6C UnloadFrockConveyorCheck2</v>
+                <v>IN6C Vành ?ai c?ng c? ? v? trí quang ?i?n ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"109"</v>
+              <v n="TextDefault">"IN6D 下uc皮带翻转光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN6D 下uc皮带翻转光电</v>
+                <v>IN6D UnloadUcBeltTipper</v>
+                <v>IN6D ??o ng??c n?ng l??ng m?t tr?i ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"110"</v>
+              <v n="TextDefault">"IN6E 取UC站流入光电"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN6E 取UC站流入光电</v>
+                <v>IN6E TakeUcCheck0</v>
+                <v>IN6E TakeUcCheck0</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"111"</v>
+              <v n="TextDefault">"IN6F 取UC模组平移Y气缸安全位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN6F 取UC模组平移Y气缸安全位</v>
+                <v>IN6F TakeUc1Y_Cyl_Safe</v>
+                <v>IN6F Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"112"</v>
+              <v n="TextDefault">"IN70 解锁站升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN70 解锁站升降气缸原位</v>
+                <v>IN70 OpenLockElevator_Cyl_H</v>
+                <v>IN70 M? khóa tr?m n?ng xi lanh v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"113"</v>
+              <v n="TextDefault">"IN71 解锁站升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN71 解锁站升降气缸工作位</v>
+                <v>IN71 OpenLockElevator_Cyl_W</v>
+                <v>IN71 M? khóa tr?m n?ng xi lanh v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"114"</v>
+              <v n="TextDefault">"IN72 解锁站解锁平移原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN72 解锁站解锁平移原位</v>
+                <v>IN72 OpenLockPin_Cyl_H</v>
+                <v>IN72 Tr?m m? khóa m? khóa chuy?n v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"115"</v>
+              <v n="TextDefault">"IN73 解锁站解锁平移工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN73 解锁站解锁平移工作位</v>
+                <v>IN73 OpenLockPin_Cyl_W</v>
+                <v>IN73 Tr?m m? khóa m? khóa chuy?n v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"116"</v>
+              <v n="TextDefault">"IN74 解锁站按压气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN74 解锁站按压气缸到原位</v>
+                <v>IN74 TakeUcElevator_Cyl_H</v>
+                <v>IN74 M? khóa tr?m nh?n xi lanh vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"117"</v>
+              <v n="TextDefault">"IN75 解锁站按压气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN75 解锁站按压气缸到工作位</v>
+                <v>IN75 TakeUcElevator_Cyl_W</v>
+                <v>IN75 M? khóa tr?m nh?n xi lanh ??n v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"118"</v>
+              <v n="TextDefault">"IN76 取UC站升降气缸原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN76 取UC站升降气缸原位</v>
+                <v>IN76 TakeUcPush1_Cyl_H</v>
+                <v>IN76 L?y xi lanh n?ng t? tr?m UC ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"119"</v>
+              <v n="TextDefault">"IN77 取UC站升降气缸工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN77 取UC站升降气缸工作位</v>
+                <v>IN77 TakeUcPush1_Cyl_W</v>
+                <v>IN77 Tr? UC n?ng xi lanh v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"120"</v>
+              <v n="TextDefault">"IN78 取UC站侧推1气缸到原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN78 取UC站侧推1气缸到原位</v>
+                <v>IN78 None45</v>
+                <v>IN78 L?y ga UC ??y 1 xi lanh vào v? trí ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"121"</v>
+              <v n="TextDefault">"IN79 取UC站侧推1气缸到工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN79 取UC站侧推1气缸到工作位</v>
+                <v>IN79 None46</v>
+                <v>IN79 L?y ga bên ??y 1 xi lanh t?i v? trí làm vi?c ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"122"</v>
+              <v n="TextDefault">"IN7A 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN7A 预留</v>
+                <v>IN7A None45</v>
+                <v>IN7A Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"123"</v>
+              <v n="TextDefault">"IN7B 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN7B 预留</v>
+                <v>IN7B None46</v>
+                <v>IN7B Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"124"</v>
+              <v n="TextDefault">"IN7C 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN7C 预留</v>
+                <v>IN7C None47</v>
+                <v>IN7C Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"125"</v>
+              <v n="TextDefault">"IN7D 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN7D 预留</v>
+                <v>IN7D None48</v>
+                <v>IN7D Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"126"</v>
+              <v n="TextDefault">"IN7E 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN7E 预留</v>
+                <v>IN7E None49</v>
+                <v>IN7E Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"127"</v>
+              <v n="TextDefault">"IN7F 预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>IN7F 预留</v>
+                <v>IN7F None50</v>
+                <v>IN7F Dành riêng ?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{8a79b8ea-c0eb-469b-a7cd-24495840b385}</v>
+          <v n="GuidReInit">{4d3ac186-952e-4af2-8f1a-a7bceda3dd43}</v>
+          <v n="GuidExitX">{c332fe13-1d97-43fa-8ba5-1300ee1a67c6}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </TextList>
+</TcPlcObject>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="ST_Setting" Id="{2be012e6-6413-4cbf-b32c-f5fb0f9f9bad}">
+    <Declaration><![CDATA[TYPE ST_Setting :
+STRUCT
+	bDryRun:					BOOL;// 空跑
+	bManualLoad:				BOOL;// 手动上料
+	bManualUnloadUc:			BOOL;// 手动下UC
+	bManualUnloadFrock:			BOOL;// 手动下工装
+	arrStationShield:			ARRAY[0..20] OF BOOL;// 工站使能信号
+	bLine0BufferShield:         BOOL;// 主流分料屏蔽
+	bSafeDoorShield:            BOOL;// 安全门屏蔽
+	bOpenLockPressShield:       BOOL;// 解锁站解除保压屏蔽
+	bAcquirePrevent2Shield:     BOOL;// 接驳线前前阻挡气缸屏蔽
+	bStopFrontStation:          BOOL;// 不允许前站放料
+	bLine0Priority:             BOOL;// 优先主流线上料
+	bFrockCloseCheckShield:     BOOL;// 工装误合盖检测屏蔽
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

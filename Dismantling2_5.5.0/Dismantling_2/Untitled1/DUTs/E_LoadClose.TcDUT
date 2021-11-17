@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="E_LoadClose" Id="{dfb85c52-f177-4a47-a35a-498bee92e2db}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_LoadClose :
+(
+	None:=0,
+	Line0,// 关闭Line0
+	Acquire// 关闭接驳站上料
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

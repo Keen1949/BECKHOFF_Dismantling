@@ -1,0 +1,1036 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GlobalTextList Name="GlobalTextList" Id="{0a2001fa-0f7d-4586-b405-0c34c8a727d8}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="GlobalTextListObject">
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"795"</v>
+              <v n="TextDefault">"%"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"656"</v>
+              <v n="TextDefault">"%0.1f"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"684"</v>
+              <v n="TextDefault">"%0.2d"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"668"</v>
+              <v n="TextDefault">"%0.2f"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"947"</v>
+              <v n="TextDefault">"%d"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"268"</v>
+              <v n="TextDefault">"%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"858"</v>
+              <v n="TextDefault">"%f"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"74"</v>
+              <v n="TextDefault">"%s"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"761"</v>
+              <v n="TextDefault">"1"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"1035"</v>
+              <v n="TextDefault">"367机型"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>367机型</v>
+                <v>367 Type</v>
+                <v>367 Type</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"827"</v>
+              <v n="TextDefault">"Acquire"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"938"</v>
+              <v n="TextDefault">"Admin"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"67"</v>
+              <v n="TextDefault">"CT：%0.1f S"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"972"</v>
+              <v n="TextDefault">"Dismantling"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"258"</v>
+              <v n="TextDefault">"DryRun"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>空跑</v>
+                <v>DryRun</v>
+                <v>DryRun</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"238"</v>
+              <v n="TextDefault">"ioooo"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"355"</v>
+              <v n="TextDefault">"LED"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>照明灯</v>
+                <v>LED</v>
+                <v>LED</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"582"</v>
+              <v n="TextDefault">"Line0Buffer"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"240"</v>
+              <v n="TextDefault">"Line0BufferShield"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>主流线分料屏蔽</v>
+                <v>Line0BufferShield</v>
+                <v>Line1BufferShield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"75"</v>
+              <v n="TextDefault">"LineAxis"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"978"</v>
+              <v n="TextDefault">"LUX"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>立讯图标</v>
+                <v>LUX</v>
+                <v>LUX</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"215"</v>
+              <v n="TextDefault">"ManualLoad"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>手动上料</v>
+                <v>ManualLoad</v>
+                <v>ManualLoad</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"475"</v>
+              <v n="TextDefault">"ManualUnloadFrock"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>手动下工装</v>
+                <v>ManualUnloadFrock</v>
+                <v>ManualUnloadFrock</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"177"</v>
+              <v n="TextDefault">"ManualUnloadUc"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>手动下UC</v>
+                <v>ManualUnloadUc</v>
+                <v>ManualUnloadUc</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"904"</v>
+              <v n="TextDefault">"None"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>无</v>
+                <v>None</v>
+                <v>None</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"186"</v>
+              <v n="TextDefault">"Operator"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"366"</v>
+              <v n="TextDefault">"Other"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"154"</v>
+              <v n="TextDefault">"Service"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"108"</v>
+              <v n="TextDefault">"UnloadForck"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下工装</v>
+                <v>UnloadForck</v>
+                <v>UnloadForck</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"971"</v>
+              <v n="TextDefault">"UnloadUc"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下UC</v>
+                <v>UnloadUc</v>
+                <v>UnloadUc</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"726"</v>
+              <v n="TextDefault">"Version:%s"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"288"</v>
+              <v n="TextDefault">"上位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>上位</v>
+                <v>Up Position</v>
+                <v>phán</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"486"</v>
+              <v n="TextDefault">"上位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>上位:%dms</v>
+                <v>Up Position:%dms</v>
+                <v>phán:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"370"</v>
+              <v n="TextDefault">"下UC线体"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下UC线体</v>
+                <v>UnloadUc</v>
+                <v>UnloadUc</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"109"</v>
+              <v n="TextDefault">"下位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下位</v>
+                <v>Down Position</v>
+                <v>V? trí ti?p theo</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"409"</v>
+              <v n="TextDefault">"下位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下位:%dms</v>
+                <v>Down Position:%dms</v>
+                <v>V? trí ti?p theo:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"286"</v>
+              <v n="TextDefault">"下工装线体"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下工装线体</v>
+                <v>UnloadForck</v>
+                <v>UnloadForck</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"646"</v>
+              <v n="TextDefault">"不允许前站放料"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>不允许前站放料</v>
+                <v>StopFrontStation</v>
+                <v>StopFrontStation</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"399"</v>
+              <v n="TextDefault">"主流线优先复位延时"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>主流线优先置位延时</v>
+                <v>Line0PriorityOnDelay</v>
+                <v>Line0PriorityOnDelay</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"738"</v>
+              <v n="TextDefault">"主流线优先置位延时"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>主流线优先复位延时</v>
+                <v>Line0PriorityOffDelay</v>
+                <v>Line0PriorityOffDelay</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"758"</v>
+              <v n="TextDefault">"主流线分料屏蔽"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>主流线分料屏蔽</v>
+                <v>Line0BufferShield</v>
+                <v>Line0BufferShield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"687"</v>
+              <v n="TextDefault">"主流线分料气缸缩回延时"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>主流线分料气缸缩回延时</v>
+                <v>Line0PartHomeDelay</v>
+                <v>Line0PartHomeDelay</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"750"</v>
+              <v n="TextDefault">"伸出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>伸出</v>
+                <v>Reach out</v>
+                <v>V??n ra</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"664"</v>
+              <v n="TextDefault">"伸出:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>伸出:%dms</v>
+                <v>Reach out:%dms</v>
+                <v>V??n ra:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"716"</v>
+              <v n="TextDefault">"伸出位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>伸出位</v>
+                <v>Reach out</v>
+                <v>Thò tay ra</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"979"</v>
+              <v n="TextDefault">"伸出位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>伸出位:%dms</v>
+                <v>Reach out:%dms</v>
+                <v>Thò tay ra:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"554"</v>
+              <v n="TextDefault">"保压解除功能屏蔽"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>保压解除功能屏蔽</v>
+                <v>OpenLockPressShield</v>
+                <v>OpenLockPressShield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"477"</v>
+              <v n="TextDefault">"共通"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>共通</v>
+                <v>Common</v>
+                <v>Common</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"941"</v>
+              <v n="TextDefault">"初始位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>初始位</v>
+                <v>Initial Position</v>
+                <v>Bit ban ??u</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"492"</v>
+              <v n="TextDefault">"到位延迟"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>到位延迟</v>
+                <v>In delay</v>
+                <v>S? ch?m tr? t?i ch?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"453"</v>
+              <v n="TextDefault">"动位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>动位</v>
+                <v>Action Position</v>
+                <v>Di chuy?n v? trí</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"45"</v>
+              <v n="TextDefault">"动位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>动位:%dms</v>
+                <v>Action Position:%dms</v>
+                <v>Di chuy?n v? trí:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"57"</v>
+              <v n="TextDefault">"动作延迟"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>动作延迟</v>
+                <v>Action delay</v>
+                <v>S? trì ho?n hành ??ng</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"929"</v>
+              <v n="TextDefault">"原位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>原位</v>
+                <v>Home Position</v>
+                <v>??</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"433"</v>
+              <v n="TextDefault">"原位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>原位:%dms</v>
+                <v>Home Position:%dms</v>
+                <v>??:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"609"</v>
+              <v n="TextDefault">"右位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>右位</v>
+                <v>Right Position</v>
+                <v>Bên ph?i m?t</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"711"</v>
+              <v n="TextDefault">"右位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>右位:%dms</v>
+                <v>Right Position:%dms</v>
+                <v>Bên ph?i m?t:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"413"</v>
+              <v n="TextDefault">"向上"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向上</v>
+                <v>Up</v>
+                <v>?i lên</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"498"</v>
+              <v n="TextDefault">"向上:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向上:%dms</v>
+                <v>Up:%dms</v>
+                <v>?i lên:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"172"</v>
+              <v n="TextDefault">"向下"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向下</v>
+                <v>Down</v>
+                <v>Nhìn xu?ng</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"26"</v>
+              <v n="TextDefault">"向下:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向下:%dms</v>
+                <v>Down:%dms</v>
+                <v>Nhìn xu?ng:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"27"</v>
+              <v n="TextDefault">"向右"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向右</v>
+                <v>Right</v>
+                <v>Sang ph?i</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"151"</v>
+              <v n="TextDefault">"向右:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向右:%dms</v>
+                <v>Right:%dms</v>
+                <v>Sang ph?i:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"69"</v>
+              <v n="TextDefault">"向左"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向左</v>
+                <v>Left</v>
+                <v>Sang trái</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"849"</v>
+              <v n="TextDefault">"向左:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>向左:%dms</v>
+                <v>Left:%dms</v>
+                <v>Sang trái:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"479"</v>
+              <v n="TextDefault">"夹紧"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>夹紧</v>
+                <v>Clamp</v>
+                <v>K?p ch?t</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"504"</v>
+              <v n="TextDefault">"夹紧:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>夹紧:%dms</v>
+                <v>Clamp:%dms</v>
+                <v>K?p ch?t:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"815"</v>
+              <v n="TextDefault">"夹紧位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>夹紧位</v>
+                <v>Clamp Position</v>
+                <v>k?p</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"925"</v>
+              <v n="TextDefault">"夹紧位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>夹紧位:%dms</v>
+                <v>Clamp Position:%dms</v>
+                <v>k?p:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"536"</v>
+              <v n="TextDefault">"安全门屏蔽"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>安全门屏蔽</v>
+                <v>SafeDoorShield</v>
+                <v>SafeDoorShield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"909"</v>
+              <v n="TextDefault">"工作位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>工作位</v>
+                <v>Work Position</v>
+                <v>V? trí làm vi?c</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"818"</v>
+              <v n="TextDefault">"工装误合盖检测屏蔽"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>工装误合盖检测屏蔽</v>
+                <v>FrockCloseCheckShield</v>
+                <v>FrockCloseCheckShield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"437"</v>
+              <v n="TextDefault">"左位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>左位</v>
+                <v>Left Position</v>
+                <v>M?t bên trái</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"165"</v>
+              <v n="TextDefault">"左位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>左位:%dms</v>
+                <v>Left Position:%dms</v>
+                <v>M?t bên trái:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"867"</v>
+              <v n="TextDefault">"手动上料"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>手动上料</v>
+                <v>ManualLoad</v>
+                <v>bManualLoad</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"844"</v>
+              <v n="TextDefault">"手动下UC"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>手动下UC</v>
+                <v>ManualUnloadUc</v>
+                <v>ManualUnloadUc</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"367"</v>
+              <v n="TextDefault">"手动下工装"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>手动下工装</v>
+                <v>ManualUnloadFrock</v>
+                <v>ManualUnloadFrock</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"500"</v>
+              <v n="TextDefault">"拆解线线体"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>拆解线线体</v>
+                <v>Dismantling</v>
+                <v>Dismantling</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"671"</v>
+              <v n="TextDefault">"接驳站前线体"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>接驳站前线体</v>
+                <v>AcquireFront</v>
+                <v>AcquireFront</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"515"</v>
+              <v n="TextDefault">"接驳站线体"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>接驳站线体</v>
+                <v>Acquire</v>
+                <v>Acquire</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"273"</v>
+              <v n="TextDefault">"接驳线前前阻挡屏蔽"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>接驳线前前阻挡屏蔽</v>
+                <v>AcquirePrevent2Shield</v>
+                <v>AcquirePrevent2Shield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"95"</v>
+              <v n="TextDefault">"旋转站到位光电去抖动时间"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>旋转站到位光电去抖动时间</v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"885"</v>
+              <v n="TextDefault">"旋转站到位检测光电去抖动时间"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"752"</v>
+              <v n="TextDefault">"松开"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>松开</v>
+                <v>Loosen</v>
+                <v>Th? ra</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"628"</v>
+              <v n="TextDefault">"松开:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>松开:%dms</v>
+                <v>Loosen:%dms</v>
+                <v>Th? ra:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"997"</v>
+              <v n="TextDefault">"松开位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>松开位</v>
+                <v>Loosen Position</v>
+                <v>N?i l?ng</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"836"</v>
+              <v n="TextDefault">"松开位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>松开位:%dms</v>
+                <v>Loosen Position:%dms</v>
+                <v>N?i l?ng:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"866"</v>
+              <v n="TextDefault">"特瑞特"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"40"</v>
+              <v n="TextDefault">"空跑"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>空跑</v>
+                <v>DryRun</v>
+                <v>DryRun</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"817"</v>
+              <v n="TextDefault">"立讯图标"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>立讯图标</v>
+                <v>LIXUN</v>
+                <v>LIXUN</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"911"</v>
+              <v n="TextDefault">"线体"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>线体</v>
+                <v>LineAxis</v>
+                <v>LineAxis</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"480"</v>
+              <v n="TextDefault">"缩回"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>缩回</v>
+                <v>Retraction</v>
+                <v>Theo l?</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"875"</v>
+              <v n="TextDefault">"缩回:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>缩回:%dms</v>
+                <v>Retraction:%dms</v>
+                <v>Theo l?:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"146"</v>
+              <v n="TextDefault">"缩回位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>缩回位</v>
+                <v>Retraction Position</v>
+                <v>Thu nh? các bit</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"589"</v>
+              <v n="TextDefault">"缩回位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>缩回位:%dms</v>
+                <v>Retraction Position:%dms</v>
+                <v>Thu nh? các bit:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"790"</v>
+              <v n="TextDefault">"蜂鸣器屏蔽"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>蜂鸣器屏蔽</v>
+                <v>BuzzerShield</v>
+                <v>BuzzerShield</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"349"</v>
+              <v n="TextDefault">"解锁站到位光电去抖动时间"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>解锁站到位光电去抖动时间</v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"824"</v>
+              <v n="TextDefault">"计数清零"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>计数清零</v>
+                <v>Clear</v>
+                <v>Clear</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"830"</v>
+              <v n="TextDefault">"输入"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>输入</v>
+                <v>Input</v>
+                <v>Nh?p vào</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"785"</v>
+              <v n="TextDefault">"输出"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>输出</v>
+                <v>Output</v>
+                <v>??u ra</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"872"</v>
+              <v n="TextDefault">"远离"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>远离</v>
+                <v>Away from the screen</v>
+                <v>Tránh xa</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"195"</v>
+              <v n="TextDefault">"远离:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>远离:%dms</v>
+                <v>Away from the screen:%dms</v>
+                <v>Tránh xa:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"449"</v>
+              <v n="TextDefault">"远离位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>远离位</v>
+                <v>Away from the screen</v>
+                <v>Tránh xa các bit</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"527"</v>
+              <v n="TextDefault">"远离位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>远离位:%dms</v>
+                <v>Away from the screen:%dms</v>
+                <v>Tránh xa các bit:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"14"</v>
+              <v n="TextDefault">"远离屏幕"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>远离屏幕</v>
+                <v>Away from the screen</v>
+                <v>Tránh xa màn hình</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"587"</v>
+              <v n="TextDefault">"释放"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>释放</v>
+                <v>Release</v>
+                <v>Gi?i phóng</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"719"</v>
+              <v n="TextDefault">"靠近"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>靠近</v>
+                <v>Close to the screen</v>
+                <v>??n g?n</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"569"</v>
+              <v n="TextDefault">"靠近:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>靠近:%dms</v>
+                <v>Close to the screen:%dms</v>
+                <v>??n g?n:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"786"</v>
+              <v n="TextDefault">"靠近位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>靠近位</v>
+                <v>Close to the screen</v>
+                <v>G?n v? trí</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"376"</v>
+              <v n="TextDefault">"靠近位:%dms"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>靠近位:%dms</v>
+                <v>Close to the screen:%dms</v>
+                <v>G?n v? trí:%dms</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"549"</v>
+              <v n="TextDefault">"靠近屏幕"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>靠近屏幕</v>
+                <v>Close to the screen</v>
+                <v>G?n màn hình</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"261"</v>
+              <v n="TextDefault">"预留"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>预留</v>
+                <v>Reserved</v>
+                <v>Reserved</v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{3ece85cc-d32e-41d6-8a46-90d80730b006}</v>
+          <v n="GuidReInit">{84349648-8620-4519-9723-4bdd6c58fa3d}</v>
+          <v n="GuidExitX">{b215a251-c231-4b0a-a8f9-c6b255997ee7}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="GlobalTextListObject">{63784cbb-9ba0-45e6-9d69-babf3f040511}</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </GlobalTextList>
+</TcPlcObject>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="E_Cylinder" Id="{bca95557-97d1-4194-a68b-886979b754c3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_Cylinder :
+(
+Line0Part:=0, //  主流线分料气缸
+Line0Prevent, //  主流线阻挡气缸
+Line0Push, //  主流线拨料气缸
+AcquirePrevent0, //  接驳线前阻挡气缸
+AcquirePrevent1, //  接驳线后阻挡气缸
+AcquireLift, //  接驳线顶升气缸
+AcquirePush, //  接驳模组拨料气缸
+AcquireElevator, //  接驳模组升降气缸
+SteeringLift, //  转向站顶升气缸
+SteeringAcquireElevator, //  转向站接驳升降气缸
+SteeringRotate, //  转向站旋转气缸
+SteeringAcquireLimit, //  转向站接驳限位气缸
+OpenLockPrevent, //  解锁站阻挡气缸
+OpenLockLift, //  解锁站顶升气缸
+OpenLockPush, //  解锁站侧推气缸
+OpenLockRotate, //  解锁站旋转气缸
+OpenLockPush2, //  解锁站侧推气缸2
+TakeUcPrevent, //  取UC站阻挡气缸
+TakeUcLift, //  取UC站顶升气缸
+TakeUcPush, //  取UC站侧推气缸
+TakeUcRotate, //  取UC站旋转气缸
+TakeUcStandard, //  取UC站校平气缸
+UnloadFrockPrevent, //  下工装站阻挡气缸
+UnloadFrockLift, //  下工装站顶升气缸
+UnloadFrockPush, //  下工装站拨料气缸
+TakeUc1Y, //  取UC模组平移Y气缸
+TakeUc1Z1, //  取UC模组升降Z1气缸
+TakeUc1Z2, //  取UC模组升降Z2气缸
+TakeUc1Rotate, //  取UC模组旋转气缸
+TakeUc1Clamp, //  取UC模组夹紧气缸
+UnloadUcElevator, //  下UC皮带升降气缸
+UnloadUcConveyorPush, //  下UC皮带拨料气缸
+UnloadFrockConveyorPrevent, //  下工装皮带升降气缸
+UnloadFrockConveyorPush, //  下工装皮带拨料气缸
+OpenLockElevator,// 解锁站升降气缸
+OpenLockPin,// 解锁站压紧气缸
+TakeUcElevator,// 取UC站升降气缸
+TakeUcPush1,// 取UC站侧推气缸1
+UnloadUcBeltTipper,// 下UC皮带翻转
+UnloadUcBeltLift,// 下UC皮带顶升
+OpenLockTranslation,// 解锁站解锁平移气缸
+TakeUcFrockClamp,//取UC站工装夹紧气缸
+OpenLockPressPush,//解锁站解压侧推气缸
+OpenLockPressRotate,//解锁站解压旋转气缸
+AcquirePrevent2,//  接驳线前前阻挡气缸
+Line0PushElevator, //  主流线拨料升降气缸
+Length
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

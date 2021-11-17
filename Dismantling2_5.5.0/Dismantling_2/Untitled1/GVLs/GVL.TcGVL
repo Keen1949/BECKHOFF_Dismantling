@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GVL Name="GVL" Id="{7f0d83a2-65d0-49ae-b7c6-de793043c299}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	I:					ST_Input;
+	Q:					ST_Output;
+	stSetting:			ST_Setting;// 设置参数
+	
+	stShield_I:			ARRAY[0..7,0..15] OF  BOOL;
+	stShield_Q:			ARRAY[0..6,0..15] OF  BOOL;
+	
+	stHandshake:		ST_Handshake;
+				
+	arrFbLine:			ARRAY[0..10] OF FB_LineAxis;// 流线控制
+	
+    stOverTime:			ST_TimeOut;//光电超时报警 
+	
+	_arrAutoTimer:		ARRAY[0..19] OF  TON;//自动流程延时 
+	_arrAutoTimerOut:	ARRAY[0..19] OF  BOOL;//自动流程延时输出
+	
+	TakeUcSafeCheckNG_OpenLock:  BOOL;	//解锁站工装误合盖检测NG记忆
+	TakeUcSafeCheckNG_TakeUc:  BOOL;    //取UC站读取解锁站工装误合盖检测NG记忆
+	AlarmResetMark:     BOOL;           //311机型主流线拨料升降气缸上升速度过慢报警复位标记
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

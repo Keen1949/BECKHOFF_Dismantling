@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_StationAcquire" Id="{44dfa459-6160-4bee-be27-ac03a10a3b58}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_StationAcquire
+VAR
+	_station:					REFERENCE TO ST_SystemStation;
+	_bEnable:					BOOL;
+	_eLoadClose:				E_LoadClose;// 关闭状态缓存
+	_eLoadClass:				E_LoadClass;// 优先级缓存
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_station REF= G_arrStation[E_Station.Acquire];
+_station.arrName[E_Language.Chinese]:="接驳站";
+_station.arrName[E_Language.Vietnamese]:="Trạm truy cập";
+_bEnable:=NOT GVL.stSetting.arrStationShield[E_Station.Acquire] AND E_MachineType._367 <> GVL_Data.stRecipe.eMachineType;
+ GVL.stSetting.arrStationShield[E_Station.Acquire]:=GVL.stSetting.bManualLoad;
+
+
+A_Auto();
+A_Home();
+
+GVL._arrAutoTimer[E_Timer.Line0PriorityOnDelay](IN:=GVL.I.bLine0Check1, PT:=TO_TIME(GVL_Data.stRecipe.arrAutoTon[E_Timer.Line0PriorityOnDelay]), Q=>GVL._arrAutoTimerOut[E_Timer.Line0PriorityOnDelay] , ET=> );
+GVL._arrAutoTimer[E_Timer.Line0PriorityOffDelay](IN:=NOT GVL.I.bLine0Check1 AND NOT GVL.I.bLine0Check2, PT:=TO_TIME(GVL_Data.stRecipe.arrAutoTon[E_Timer.Line0PriorityOffDelay]), Q=>GVL._arrAutoTimerOut[E_Timer.Line0PriorityOffDelay] , ET=> );
+
+IF GVL._arrAutoTimerOut[E_Timer.Line0PriorityOnDelay] THEN
+	GVL.stSetting.bLine0Priority:=TRUE;
+ELSIF GVL._arrAutoTimerOut[E_Timer.Line0PriorityOffDelay] THEN
+	GVL.stSetting.bLine0Priority:=FALSE;	
+END_IF]]></ST>
+    </Implementation>
+    <Action Name="A_Auto" Id="{006e0886-9dc4-4d5a-be95-1d3864fef829}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	1000:
+		_station.arrInfo[E_Language.Chinese]:="初始化完成等待启动";
+		IF _bEnable  THEN
+			_station.iStepNext:=1100;
+		END_IF
+	1100:
+		_station.arrInfo[E_Language.Chinese]:="缓存状态";
+		_eLoadClass:=GVL_Data.stRecipe.eLoadClass;
+		_eLoadClose:=GVL_Data.stRecipe.eLoadClose;
+		_station.iStepNext:=1200;	
+	1200:
+		_station.arrInfo[E_Language.Chinese]:="请求上料";
+		CASE _eLoadClose OF
+			E_LoadClose.None:
+				CASE _eLoadClass OF
+					E_LoadClass.Acquire:
+						IF GVL.stHandshake.bLine1ToAcquire AND _station.iStepNow=_station.iStepNext  THEN
+							_station.iStepNext:=1301;
+						END_IF
+						IF GVL.stHandshake.bBufferToAcquire AND _station.iStepNow=_station.iStepNext THEN
+							_station.iStepNext:=1251;
+						END_IF
+					E_LoadClass.Line0,E_LoadClass.None:
+						IF GVL.stHandshake.bBufferToAcquire AND _station.iStepNow=_station.iStepNext THEN
+							_station.iStepNext:=1251;
+						END_IF
+						IF GVL.stHandshake.bLine1ToAcquire AND _station.iStepNow=_station.iStepNext THEN
+							_station.iStepNext:=1301;
+						END_IF
+					E_LoadClass.Sensor:						
+						IF GVL.stSetting.bLine0Priority THEN
+							IF GVL.stHandshake.bBufferToAcquire AND _station.iStepNow=_station.iStepNext THEN
+								_station.iStepNext:=1251;
+							END_IF
+							//IF GVL.stHandshake.bLine1ToAcquire AND _station.iStepNow=_station.iStepNext THEN
+							//	_station.iStepNext:=1301;
+							//END_IF
+						ELSE
+							IF GVL.stHandshake.bLine1ToAcquire AND _station.iStepNow=_station.iStepNext  THEN
+								_station.iStepNext:=1301;
+							END_IF
+							IF GVL.stHandshake.bBufferToAcquire AND _station.iStepNow=_station.iStepNext THEN
+								_station.iStepNext:=1251;
+							END_IF
+						END_IF			
+				END_CASE
+			E_LoadClose.Acquire:
+				IF GVL.stHandshake.bBufferToAcquire THEN
+					_station.iStepNext:=1251;
+				END_IF
+			E_LoadClose.Line0:
+				IF GVL.I.bAcquireCheck0 OR GVL.I.bAcquireCheck1 THEN
+					_station.iStepNext:=1301;
+				END_IF
+		END_CASE
+	1251:
+		_station.arrInfo[E_Language.Chinese]:="等待拨料升降气缸至缩回位";
+		IF G_arrCylinder[E_Cylinder.AcquireElevator].stStatus.bHomeDone THEN
+			GVL.stHandshake.bAcquireToBuffer:=TRUE;
+			_station.iStepNext:=1261;
+		END_IF
+	1261:
+		_station.arrInfo[E_Language.Chinese]:="等待复位请求信号";
+		IF NOT GVL.stHandshake.bBufferToAcquire THEN
+			GVL.stHandshake.bAcquireToBuffer:=FALSE;
+			_station.iStepNext:=1801;
+		END_IF
+	1301:
+		_station.arrInfo[E_Language.Chinese]:="顶升气缸缩回";		
+		IF  G_arrFbCylinder[E_Cylinder.AcquireLift].M_HomeRequest() THEN
+			GVL.stHandshake.bAcquireToLine1:=TRUE;
+			_station.iStepNext:=1311;
+		END_IF	
+	1311:	
+		_station.arrInfo[E_Language.Chinese]:="等待产品到位";
+		GVL.stOverTime.bAcquireCheck2:=TRUE;
+		IF GVL.I.bAcquireCheck2 THEN
+			GVL.stOverTime.bAcquireCheck2:=FALSE;
+			_station.iStepNext:=1321;
+		END_IF
+	1321:
+		_station.arrInfo[E_Language.Chinese]:="等待接驳线复位接驳站收料请求";
+		GVL.stHandshake.bAcquireToLine1:=FALSE;
+		IF NOT GVL.stHandshake.bLine1ToAcquire THEN
+			_station.iStepNext:=1701;
+		END_IF
+	1701:
+		_station.arrInfo[E_Language.Chinese]:="判断拨料气缸 升降气缸 是否到位";
+		IF G_arrCylinder[E_Cylinder.AcquireElevator].stStatus.bHomeDone AND G_arrCylinder[E_Cylinder.AcquirePush].stStatus.bWorkDone THEN
+			_station.iStepNext:=1751;
+		END_IF
+	1751:
+		_station.arrInfo[E_Language.Chinese]:="顶升气缸伸出 升降气缸伸出";
+		IF  G_arrFbCylinder[E_Cylinder.AcquireLift].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.AcquireElevator].M_WorkRequest() THEN 
+			_station.iStepNext:=1801;
+		END_IF	
+	1801:
+		_station.arrInfo[E_Language.Chinese]:="升降气缸伸出";
+		// 等待拨料气缸 至后位 再伸出
+		IF G_arrCylinder[E_Cylinder.AcquirePush].stStatus.bWorkDone THEN
+			IF G_arrFbCylinder[E_Cylinder.AcquireElevator].M_WorkRequest() THEN
+				_station.iStepNext:=1901;
+			END_IF
+		END_IF		
+	1901:
+		_station.arrInfo[E_Language.Chinese]:="等待转向站请求放料";
+		IF GVL.stHandshake.bSteering THEN
+			GVL.stHandshake.bSteeringOk:=TRUE;
+			_station.iStepNext:=2001;
+		END_IF
+	2001:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸至前位";
+		IF G_arrFbCylinder[E_Cylinder.AcquirePush].M_HomeRequest() THEN
+			_station.iStepNext:=2101;
+		END_IF
+	2101:
+		_station.arrInfo[E_Language.Chinese]:="等待复位请求信号";
+		IF NOT GVL.stHandshake.bSteering THEN
+			GVL.stHandshake.bSteeringOk:=FALSE;
+			_station.iStepNext:=2201;
+		END_IF
+	2201:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸至后位 升降气缸缩回";
+		G_arrFbCylinder[E_Cylinder.AcquirePush].M_WorkRequest();
+		G_arrFbCylinder[E_Cylinder.AcquireElevator].M_HomeRequest();
+		_station.iStepNext:=1100;
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Home" Id="{67bcb7bd-1cb1-48c9-83cd-865853539697}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	0:
+		_station.arrInfo[E_Language.Chinese]:="等待初始化";
+		_station.iStepNext:=SEL(_bEnable,1000,100);
+	100:
+		_station.arrInfo[E_Language.Chinese]:="前阻挡气缸伸出";
+		IF G_arrFbCylinder[E_Cylinder.AcquirePrevent0].M_WorkRequest() THEN
+			IF GVL.stSetting.bAcquirePrevent2Shield THEN
+				_station.iStepNext:=200;
+			ELSE
+				_station.iStepNext:=110;
+			END_IF	
+		END_IF
+	110:
+		_station.arrInfo[E_Language.Chinese]:="前前阻挡气缸缩回";
+		IF G_arrFbCylinder[E_Cylinder.AcquirePrevent2].M_HomeRequest() THEN
+			_station.iStepNext:=200;
+		END_IF			
+	200:
+		_station.arrInfo[E_Language.Chinese]:="后阻挡气缸伸出";
+		IF G_arrFbCylinder[E_Cylinder.AcquirePrevent1].M_WorkRequest() THEN
+			_station.iStepNext:=300;
+		END_IF
+	300:
+		_station.arrInfo[E_Language.Chinese]:="升降气缸缩回";
+		IF  G_arrFbCylinder[E_Cylinder.AcquireElevator].M_HomeRequest() THEN
+			_station.iStepNext:=400;
+		END_IF
+	400:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸至后位";
+		IF  G_arrFbCylinder[E_Cylinder.AcquirePush].M_WorkRequest() THEN
+			_station.iStepNext:=500;
+		END_IF
+	500:
+		_station.arrInfo[E_Language.Chinese]:="顶升气缸伸出";
+		IF G_arrFbCylinder[E_Cylinder.AcquireLift].M_WorkRequest() THEN
+			_station.iStepNext:=1000;
+		END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P_StationAcquire">
+      <LineId Id="18" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="128" Count="1" />
+      <LineId Id="104" Count="4" />
+      <LineId Id="103" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationAcquire.A_Auto">
+      <LineId Id="2" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="132" Count="2" />
+      <LineId Id="45" Count="3" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="6" Count="1" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="347" Count="1" />
+      <LineId Id="343" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="140" Count="1" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="353" Count="0" />
+      <LineId Id="356" Count="0" />
+      <LineId Id="368" Count="4" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="374" Count="4" />
+      <LineId Id="373" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="157" Count="1" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="282" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="281" Count="0" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="122" Count="2" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="312" Count="0" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="351" Count="0" />
+      <LineId Id="379" Count="0" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="391" Count="4" />
+      <LineId Id="385" Count="0" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="406" Count="0" />
+      <LineId Id="399" Count="1" />
+      <LineId Id="404" Count="1" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="204" Count="2" />
+      <LineId Id="306" Count="0" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="308" Count="1" />
+      <LineId Id="307" Count="0" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="254" Count="0" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="287" Count="1" />
+      <LineId Id="285" Count="1" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="246" Count="3" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="258" Count="2" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="262" Count="4" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="269" Count="1" />
+      <LineId Id="273" Count="1" />
+      <LineId Id="272" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationAcquire.A_Home">
+      <LineId Id="1" Count="1" />
+      <LineId Id="5" Count="4" />
+      <LineId Id="57" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="53" Count="3" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="12" Count="4" />
+      <LineId Id="42" Count="8" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="28" Count="3" />
+      <LineId Id="3" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

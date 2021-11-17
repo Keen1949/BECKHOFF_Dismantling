@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="E_Station" Id="{43c22ffa-05a5-4357-ba71-b198ec713724}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_Station :
+(
+Acquire:=0,//接驳站
+Line0Buffer,//主流线缓存
+Line0Load,//主流线上料
+OpenLock,//解锁站
+Steering,//转向站
+TakeUc,//取Uc站
+TakeUc_M,//取Uc模组
+UnloadFrock,//下工装
+UnloadFrock_L,//下工装线体
+UnloadUc_L,//下UC线体
+Line1Load,//接驳线上料
+Length
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

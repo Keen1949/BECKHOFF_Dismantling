@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="MAIN" Id="{333f833f-70a9-4983-913e-55cbee6fe48f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	VERSION:STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[GVL_Data.stRecipe.bLuxshardict:=TRUE;
+
+VERSION:='5.5.0';
+P_System();
+P_Alarm();
+P_Device();
+
+P_StationAcquire();// 接驳站
+P_StationLine0Buffer();// Line0上料缓存站
+P_StationLine0Load();// Line0上料站
+P_StationOpenLock();// 解锁站
+P_StationSteering();// 转向站
+P_StationTakeUc();// 取UC
+P_StationTakeUc_M();// 取UC模组
+P_StationUnloadFrock();// 下工装
+P_StationUnloadFrock_L();// 下工装线条
+P_StationUnloadUc_L();// 下UC线条
+P_StationLine1Load();// Line1上料站
+
+
+IF GVL_Data.stRecipe.eMachineType=E_MachineType._367 THEN
+	GVL_IO.EIP_Q_Var4091.1:=GVL_P.G_stSystem.stMode.bAutoRunning AND NOT GVL.I.bLine0Check1 AND  NOT GVL.stSetting.bStopFrontStation;//给前站设备要料信号
+ELSE
+	GVL_IO.EIP_Q_Var4091.1:=GVL_P.G_stSystem.stMode.bAutoRunning AND NOT GVL.I.bAcquireCheck0 AND  NOT GVL.stSetting.bStopFrontStation;//给前站设备要料信号
+END_IF
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="193" Count="16" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="251" Count="3" />
+      <LineId Id="257" Count="1" />
+      <LineId Id="255" Count="0" />
+      <LineId Id="213" Count="0" />
+      <LineId Id="227" Count="1" />
+      <LineId Id="242" Count="4" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,3095 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_Device" Id="{13cc3208-eb13-4248-ad09-86d2342ef435}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_Device
+VAR
+	_i:					INT;
+	_t:					INT;
+	_bFirstRun:			BOOL:=TRUE;
+	_fbPulse:			FB_Pulse;
+	_arrInput:			ARRAY[0..7,0..15] OF  BOOL;
+	_arrOutput:			ARRAY[0..6,0..15] OF  BOOL;
+	_arrTonInput :		ARRAY[0..7,0..15] OF  TON;
+	_arrTonOutput:		ARRAY[0..6,0..15] OF  TON;
+	_arrCylTon_H:		ARRAY[0..50] OF TON;
+	_arrCylTon_W:		ARRAY[0..50] OF TON;
+	
+	
+	_boolTemp:			POINTER TO BOOL;
+	
+	_eMachineType:		E_MachineType;
+	_eMachineType1:		E_MachineType;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF _bFirstRun THEN
+	A_Info();
+	_bFirstRun:=FALSE;
+END_IF
+
+A_InOut();// 输入输出
+A_Axis();// 轴控制
+A_Line();// 线体控制
+
+IF GVL.stSetting.bDryRun THEN
+	(*CASE GVL_Data.stRecipe.eMachineType OF
+		E_MachineType._367:
+	          A_CylinderTest367();
+		E_MachineType._200:
+		      A_CylinderTest201();
+		E_MachineType._373:
+		      A_CylinderTest373();
+		E_MachineType._069:
+		      A_CylinderTest069();
+		E_MachineType._311:
+		     A_CylinderTest311();
+	END_CASE*)
+	A_CylinderTest();
+ELSE
+	A_Cylinder();
+END_IF
+
+// 气缸屏蔽
+IF GVL_Data.stRecipe.eMachineType<>_eMachineType1 THEN
+	FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].stLock.bShield:=FALSE;
+    END_FOR
+	_eMachineType1:=GVL_Data.stRecipe.eMachineType;
+END_IF
+
+
+CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._367:
+		G_arrCylinder[E_Cylinder.AcquirePrevent0].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.AcquirePrevent1].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.AcquireLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.AcquirePush].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.AcquireElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockPrevent].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltTipper].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPin].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcPush1].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockTranslation].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressPush].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.AcquirePrevent2].stLock.bShield:=TRUE;
+		
+	E_MachineType._200:
+		G_arrCylinder[E_Cylinder.TakeUcStandard].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPin].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcPush1].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockTranslation].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcFrockClamp].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressPush].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.Line0PushElevator].stLock.bShield:=TRUE;
+	E_MachineType._373:
+		G_arrCylinder[E_Cylinder.OpenLockPush2].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockPrevent].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltTipper].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPin].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcPush1].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockTranslation].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUc1Z2].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcFrockClamp].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcStandard].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.Line0PushElevator].stLock.bShield:=TRUE;
+	E_MachineType._069:
+		G_arrCylinder[E_Cylinder.TakeUcStandard].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockPrevent].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltTipper].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPin].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcElevator].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcPush1].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockTranslation].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcFrockClamp].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressPush].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.Line0PushElevator].stLock.bShield:=TRUE;
+	E_MachineType._311:
+		G_arrCylinder[E_Cylinder.OpenLockPush].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPush2].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcStandard].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltTipper].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadUcBeltLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.UnloadFrockPrevent].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.TakeUcFrockClamp].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressPush].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.OpenLockPressRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringLift].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.SteeringRotate].stLock.bShield:=TRUE;
+		G_arrCylinder[E_Cylinder.Line0PushElevator].stLock.bShield:=TRUE;
+
+		
+END_CASE]]></ST>
+    </Implementation>
+    <Action Name="A_Axis" Id="{ff47a3e6-d233-4182-ae50-c85a3b8a742d}">
+      <Implementation>
+        <ST><![CDATA[_i:=E_Axis.Z;
+G_arrAxis[_i].arrInfo[E_Language.Chinese].sName:="Z轴";
+G_arrAxis[_i].arrInfo[E_Language.English].sName:="Z";
+G_arrAxis[_i].arrInfo[E_Language.Vietnamese].sName:="Z";
+G_arrAxis[_i].stLock.bShield:=GVL_Data.stRecipe.eMachineType=E_MachineType._200;
+G_arrAxis[_i].stInput.bNegative:=GVL_IO.AxisInput.0;
+G_arrAxis[_i].stInput.bPositive:=GVL_IO.AxisInput.2;
+G_arrAxisData[_i].stMode.iHomeMode:=0;
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Cylinder" Id="{f287f90e-ded2-434e-9553-ff04ee696bc4}">
+      <Implementation>
+        <ST><![CDATA[_i:=E_Cylinder.Line0Part;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Part_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Part_Cyl_W;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Prevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Prevent_Cyl_W;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Push_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Push_Cyl_W;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bAcquirePrevent0_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent0_Cyl_W;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bAcquirePrevent1_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent1_Cyl_W;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireLift_Cyl_W;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePush_Cyl_W;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireElevator_Cyl_W;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringLift_Cyl_W;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireElevator_Cyl_W;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringRotate_Cyl_W;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireLimit_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireLimit_Cyl_W;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPrevent_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPrevent_Cyl_W;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockLift_Cyl_W;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush_Cyl_W;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockRotate_Cyl_W;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush2_Cyl_H;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPush2_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush2_Cyl_W;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bTakeUcPrevent_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPrevent_Cyl_W;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcLift_Cyl_W;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush_Cyl_W;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcRotate_Cyl_W;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcStandard_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcStandard_Cyl_W;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bUnloadFrockPrevent_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPrevent_Cyl_W;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockLift_Cyl_W;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPush_Cyl_W;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Y_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Y_Cyl_W;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z1_Cyl_W;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z2_Cyl_W;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Rotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Rotate_Cyl_W;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Clamp_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Clamp_Cyl_W;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+_i:=E_Cylinder.UnloadUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcElevator_Cyl_W;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcConveyorPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcConveyorPush_Cyl_W;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPush_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockElevator_Cyl_W;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPin_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPin_Cyl_W;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcElevator_Cyl_W;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush1_Cyl_W;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltTipper_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltTipper_Cyl_W;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltLift_Cyl_W;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockTranslation_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockTranslation_Cyl_W;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPressPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPressPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPressPush_Cyl_W;
+GVL.Q.bOpenLockPressPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPressPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPressRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPressRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPressRotate_Cyl_W;
+GVL.Q.bOpenLockPressRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPressRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePrevent2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent2_Cyl_W;
+GVL.Q.bAcquirePrevent2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0PushElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0PushElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0PushElevator_Cyl_W;
+GVL.Q.bLine0PushElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0PushElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_CylinderTest" Id="{d6a0c848-c9af-4665-8eae-053e4364a902}">
+      <Implementation>
+        <ST><![CDATA[FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].ID:=TO_BYTE(_i+50);
+	_arrCylTon_H[_i](IN:=G_arrCylinder[_i].stOutput.bHome , PT:=T#2S , Q=> , ET=> );
+	_arrCylTon_W[_i](IN:=G_arrCylinder[_i].stOutput.bWork , PT:=T#2S , Q=> , ET=> );
+	G_arrCylinder[_i].stInput.bHome:=_arrCylTon_H[_i].Q;
+	G_arrCylinder[_i].stInput.bWork:=_arrCylTon_W[_i].Q;
+END_FOR
+
+_i:=E_Cylinder.Line0Part;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcElevator;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPressPush;
+GVL.Q.bOpenLockPressPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPressPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPressRotate;
+GVL.Q.bOpenLockPressRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPressRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent2;
+GVL.Q.bAcquirePrevent2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0PushElevator;
+GVL.Q.bLine0PushElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0PushElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_CylinderTest069" Id="{5bdd318a-afde-4f44-9b1c-1cf60fbe0dc0}">
+      <Implementation>
+        <ST><![CDATA[FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].ID:=TO_BYTE(_i+50);
+	_arrCylTon_H[_i](IN:=G_arrCylinder[_i].stOutput.bHome , PT:=T#2S , Q=> , ET=> );
+	_arrCylTon_W[_i](IN:=G_arrCylinder[_i].stOutput.bWork , PT:=T#2S , Q=> , ET=> );
+	G_arrCylinder[_i].stInput.bHome:=_arrCylTon_H[_i].Q;
+	G_arrCylinder[_i].stInput.bWork:=_arrCylTon_W[_i].Q;
+END_FOR
+
+_i:=E_Cylinder.Line0Part;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent0_Cyl_W;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent1_Cyl_W;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireLift_Cyl_W;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePush_Cyl_W;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireElevator_Cyl_W;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringLift_Cyl_W;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireElevator_Cyl_W;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringRotate_Cyl_W;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireLimit_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireLimit_Cyl_W;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPrevent_Cyl_W;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockLift_Cyl_W;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush_Cyl_W;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockRotate_Cyl_W;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush2_Cyl_H;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPush2_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush2_Cyl_W;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPrevent_Cyl_W;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcLift_Cyl_W;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush_Cyl_W;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcRotate_Cyl_W;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcStandard_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcStandard_Cyl_W;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPrevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPrevent_Cyl_W;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockLift_Cyl_W;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPush_Cyl_W;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Y_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Y_Cyl_W;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z1_Cyl_W;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z2_Cyl_W;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Rotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Rotate_Cyl_W;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Clamp_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Clamp_Cyl_W;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcElevator;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcElevator_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcElevator_Cyl_W;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcConveyorPush_Cyl_W;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPush_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockElevator_Cyl_W;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPin_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPin_Cyl_W;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcElevator_Cyl_W;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush1_Cyl_W;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltTipper_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltTipper_Cyl_W;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltLift_Cyl_W;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockTranslation_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockTranslation_Cyl_W;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcFrockClamp_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcFrockClamp_Cyl_W;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_CylinderTest201" Id="{9f5fffe6-759d-43ec-9a2f-9aaa9b32cddf}">
+      <Implementation>
+        <ST><![CDATA[FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].ID:=TO_BYTE(_i+50);
+	_arrCylTon_H[_i](IN:=G_arrCylinder[_i].stOutput.bHome , PT:=T#2S , Q=> , ET=> );
+	_arrCylTon_W[_i](IN:=G_arrCylinder[_i].stOutput.bWork , PT:=T#2S , Q=> , ET=> );
+	G_arrCylinder[_i].stInput.bHome:=_arrCylTon_H[_i].Q;
+	G_arrCylinder[_i].stInput.bWork:=_arrCylTon_W[_i].Q;
+END_FOR
+
+_i:=E_Cylinder.Line0Part;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Part_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Part_Cyl_W;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Prevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Prevent_Cyl_W;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Push_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Push_Cyl_W;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent0_Cyl_W;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent1_Cyl_W;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireLift_Cyl_W;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePush_Cyl_W;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireElevator_Cyl_W;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringLift_Cyl_W;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireElevator_Cyl_W;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringRotate_Cyl_W;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireLimit_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireLimit_Cyl_W;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPrevent_Cyl_W;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockLift_Cyl_W;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush_Cyl_W;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockRotate_Cyl_W;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush2_Cyl_H;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPush2_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush2_Cyl_W;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPrevent_Cyl_W;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcLift_Cyl_W;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush_Cyl_W;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcRotate_Cyl_W;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcStandard_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcStandard_Cyl_W;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPrevent_Cyl_W;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockLift_Cyl_W;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;//
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPush_Cyl_W;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Y_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Y_Cyl_W;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z1_Cyl_W;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z2_Cyl_W;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Rotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Rotate_Cyl_W;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Clamp_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Clamp_Cyl_W;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcElevator;
+//G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+//G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcElevator_Cyl_W;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+//G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcConveyorPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcConveyorPush_Cyl_W;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+//G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+//G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+//G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPush_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockElevator_Cyl_W;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPin_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPin_Cyl_W;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcElevator_Cyl_W;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush1_Cyl_W;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltTipper_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltTipper_Cyl_W;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltLift_Cyl_W;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+//G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+//G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcFrockClamp_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcFrockClamp_Cyl_W;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_CylinderTest311" Id="{05f3ebc1-9597-4352-ab77-b74849cc9f67}">
+      <Implementation>
+        <ST><![CDATA[FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].ID:=TO_BYTE(_i+50);
+	_arrCylTon_H[_i](IN:=G_arrCylinder[_i].stOutput.bHome , PT:=T#2S , Q=> , ET=> );
+	_arrCylTon_W[_i](IN:=G_arrCylinder[_i].stOutput.bWork , PT:=T#2S , Q=> , ET=> );
+	G_arrCylinder[_i].stInput.bHome:=_arrCylTon_H[_i].Q;
+	G_arrCylinder[_i].stInput.bWork:=_arrCylTon_W[_i].Q;
+END_FOR
+
+_i:=E_Cylinder.Line0Part;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent0_Cyl_W;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent1_Cyl_W;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireLift_Cyl_W;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePush_Cyl_W;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireElevator_Cyl_W;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringLift_Cyl_W;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireElevator_Cyl_W;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringRotate_Cyl_W;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireLimit_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireLimit_Cyl_W;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPrevent_Cyl_W;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockLift_Cyl_W;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush_Cyl_W;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockRotate_Cyl_W;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush2_Cyl_H;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPush2_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush2_Cyl_W;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPrevent_Cyl_W;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;//GVL.I.bTakeUcLift_Cyl_W;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush_Cyl_W;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcRotate_Cyl_W;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcStandard_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcStandard_Cyl_W;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPrevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPrevent_Cyl_W;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockLift_Cyl_W;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPush_Cyl_W;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Y_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Y_Cyl_W;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z1_Cyl_W;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z2_Cyl_W;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Rotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Rotate_Cyl_W;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Clamp_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Clamp_Cyl_W;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcElevator;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcElevator_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcElevator_Cyl_W;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcConveyorPush_Cyl_W;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPush_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockElevator_Cyl_W;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;//GVL.I.bOpenLockPin_Cyl_W;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcElevator_Cyl_W;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush1_Cyl_W;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltTipper_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltTipper_Cyl_W;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltLift_Cyl_W;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockTranslation_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockTranslation_Cyl_W;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcFrockClamp_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcFrockClamp_Cyl_W;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_CylinderTest367" Id="{c9fd115b-a8aa-475c-a7d3-fd9552ad2280}">
+      <Implementation>
+        <ST><![CDATA[FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].ID:=TO_BYTE(_i+50);
+	_arrCylTon_H[_i](IN:=G_arrCylinder[_i].stOutput.bHome , PT:=T#2S , Q=> , ET=> );
+	_arrCylTon_W[_i](IN:=G_arrCylinder[_i].stOutput.bWork , PT:=T#2S , Q=> , ET=> );
+	G_arrCylinder[_i].stInput.bHome:=_arrCylTon_H[_i].Q;
+	G_arrCylinder[_i].stInput.bWork:=_arrCylTon_W[_i].Q;
+END_FOR
+
+_i:=E_Cylinder.Line0Part;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bLine0Push_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bLine0Push_Cyl_W;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent0_Cyl_W;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent1_Cyl_W;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireLift_Cyl_W;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePush_Cyl_W;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireElevator_Cyl_W;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringLift_Cyl_W;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireElevator_Cyl_W;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringRotate_Cyl_W;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireLimit_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireLimit_Cyl_W;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPrevent_Cyl_W;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockLift_Cyl_W;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush_Cyl_W;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockRotate_Cyl_W;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush2_Cyl_H;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPush2_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush2_Cyl_W;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPrevent_Cyl_W;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcLift_Cyl_W;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush_Cyl_W;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcRotate_Cyl_W;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcStandard_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcStandard_Cyl_W;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPrevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPrevent_Cyl_W;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockLift_Cyl_W;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPush_Cyl_W;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Y_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Y_Cyl_W;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z1_Cyl_W;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z2_Cyl_W;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Rotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Rotate_Cyl_W;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Clamp_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Clamp_Cyl_W;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcElevator;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcElevator_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcElevator_Cyl_W;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcConveyorPush_Cyl_W;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPush_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockElevator_Cyl_W;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPin_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPin_Cyl_W;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcElevator_Cyl_W;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush1_Cyl_W;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltTipper_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltTipper_Cyl_W;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltLift_Cyl_W;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockTranslation_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockTranslation_Cyl_W;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].stInput.bHome:=G_arrCylinder[_i].stOutput.bHome;
+G_arrCylinder[_i].stInput.bWork:=G_arrCylinder[_i].stOutput.bWork;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_CylinderTest373" Id="{a87c1324-8fa2-4e8f-b6f4-e294dfa9223b}">
+      <Implementation>
+        <ST><![CDATA[FOR _i:=0 TO 50 BY 1 DO
+	G_arrCylinder[_i].ID:=TO_BYTE(_i+50);
+	_arrCylTon_H[_i](IN:=G_arrCylinder[_i].stOutput.bHome , PT:=T#2S , Q=> , ET=> );
+	_arrCylTon_W[_i](IN:=G_arrCylinder[_i].stOutput.bWork , PT:=T#2S , Q=> , ET=> );
+	G_arrCylinder[_i].stInput.bHome:=_arrCylTon_H[_i].Q;
+	G_arrCylinder[_i].stInput.bWork:=_arrCylTon_W[_i].Q;
+END_FOR
+
+_i:=E_Cylinder.Line0Part;
+GVL.Q.bLine0Part_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Part_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Prevent;
+GVL.Q.bLine0Prevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Prevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.Line0Push;
+GVL.Q.bLine0Push_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bLine0Push_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent0_Cyl_W;
+GVL.Q.bAcquirePrevent0_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent0_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePrevent1_Cyl_W;
+GVL.Q.bAcquirePrevent1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePrevent1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireLift_Cyl_W;
+GVL.Q.bAcquireLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquirePush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquirePush_Cyl_W;
+GVL.Q.bAcquirePush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquirePush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bAcquireElevator_Cyl_W;
+GVL.Q.bAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringLift_Cyl_W;
+GVL.Q.bSteeringLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireElevator_Cyl_W;
+GVL.Q.bSteeringAcquireElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringRotate_Cyl_W;
+GVL.Q.bSteeringRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bSteeringAcquireLimit_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bSteeringAcquireLimit_Cyl_W;
+GVL.Q.bSteeringAcquireLimit_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bSteeringAcquireLimit_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPrevent_Cyl_W;
+GVL.Q.bOpenLockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockLift_Cyl_W;
+GVL.Q.bOpenLockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush_Cyl_W;
+GVL.Q.bOpenLockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockRotate_Cyl_W;
+GVL.Q.bOpenLockRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPush2;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPush2_Cyl_H;
+G_arrCylinder[_i].stInput.bHome:=NOT GVL.I.bOpenLockPush2_Cyl_W;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPush2_Cyl_W;
+GVL.Q.bOpenLockPush2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPush2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPrevent_Cyl_W;
+GVL.Q.bTakeUcPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcLift_Cyl_W;
+GVL.Q.bTakeUcLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush_Cyl_W;
+GVL.Q.bTakeUcPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcRotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcRotate_Cyl_W;
+GVL.Q.bTakeUcRotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcRotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcStandard;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcStandard_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcStandard_Cyl_W;
+GVL.Q.bTakeUcStandard_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcStandard_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPrevent_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPrevent_Cyl_W;
+GVL.Q.bUnloadFrockPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockLift_Cyl_W;
+GVL.Q.bUnloadFrockLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockPush;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockPush_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockPush_Cyl_W;
+GVL.Q.bUnloadFrockPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Y_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Y_Cyl_W;
+GVL.Q.bTakeUc1Y_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Y_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z1_Cyl_W;
+GVL.Q.bTakeUc1Z1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Z2_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Z2_Cyl_W;
+GVL.Q.bTakeUc1Z2_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Z2_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Rotate_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Rotate_Cyl_W;
+GVL.Q.bTakeUc1Rotate_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Rotate_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUc1Clamp_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUc1Clamp_Cyl_W;
+GVL.Q.bTakeUc1Clamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUc1Clamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcElevator;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcElevator_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcElevator_Cyl_W;
+GVL.Q.bUnloadUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcConveyorPush_Cyl_W;
+GVL.Q.bUnloadUcConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPrevent_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPrevent_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+//G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadFrockConveyorPush_Cyl_H;
+//G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadFrockConveyorPush_Cyl_W;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadFrockConveyorPush_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockElevator_Cyl_W;
+GVL.Q.bOpenLockElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockPin_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockPin_Cyl_W;
+GVL.Q.bOpenLockPin_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockPin_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcElevator_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcElevator_Cyl_W;
+GVL.Q.bTakeUcElevator_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcElevator_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcPush1_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcPush1_Cyl_W;
+GVL.Q.bTakeUcPush1_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcPush1_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltTipper_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltTipper_Cyl_W;
+GVL.Q.bUnloadUcBeltTipper_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltTipper_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bUnloadUcBeltLift_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bUnloadUcBeltLift_Cyl_W;
+GVL.Q.bUnloadUcBeltLift_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bUnloadUcBeltLift_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.OpenLockTranslation;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bOpenLockTranslation_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bOpenLockTranslation_Cyl_W;
+GVL.Q.bOpenLockTranslation_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bOpenLockTranslation_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].stInput.bHome:=GVL.I.bTakeUcFrockClamp_Cyl_H;
+G_arrCylinder[_i].stInput.bWork:=GVL.I.bTakeUcFrockClamp_Cyl_W;
+GVL.Q.bTakeUcFrockClamp_Cyl_H:=G_arrCylinder[_i].stOutput.bHome;
+GVL.Q.bTakeUcFrockClamp_Cyl_W:=G_arrCylinder[_i].stOutput.bWork;
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Info" Id="{a7862511-5848-48f5-b27a-2def49c23547}">
+      <Implementation>
+        <ST><![CDATA[_i:=E_Cylinder.Line0Part;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="主流线分料气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="Line0Part";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh phân phối dòng chính  ";
+
+_i:=E_Cylinder.Line0Prevent;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="主流线阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="Line0Prevent";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Dòng chính ngăn chặn các xi lanh  ";
+
+_i:=E_Cylinder.Line0Push;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="主流线拨料气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="Line0Push";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh cuộn dòng chính  ";
+
+_i:=E_Cylinder.AcquirePrevent0;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="接驳线前阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="AcquirePrevent0";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Chặn xi lanh trước dây nối  ";
+
+_i:=E_Cylinder.AcquirePrevent1;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="接驳线后阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="AcquirePrevent1";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Chặn xi lanh sau khi kết nối  ";
+
+_i:=E_Cylinder.AcquireLift;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="接驳线顶升气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="AcquireLift";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh nâng lên dây nối  ";
+
+_i:=E_Cylinder.AcquirePush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="接驳模组拨料气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="AcquirePush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh kết nối mô-đun  ";
+
+_i:=E_Cylinder.AcquireElevator;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="接驳模组升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="AcquireElevator";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh nâng mô-đun kết nối  ";
+
+_i:=E_Cylinder.SteeringLift;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="转向站顶升气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="SteeringLift";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh hướng về ga nâng lên  ";
+
+_i:=E_Cylinder.SteeringAcquireElevator;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="转向站接驳升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="SteeringAcquireElevator";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Trạm lái xe nối với xi lanh nâng  ";
+
+_i:=E_Cylinder.SteeringRotate;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="转向站旋转气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="SteeringRotate";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Quay xi lanh ở trạm rẽ  ";
+
+_i:=E_Cylinder.SteeringAcquireLimit;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="转向站接驳限位气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="SteeringAcquireLimit";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh giới hạn kết nối trạm rẽ  ";
+
+_i:=E_Cylinder.OpenLockPrevent;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockPrevent";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa trạm để ngăn chặn xi lanh  ";
+
+_i:=E_Cylinder.OpenLockLift;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站顶升气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockLift";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa các xi lanh nâng lên  ";
+
+_i:=E_Cylinder.OpenLockPush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站侧推气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockPush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa xi lanh đẩy ga  ";
+
+_i:=E_Cylinder.OpenLockRotate;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站旋转气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockRotate";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa trạm quay xi lanh  ";
+
+_i:=E_Cylinder.OpenLockPush2;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站侧推气缸2";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockPush2";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa ga đẩy xi lanh 2  ";
+
+_i:=E_Cylinder.TakeUcPrevent;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcPrevent";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy trụ UC để ngăn chặn xi lanh  ";
+
+_i:=E_Cylinder.TakeUcLift;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站顶升气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcLift";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh nâng lên từ trạm UC  ";
+
+_i:=E_Cylinder.TakeUcPush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站侧推气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcPush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy ống đẩy bên ga UC  ";
+
+_i:=E_Cylinder.TakeUcRotate;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站旋转气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcRotate";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh quay từ trạm UC  ";
+
+_i:=E_Cylinder.TakeUcStandard;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站校平气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcStandard";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh bằng phẳng từ trạm UC  ";
+
+_i:=E_Cylinder.UnloadFrockPrevent;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下工装站阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadFrockPrevent";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Trạm dừng xi lanh  ";
+
+_i:=E_Cylinder.UnloadFrockLift;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下工装站顶升气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadFrockLift";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh nâng lên xuống ga  ";
+
+_i:=E_Cylinder.UnloadFrockPush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下工装站拨料气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadFrockPush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh vật liệu trạm tiếp theo  ";
+
+_i:=E_Cylinder.TakeUc1Y;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC模组平移Y气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUc1Y";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy mô-đun UC và chuyển xi lanh Y  ";
+
+_i:=E_Cylinder.TakeUc1Z1;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC模组升降Z1气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUc1Z1";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Nâng xi lanh Z1 bằng mô-đun UC  ";
+
+_i:=E_Cylinder.TakeUc1Z2;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC模组升降Z2气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUc1Z2";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy mô-đun UC nâng xi lanh Z2  ";
+
+_i:=E_Cylinder.TakeUc1Rotate;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC模组旋转气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUc1Rotate";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh quay trong mô-đun UC  ";
+
+_i:=E_Cylinder.TakeUc1Clamp;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC模组夹紧气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUc1Clamp";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy mô-đun UC kẹp xi lanh  ";
+
+_i:=E_Cylinder.UnloadUcElevator;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下UC皮带升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadUcElevator";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Ống nâng dưới vành đai UC  ";
+
+_i:=E_Cylinder.UnloadUcConveyorPush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下UC皮带拨料气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadUcConveyorPush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh dưới vành đai UC  ";
+
+_i:=E_Cylinder.UnloadFrockConveyorPrevent;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下工装皮带升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadFrockConveyorPrevent";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Dây chuyền nâng xi lanh  ";
+
+_i:=E_Cylinder.UnloadFrockConveyorPush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下工装皮带拨料气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadFrockConveyorPush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh dây buộc công nhân  ";
+
+_i:=E_Cylinder.OpenLockElevator;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockElevator";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa trạm nâng xi lanh  ";
+
+_i:=E_Cylinder.OpenLockPin;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站按压气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockPin";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Mở khóa trạm nhấn xi lanh  ";
+
+_i:=E_Cylinder.TakeUcElevator;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcElevator";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh nâng từ trạm UC  ";
+
+_i:=E_Cylinder.TakeUcPush1;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站侧推气缸1";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcPush1";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh 1 đẩy bên ga UC  ";
+
+_i:=E_Cylinder.UnloadUcBeltTipper;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下UC皮带翻转气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadUcBeltTipper";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Phía dưới vành đai xoay xi lanh  ";
+
+_i:=E_Cylinder.UnloadUcBeltLift;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="下UC皮带顶升气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="UnloadUcBeltLift";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Xi lanh nâng lên phía dưới vành đai UC  ";
+
+_i:=E_Cylinder.OpenLockTranslation;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站解锁平移气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockTranslation";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Trạm mở khóa mở xi lanh dịch chuyển  ";
+
+_i:=E_Cylinder.TakeUcFrockClamp;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="取UC站工装夹紧气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="TakeUcFrockClamp";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Lấy xi lanh bị kẹp ở trạm UC";
+
+_i:=E_Cylinder.OpenLockPressPush;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站解压侧推气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockPressPush";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="OpenLockPressPush";
+
+_i:=E_Cylinder.OpenLockPressRotate;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="解锁站解压旋转气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="OpenLockPressRotate";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="OpenLockPressRotate";
+
+_i:=E_Cylinder.AcquirePrevent2;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="接驳线前前阻挡气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="AcquirePrevent2";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="AcquirePrevent2";
+
+_i:=E_Cylinder.Line0PushElevator;
+G_arrCylinder[_i].arrInfo[E_Language.Chinese].sName:="主流线拨料升降气缸";
+G_arrCylinder[_i].arrInfo[E_Language.English].sName:="Line0PushElevator";
+G_arrCylinder[_i].arrInfo[E_Language.Vietnamese].sName:="Line0PushElevator";
+
+
+
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_InOut" Id="{cd9529a3-874d-4a86-899b-b7fed3efd57b}">
+      <Implementation>
+        <ST><![CDATA[//输出信号
+//结构体->Bool数组1->加延迟->Bool数组2->字节数组
+//输入信号
+//字节数组->Bool数组->加延迟->Bool数组2->结构体
+
+
+
+
+FOR _i:=0 TO 7 BY 1 DO
+	FOR _t:=0 TO 15 BY 1 DO
+		IF GVL.stSetting.bDryRun AND _i=6 THEN
+			_fbPulse(PT:=T#1S , Q=> _arrInput[_i,_t]);
+		ELSE
+			_arrTonInput[_i,_t](IN:=GVL_IO.I_Temp[_i,_t] , PT:=TO_TIME(GVL_Data.stRecipe.arrInputTon[_i,_t]) , Q=>_arrInput[_i,_t] , ET=> );
+		END_IF
+	END_FOR
+END_FOR
+
+FOR _i:=0 TO 6 BY 1 DO
+	FOR _t:=0 TO 15 BY 1 DO
+		IF NOT G_stSystem.stMode.bSetting THEN
+			_arrTonOutput[_i,_t](IN:=_arrOutput[_i,_t] , PT:=TO_TIME(GVL_Data.stRecipe.arrOutputTon[_i,_t]) , Q=>GVL_IO.Q_Temp[_i,_t] , ET=> );
+		END_IF
+	END_FOR
+END_FOR
+
+
+Data_TO_Data(ADR(_arrInput),SIZEOF(_arrInput),ADR(GVL.I),SIZEOF(GVL.I));
+Data_TO_Data(ADR(GVL.Q),SIZEOF(GVL.Q),ADR(_arrOutput),SIZEOF(_arrOutput));
+
+
+ArrayBool_TO_ArrayByte(ADR(GVL_IO.Q_Temp),SIZEOF(GVL_IO.Q_Temp),ADR(GVL_IO.Q),SIZEOF(GVL_IO.Q));
+ArrayByte_TO_ArrayBool(ADR(GVL_IO.I),SIZEOF(GVL_IO.I),ADR(GVL_IO.I_Temp),SIZEOF(GVL_IO.I_Temp));
+
+
+
+
+// IO屏蔽
+IF GVL_Data.stRecipe.eMachineType<>_eMachineType THEN
+	_boolTemp:=ADR(GVL.stShield_I);
+	FOR _i:=0 TO SIZEOF(GVL.stShield_I)-1 BY 1 DO
+		_boolTemp[_i]:=FALSE;
+	END_FOR
+	_boolTemp:=ADR(GVL.stShield_Q);
+	FOR _i:=0 TO SIZEOF(GVL.stShield_Q)-1 BY 1 DO
+		_boolTemp[_i]:=FALSE;
+	END_FOR
+	_eMachineType:=GVL_Data.stRecipe.eMachineType;
+END_IF
+
+
+
+CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._200:
+		GVL.stShield_I[0,5]:=TRUE;		
+		GVL.stShield_I[0,6]:=TRUE;		
+		GVL.stShield_I[0,7]:=TRUE;		
+		GVL.stShield_I[0,8]:=TRUE;		
+		GVL.stShield_I[0,9]:=TRUE;		
+		GVL.stShield_I[0,10]:=TRUE;		
+		GVL.stShield_I[0,11]:=TRUE;		
+		GVL.stShield_I[0,12]:=TRUE;	
+		GVL.stShield_I[3,10]:=TRUE;
+		GVL.stShield_I[3,11]:=TRUE;
+		GVL.stShield_I[3,12]:=TRUE;
+		GVL.stShield_I[3,13]:=TRUE;
+		GVL.stShield_I[6,14]:=TRUE;
+		
+		GVL.stShield_Q[0,7]:=TRUE;
+		GVL.stShield_Q[0,12]:=TRUE;
+		GVL.stShield_Q[0,13]:=TRUE;
+		GVL.stShield_Q[3,10]:=TRUE;
+		GVL.stShield_Q[3,11]:=TRUE;
+		GVL.stShield_Q[3,12]:=TRUE;
+		GVL.stShield_Q[3,13]:=TRUE;
+		GVL.stShield_Q[5,11]:=TRUE;
+		
+		FOR _i:=0 TO 15 BY 1 DO
+			GVL.stShield_I[7,_i]:=TRUE;
+			GVL.stShield_Q[6,_i]:=TRUE;
+		END_FOR
+	E_MachineType._367:
+		FOR _i:=6 TO 15 BY 1 DO
+			GVL.stShield_I[1,_i]:=TRUE;
+			GVL.stShield_Q[1,_i]:=TRUE;
+		END_FOR
+	
+		GVL.stShield_I[0,5]:=TRUE;		
+		GVL.stShield_I[0,6]:=FALSE;		
+		GVL.stShield_I[0,7]:=TRUE;				
+		GVL.stShield_I[0,10]:=TRUE;		
+		GVL.stShield_I[0,11]:=TRUE;		
+		GVL.stShield_I[0,12]:=FALSE;	
+		GVL.stShield_I[0,13]:=TRUE;
+		GVL.stShield_I[0,14]:=TRUE;
+		GVL.stShield_I[0,15]:=TRUE;
+		GVL.stShield_I[3,14]:=TRUE;
+		GVL.stShield_I[3,15]:=TRUE;
+		GVL.stShield_I[4,0]:=TRUE;
+		GVL.stShield_I[4,1]:=TRUE;
+		GVL.stShield_I[6,3]:=TRUE;
+		GVL.stShield_I[6,4]:=TRUE;
+		GVL.stShield_I[5,6]:=TRUE;
+		GVL.stShield_I[5,7]:=TRUE;
+		GVL.stShield_I[5,8]:=TRUE;
+		GVL.stShield_I[5,9]:=TRUE;
+		GVL.stShield_I[5,10]:=TRUE;
+		GVL.stShield_I[5,11]:=TRUE;
+		GVL.stShield_I[5,12]:=TRUE;
+		GVL.stShield_I[5,13]:=TRUE;
+		GVL.stShield_I[5,14]:=TRUE;
+		GVL.stShield_I[5,15]:=TRUE;
+		GVL.stShield_I[6,13]:=TRUE;
+		GVL.stShield_I[6,14]:=TRUE;
+		
+		GVL.stShield_Q[0,7]:=TRUE;
+		GVL.stShield_Q[0,14]:=TRUE;
+		GVL.stShield_Q[0,15]:=TRUE;
+		GVL.stShield_Q[3,14]:=TRUE;
+		GVL.stShield_Q[3,15]:=TRUE;
+		GVL.stShield_Q[4,0]:=TRUE;
+		GVL.stShield_Q[4,1]:=TRUE;
+		GVL.stShield_Q[5,6]:=TRUE;
+		GVL.stShield_Q[5,7]:=TRUE;
+		GVL.stShield_Q[5,11]:=TRUE;
+		GVL.stShield_Q[5,12]:=TRUE;
+		GVL.stShield_Q[5,13]:=TRUE;
+		GVL.stShield_Q[5,14]:=TRUE;
+		GVL.stShield_Q[5,15]:=TRUE;
+		
+		FOR _i:=0 TO 15 BY 1 DO
+			GVL.stShield_I[7,_i]:=TRUE;
+			GVL.stShield_Q[6,_i]:=TRUE;
+		END_FOR
+	E_MachineType._373:
+		GVL.stShield_I[0,5]:=TRUE;		
+		GVL.stShield_I[0,6]:=TRUE;		
+		GVL.stShield_I[0,7]:=TRUE;		
+		GVL.stShield_I[0,8]:=TRUE;		
+		GVL.stShield_I[0,9]:=TRUE;		
+		GVL.stShield_I[0,10]:=TRUE;		
+		GVL.stShield_I[0,11]:=TRUE;		
+		GVL.stShield_I[0,12]:=TRUE;	
+		GVL.stShield_I[0,13]:=FALSE;	
+		GVL.stShield_I[0,14]:=FALSE;	
+		GVL.stShield_I[0,15]:=FALSE;	
+		GVL.stShield_I[2,0]:=TRUE;
+		GVL.stShield_I[2,1]:=TRUE;
+		GVL.stShield_I[2,4]:=TRUE;
+		GVL.stShield_I[2,5]:=TRUE;
+		GVL.stShield_I[3,0]:=TRUE;
+		GVL.stShield_I[3,1]:=TRUE;
+		GVL.stShield_I[3,10]:=TRUE;
+		GVL.stShield_I[3,11]:=TRUE;
+		GVL.stShield_I[3,12]:=TRUE;
+		GVL.stShield_I[3,13]:=TRUE;
+		GVL.stShield_I[3,14]:=TRUE;
+		GVL.stShield_I[3,15]:=TRUE;
+		GVL.stShield_I[4,0]:=TRUE;
+		GVL.stShield_I[4,1]:=TRUE;
+		GVL.stShield_I[4,8]:=TRUE;
+		GVL.stShield_I[4,9]:=TRUE;
+		GVL.stShield_I[5,10]:=TRUE;
+		GVL.stShield_I[5,11]:=TRUE;
+		GVL.stShield_I[5,12]:=TRUE;
+		GVL.stShield_I[5,13]:=TRUE;
+		GVL.stShield_I[5,14]:=TRUE;
+		GVL.stShield_I[5,15]:=TRUE;
+		GVL.stShield_I[6,13]:=TRUE;
+		GVL.stShield_I[6,14]:=FALSE;
+		
+		GVL.stShield_Q[0,7]:=TRUE;
+		GVL.stShield_Q[0,12]:=TRUE;		
+		GVL.stShield_Q[0,13]:=TRUE;
+		GVL.stShield_Q[2,0]:=TRUE;
+		GVL.stShield_Q[2,1]:=TRUE;
+		GVL.stShield_Q[2,4]:=TRUE;
+		GVL.stShield_Q[2,5]:=TRUE;				
+		GVL.stShield_Q[3,0]:=TRUE;
+		GVL.stShield_Q[3,1]:=TRUE;
+		GVL.stShield_Q[3,10]:=TRUE;
+		GVL.stShield_Q[3,11]:=TRUE;
+		GVL.stShield_Q[3,12]:=TRUE;
+		GVL.stShield_Q[3,13]:=TRUE;
+		GVL.stShield_Q[3,14]:=TRUE;
+		GVL.stShield_Q[3,15]:=TRUE;
+		GVL.stShield_Q[4,0]:=TRUE;
+		GVL.stShield_Q[4,1]:=TRUE;
+		GVL.stShield_Q[4,8]:=TRUE;
+		GVL.stShield_Q[4,9]:=TRUE;
+		GVL.stShield_Q[5,11]:=TRUE;
+		GVL.stShield_Q[5,12]:=TRUE;
+		GVL.stShield_Q[5,13]:=TRUE;
+		GVL.stShield_Q[5,14]:=TRUE;
+		GVL.stShield_Q[5,15]:=TRUE;
+		
+		FOR _i:=0 TO 15 BY 1 DO
+			GVL.stShield_I[7,_i]:=TRUE;
+			GVL.stShield_Q[6,_i]:=TRUE;
+		END_FOR
+	E_MachineType._069:
+		GVL.stShield_I[0,5]:=TRUE;		
+		GVL.stShield_I[0,6]:=TRUE;		
+		GVL.stShield_I[0,7]:=TRUE;		
+		GVL.stShield_I[0,8]:=TRUE;		
+		GVL.stShield_I[0,9]:=TRUE;		
+		GVL.stShield_I[0,10]:=TRUE;		
+		GVL.stShield_I[0,11]:=TRUE;		
+		GVL.stShield_I[0,12]:=TRUE;	
+		GVL.stShield_I[2,0]:=TRUE;
+		GVL.stShield_I[2,1]:=TRUE;
+		GVL.stShield_I[2,4]:=TRUE;
+		GVL.stShield_I[2,5]:=TRUE;
+		GVL.stShield_I[3,10]:=TRUE;
+		GVL.stShield_I[3,11]:=TRUE;
+		GVL.stShield_I[3,12]:=TRUE;
+		GVL.stShield_I[3,13]:=TRUE;
+		GVL.stShield_I[3,14]:=TRUE;
+		GVL.stShield_I[3,15]:=TRUE;
+		GVL.stShield_I[4,0]:=TRUE;
+		GVL.stShield_I[4,1]:=TRUE;
+		GVL.stShield_I[5,6]:=TRUE;
+		GVL.stShield_I[5,7]:=TRUE;
+		GVL.stShield_I[5,8]:=TRUE;
+		GVL.stShield_I[5,9]:=TRUE;
+		GVL.stShield_I[5,10]:=TRUE;
+		GVL.stShield_I[5,11]:=TRUE;
+		GVL.stShield_I[5,12]:=TRUE;
+		GVL.stShield_I[5,13]:=TRUE;
+		GVL.stShield_I[5,14]:=TRUE;
+		GVL.stShield_I[5,15]:=TRUE;
+		GVL.stShield_I[6,13]:=TRUE;
+		GVL.stShield_I[6,14]:=TRUE;
+		
+		GVL.stShield_Q[0,7]:=TRUE;
+		GVL.stShield_Q[0,12]:=TRUE;
+		GVL.stShield_Q[0,13]:=TRUE;
+		GVL.stShield_Q[2,0]:=TRUE;
+		GVL.stShield_Q[2,1]:=TRUE;
+		GVL.stShield_Q[2,4]:=TRUE;
+		GVL.stShield_Q[2,5]:=TRUE;
+		GVL.stShield_Q[3,10]:=TRUE;
+		GVL.stShield_Q[3,11]:=TRUE;
+		GVL.stShield_Q[3,12]:=TRUE;
+		GVL.stShield_Q[3,13]:=TRUE;
+		GVL.stShield_Q[3,14]:=TRUE;
+		GVL.stShield_Q[3,15]:=TRUE;
+		GVL.stShield_Q[4,0]:=TRUE;
+		GVL.stShield_Q[4,1]:=TRUE;
+		GVL.stShield_Q[5,11]:=TRUE;
+		GVL.stShield_Q[5,12]:=TRUE;
+		GVL.stShield_Q[5,13]:=TRUE;
+		GVL.stShield_Q[5,14]:=TRUE;
+		GVL.stShield_Q[5,15]:=TRUE;
+	
+		FOR _i:=0 TO 15 BY 1 DO
+			GVL.stShield_I[7,_i]:=TRUE;
+			GVL.stShield_Q[6,_i]:=TRUE;
+		END_FOR
+	E_MachineType._311:
+		GVL.stShield_I[0,5]:=FALSE;		
+		GVL.stShield_I[0,6]:=TRUE;		
+		GVL.stShield_I[0,7]:=TRUE;		
+		GVL.stShield_I[0,8]:=TRUE;		
+		GVL.stShield_I[0,9]:=TRUE;		
+		GVL.stShield_I[0,10]:=TRUE;		
+		GVL.stShield_I[0,11]:=TRUE;		
+		GVL.stShield_I[0,12]:=TRUE;
+		GVL.stShield_I[2,0]:=TRUE;
+		GVL.stShield_I[2,1]:=TRUE;
+		GVL.stShield_I[2,4]:=TRUE;
+		GVL.stShield_I[2,5]:=TRUE;	
+		GVL.stShield_I[3,0]:=TRUE;
+		GVL.stShield_I[3,1]:=TRUE;
+		GVL.stShield_I[3,10]:=TRUE;
+		GVL.stShield_I[3,11]:=TRUE;
+		GVL.stShield_I[3,12]:=TRUE;
+		GVL.stShield_I[3,13]:=TRUE;
+		GVL.stShield_I[3,14]:=TRUE;
+		GVL.stShield_I[3,15]:=TRUE;
+		GVL.stShield_I[4,0]:=TRUE;
+		GVL.stShield_I[4,1]:=TRUE;
+		GVL.stShield_I[5,6]:=TRUE;
+		GVL.stShield_I[5,7]:=TRUE;
+		GVL.stShield_I[5,8]:=TRUE;
+		GVL.stShield_I[5,9]:=TRUE;
+		GVL.stShield_I[5,10]:=TRUE;
+		GVL.stShield_I[5,11]:=TRUE;
+		GVL.stShield_I[5,12]:=TRUE;
+		GVL.stShield_I[5,13]:=TRUE;
+		GVL.stShield_I[5,14]:=TRUE;
+		GVL.stShield_I[5,15]:=TRUE;
+		GVL.stShield_I[6,13]:=TRUE;
+		GVL.stShield_I[6,14]:=TRUE;
+		
+		GVL.stShield_Q[0,7]:=TRUE;
+		GVL.stShield_Q[0,12]:=TRUE;
+		GVL.stShield_Q[0,13]:=TRUE;
+		GVL.stShield_Q[2,0]:=TRUE;
+		GVL.stShield_Q[2,1]:=TRUE;
+		GVL.stShield_Q[2,4]:=TRUE;
+		GVL.stShield_Q[2,5]:=TRUE;
+		GVL.stShield_Q[3,0]:=TRUE;
+		GVL.stShield_Q[3,1]:=TRUE;
+		GVL.stShield_Q[3,10]:=TRUE;
+		GVL.stShield_Q[3,11]:=TRUE;
+		GVL.stShield_Q[3,12]:=TRUE;
+		GVL.stShield_Q[3,13]:=TRUE;
+		GVL.stShield_Q[3,14]:=TRUE;
+		GVL.stShield_Q[3,15]:=TRUE;
+		GVL.stShield_Q[4,0]:=TRUE;
+		GVL.stShield_Q[4,1]:=TRUE;
+		GVL.stShield_Q[5,11]:=TRUE;
+		GVL.stShield_Q[5,12]:=TRUE;
+		GVL.stShield_Q[5,13]:=TRUE;
+		GVL.stShield_Q[5,14]:=TRUE;
+		GVL.stShield_Q[5,15]:=TRUE;
+END_CASE
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Line" Id="{17405297-3473-449e-8cdf-f5ce13cffb81}">
+      <Implementation>
+        <ST><![CDATA[GVL.arrFbLine[E_LineAxis.Acquire](System:=G_stSystem , Moving=>GVL.Q.bAcquireAxis );
+GVL.arrFbLine[E_LineAxis.UnloadForck](System:=G_stSystem , Moving=>GVL.Q.bUnloadFrock );
+GVL.arrFbLine[E_LineAxis.UnloadUc](System:=G_stSystem , Moving=>GVL.Q.bUnloadUcAxis );
+GVL.arrFbLine[E_LineAxis.Dismantling](System:=G_stSystem , Moving=>GVL.Q.bDismantlingAxis );
+GVL.arrFbLine[E_LineAxis.AcquireFront](System:=G_stSystem , Moving=>GVL.Q.bAcquireFrontAxis );
+
+IF G_stSystem.stMode.bAutoRunning THEN
+	GVL.arrFbLine[E_LineAxis.Acquire].M_Jog(1);
+	GVL.arrFbLine[E_LineAxis.UnloadForck].M_Jog(1);
+	GVL.arrFbLine[E_LineAxis.Dismantling].M_Jog(1);
+	GVL.arrFbLine[E_LineAxis.AcquireFront].M_Jog(1);
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P_Device">
+      <LineId Id="24" Count="9" />
+      <LineId Id="218" Count="1" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="222" Count="7" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="213" Count="1" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="71" Count="3" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="125" Count="1" />
+      <LineId Id="136" Count="3" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="318" Count="1" />
+      <LineId Id="368" Count="0" />
+      <LineId Id="420" Count="0" />
+      <LineId Id="79" Count="1" />
+      <LineId Id="141" Count="3" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="320" Count="0" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="394" Count="1" />
+      <LineId Id="448" Count="0" />
+      <LineId Id="81" Count="1" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="127" Count="1" />
+      <LineId Id="146" Count="3" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="347" Count="0" />
+      <LineId Id="392" Count="1" />
+      <LineId Id="449" Count="0" />
+      <LineId Id="85" Count="3" />
+      <LineId Id="129" Count="1" />
+      <LineId Id="151" Count="3" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="275" Count="0" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="389" Count="1" />
+      <LineId Id="450" Count="0" />
+      <LineId Id="89" Count="1" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="131" Count="1" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="396" Count="1" />
+      <LineId Id="451" Count="0" />
+      <LineId Id="425" Count="0" />
+      <LineId Id="427" Count="0" />
+      <LineId Id="63" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_Axis">
+      <LineId Id="6" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_Cylinder">
+      <LineId Id="906" Count="10" />
+      <LineId Id="1212" Count="0" />
+      <LineId Id="918" Count="6" />
+      <LineId Id="1162" Count="0" />
+      <LineId Id="926" Count="4" />
+      <LineId Id="1163" Count="0" />
+      <LineId Id="932" Count="46" />
+      <LineId Id="1164" Count="0" />
+      <LineId Id="980" Count="23" />
+      <LineId Id="1165" Count="0" />
+      <LineId Id="1004" Count="4" />
+      <LineId Id="1166" Count="0" />
+      <LineId Id="1010" Count="28" />
+      <LineId Id="1167" Count="0" />
+      <LineId Id="1040" Count="44" />
+      <LineId Id="1176" Count="0" />
+      <LineId Id="1085" Count="1" />
+      <LineId Id="1204" Count="0" />
+      <LineId Id="1171" Count="0" />
+      <LineId Id="1089" Count="1" />
+      <LineId Id="1177" Count="0" />
+      <LineId Id="1091" Count="1" />
+      <LineId Id="1180" Count="0" />
+      <LineId Id="1185" Count="0" />
+      <LineId Id="1095" Count="1" />
+      <LineId Id="1186" Count="0" />
+      <LineId Id="1097" Count="1" />
+      <LineId Id="1194" Count="0" />
+      <LineId Id="1190" Count="0" />
+      <LineId Id="1101" Count="1" />
+      <LineId Id="1202" Count="0" />
+      <LineId Id="1103" Count="1" />
+      <LineId Id="1203" Count="0" />
+      <LineId Id="1198" Count="0" />
+      <LineId Id="1107" Count="37" />
+      <LineId Id="1150" Count="0" />
+      <LineId Id="1152" Count="4" />
+      <LineId Id="1151" Count="0" />
+      <LineId Id="1157" Count="4" />
+      <LineId Id="1213" Count="0" />
+      <LineId Id="1228" Count="3" />
+      <LineId Id="1214" Count="1" />
+      <LineId Id="1232" Count="3" />
+      <LineId Id="1216" Count="1" />
+      <LineId Id="1236" Count="3" />
+      <LineId Id="1218" Count="1" />
+      <LineId Id="1240" Count="3" />
+      <LineId Id="1220" Count="7" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_CylinderTest">
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="17" Count="3" />
+      <LineId Id="23" Count="3" />
+      <LineId Id="29" Count="3" />
+      <LineId Id="35" Count="3" />
+      <LineId Id="41" Count="1" />
+      <LineId Id="218" Count="1" />
+      <LineId Id="47" Count="3" />
+      <LineId Id="53" Count="3" />
+      <LineId Id="59" Count="3" />
+      <LineId Id="65" Count="3" />
+      <LineId Id="71" Count="3" />
+      <LineId Id="77" Count="3" />
+      <LineId Id="83" Count="3" />
+      <LineId Id="89" Count="3" />
+      <LineId Id="95" Count="3" />
+      <LineId Id="101" Count="3" />
+      <LineId Id="107" Count="3" />
+      <LineId Id="113" Count="3" />
+      <LineId Id="119" Count="3" />
+      <LineId Id="125" Count="3" />
+      <LineId Id="131" Count="3" />
+      <LineId Id="137" Count="3" />
+      <LineId Id="143" Count="3" />
+      <LineId Id="149" Count="3" />
+      <LineId Id="155" Count="3" />
+      <LineId Id="161" Count="3" />
+      <LineId Id="167" Count="3" />
+      <LineId Id="173" Count="3" />
+      <LineId Id="179" Count="3" />
+      <LineId Id="185" Count="3" />
+      <LineId Id="191" Count="3" />
+      <LineId Id="197" Count="3" />
+      <LineId Id="203" Count="3" />
+      <LineId Id="209" Count="3" />
+      <LineId Id="215" Count="1" />
+      <LineId Id="221" Count="1" />
+      <LineId Id="225" Count="3" />
+      <LineId Id="231" Count="3" />
+      <LineId Id="237" Count="3" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="245" Count="2" />
+      <LineId Id="250" Count="3" />
+      <LineId Id="256" Count="3" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="270" Count="3" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="278" Count="1" />
+      <LineId Id="282" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="283" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_CylinderTest069">
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="509" Count="0" />
+      <LineId Id="512" Count="3" />
+      <LineId Id="518" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="278" Count="3" />
+      <LineId Id="283" Count="4" />
+      <LineId Id="289" Count="46" />
+      <LineId Id="337" Count="21" />
+      <LineId Id="527" Count="4" />
+      <LineId Id="363" Count="2" />
+      <LineId Id="367" Count="105" />
+      <LineId Id="519" Count="3" />
+      <LineId Id="477" Count="31" />
+      <LineId Id="523" Count="3" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_CylinderTest201">
+      <LineId Id="2" Count="8" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="13" Count="3" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="25" Count="3" />
+      <LineId Id="30" Count="4" />
+      <LineId Id="36" Count="46" />
+      <LineId Id="84" Count="21" />
+      <LineId Id="279" Count="4" />
+      <LineId Id="110" Count="2" />
+      <LineId Id="114" Count="28" />
+      <LineId Id="144" Count="10" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="155" Count="36" />
+      <LineId Id="291" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="192" Count="5" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="198" Count="5" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="204" Count="5" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="296" Count="0" />
+      <LineId Id="210" Count="26" />
+      <LineId Id="269" Count="4" />
+      <LineId Id="240" Count="11" />
+      <LineId Id="274" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_CylinderTest311">
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="509" Count="0" />
+      <LineId Id="512" Count="3" />
+      <LineId Id="518" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="278" Count="3" />
+      <LineId Id="283" Count="4" />
+      <LineId Id="289" Count="46" />
+      <LineId Id="337" Count="21" />
+      <LineId Id="523" Count="4" />
+      <LineId Id="363" Count="2" />
+      <LineId Id="367" Count="106" />
+      <LineId Id="475" Count="33" />
+      <LineId Id="519" Count="3" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_CylinderTest367">
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="509" Count="0" />
+      <LineId Id="512" Count="3" />
+      <LineId Id="518" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="533" Count="0" />
+      <LineId Id="532" Count="0" />
+      <LineId Id="278" Count="3" />
+      <LineId Id="283" Count="4" />
+      <LineId Id="289" Count="46" />
+      <LineId Id="337" Count="21" />
+      <LineId Id="534" Count="4" />
+      <LineId Id="363" Count="2" />
+      <LineId Id="367" Count="105" />
+      <LineId Id="519" Count="3" />
+      <LineId Id="477" Count="31" />
+      <LineId Id="527" Count="3" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_CylinderTest373">
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="509" Count="0" />
+      <LineId Id="512" Count="3" />
+      <LineId Id="518" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="278" Count="3" />
+      <LineId Id="283" Count="4" />
+      <LineId Id="289" Count="46" />
+      <LineId Id="337" Count="21" />
+      <LineId Id="527" Count="4" />
+      <LineId Id="363" Count="2" />
+      <LineId Id="367" Count="105" />
+      <LineId Id="519" Count="3" />
+      <LineId Id="477" Count="31" />
+      <LineId Id="523" Count="3" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_Info">
+      <LineId Id="1065" Count="198" />
+      <LineId Id="1266" Count="9" />
+      <LineId Id="1265" Count="0" />
+      <LineId Id="1287" Count="3" />
+      <LineId Id="1276" Count="0" />
+      <LineId Id="1291" Count="3" />
+      <LineId Id="1277" Count="0" />
+      <LineId Id="1295" Count="2" />
+      <LineId Id="1278" Count="1" />
+      <LineId Id="1298" Count="2" />
+      <LineId Id="1280" Count="6" />
+      <LineId Id="1264" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_InOut">
+      <LineId Id="104" Count="1" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="108" Count="1" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="41" Count="2" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="94" Count="1" />
+      <LineId Id="141" Count="2" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="260" Count="7" />
+      <LineId Id="258" Count="1" />
+      <LineId Id="256" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="345" Count="6" />
+      <LineId Id="344" Count="0" />
+      <LineId Id="60" Count="1" />
+      <LineId Id="272" Count="1" />
+      <LineId Id="438" Count="0" />
+      <LineId Id="394" Count="3" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="274" Count="1" />
+      <LineId Id="413" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="353" Count="2" />
+      <LineId Id="358" Count="1" />
+      <LineId Id="352" Count="0" />
+      <LineId Id="442" Count="0" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="443" Count="0" />
+      <LineId Id="67" Count="3" />
+      <LineId Id="123" Count="1" />
+      <LineId Id="294" Count="1" />
+      <LineId Id="290" Count="3" />
+      <LineId Id="224" Count="2" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="410" Count="1" />
+      <LineId Id="74" Count="2" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="414" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="220" Count="2" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="127" Count="2" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="324" Count="6" />
+      <LineId Id="320" Count="3" />
+      <LineId Id="388" Count="2" />
+      <LineId Id="387" Count="0" />
+      <LineId Id="148" Count="1" />
+      <LineId Id="336" Count="1" />
+      <LineId Id="276" Count="1" />
+      <LineId Id="150" Count="3" />
+      <LineId Id="268" Count="1" />
+      <LineId Id="288" Count="1" />
+      <LineId Id="228" Count="2" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="342" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="335" Count="0" />
+      <LineId Id="331" Count="1" />
+      <LineId Id="427" Count="2" />
+      <LineId Id="426" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="338" Count="1" />
+      <LineId Id="278" Count="1" />
+      <LineId Id="163" Count="2" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="270" Count="1" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="232" Count="2" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="156" Count="1" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="361" Count="6" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="376" Count="3" />
+      <LineId Id="167" Count="1" />
+      <LineId Id="280" Count="1" />
+      <LineId Id="174" Count="2" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="297" Count="4" />
+      <LineId Id="296" Count="0" />
+      <LineId Id="236" Count="2" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="404" Count="1" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="431" Count="2" />
+      <LineId Id="430" Count="0" />
+      <LineId Id="183" Count="1" />
+      <LineId Id="282" Count="1" />
+      <LineId Id="186" Count="2" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="240" Count="2" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="179" Count="2" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="369" Count="6" />
+      <LineId Id="380" Count="0" />
+      <LineId Id="384" Count="2" />
+      <LineId Id="383" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="193" Count="1" />
+      <LineId Id="284" Count="1" />
+      <LineId Id="195" Count="2" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="303" Count="4" />
+      <LineId Id="302" Count="0" />
+      <LineId Id="244" Count="2" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="255" Count="0" />
+      <LineId Id="441" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="407" Count="1" />
+      <LineId Id="406" Count="0" />
+      <LineId Id="435" Count="2" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="201" Count="3" />
+      <LineId Id="286" Count="1" />
+      <LineId Id="205" Count="2" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="420" Count="0" />
+      <LineId Id="248" Count="2" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="55" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Device.A_Line">
+      <LineId Id="2" Count="3" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

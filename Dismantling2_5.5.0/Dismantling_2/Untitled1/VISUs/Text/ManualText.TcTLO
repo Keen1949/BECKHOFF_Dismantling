@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <TextList Name="ManualText" Id="{3ad67886-0b61-436a-ac96-59136b45e612}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">" 
+  取料Y轴
+1:初始位 2:Line0取料位 3:Line1取料位 4:Line3取料位
+
+   取料Z轴
+1:上升位 2:下降位_Line0 3:下降位_Line1
+
+   下UC_Y轴
+1:初始位 2:Line2取料位 3:Line3取料位 4:下UC位"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v> 
+  取料Y轴
+1:初始位 2:Line0取料位 3:Line1取料位 4:Line3取料位
+
+   取料Z轴
+1:上升位 2:下降位_Line0 3:下降位_Line1
+
+   下UC_Y轴
+1:初始位 2:Line2取料位 3:Line3取料位 4:下UC位</v>
+                <v> 
+Pick the y axis
+The initial bit is the initial bit 2:line0
+
+Pick the z axis
+Drop _line0 3: drop _line1
+
+The lower uc_y axis
+1: the initial bit 2:line2 takes the material bit 
+3:line3 takes the material bit 4: the lower uc bit</v>
+                <v> 
+L?y v?t li?u trên tr?c Y
+1: ban ??u bit 2: dòng 0 c?p 3: dòng 1 c?p 4: dòng 3 c?p
+
+L?y tr?c Z
+1: n?ng lên 2: h? xu?ng bit _dòng 0 3: h? xu?ng bit _dòng 1
+
+Tr?c d??i UC_Y
+1: b?t ??u bit 2: dòng 2 c?p 3: dòng 3 c?p 4: UC</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{1f084115-5868-4c9f-94d0-8fb3970aa5bb}</v>
+          <v n="GuidReInit">{ff4d8dcc-2bb5-43ed-a623-6d7fd4584651}</v>
+          <v n="GuidExitX">{da8466a0-ad48-4489-b53b-42dc44f1e3b3}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </TextList>
+</TcPlcObject>

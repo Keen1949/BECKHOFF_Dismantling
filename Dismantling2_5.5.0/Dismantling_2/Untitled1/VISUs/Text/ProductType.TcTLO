@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <TextList Name="ProductType" Id="{13607f26-3968-4ad0-ab92-a32ab6591329}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">"无"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>无</v>
+                <v>None</v>
+                <v>None</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"1"</v>
+              <v n="TextDefault">"左线"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>左线</v>
+                <v>Left</v>
+                <v>Left</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"2"</v>
+              <v n="TextDefault">"右线"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>右线</v>
+                <v>Right</v>
+                <v>Right</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{71acbdd7-d481-4dc1-b26d-5d1fe4e23b59}</v>
+          <v n="GuidReInit">{769a6979-e90a-477d-8a11-4e1194c88227}</v>
+          <v n="GuidExitX">{e8c9aaef-018c-42d5-8a1b-d06beba20796}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </TextList>
+</TcPlcObject>

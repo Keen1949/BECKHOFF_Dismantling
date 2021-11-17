@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_StationTakeUc_M" Id="{eba7c833-7e83-4400-b154-d2717fbe67a8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_StationTakeUc_M
+VAR
+	_station:					REFERENCE TO ST_SystemStation;
+	_bEnable: 					BOOL;
+	
+	_ton:                       ARRAY [0..20] OF TON;;
+	_frig:                      ARRAY [0..20] OF R_TRIG;
+
+	RLSE: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_station REF= G_arrStation[E_Station.TakeUc_M];
+_station.arrName[E_Language.Chinese]:="取Uc模组";
+_station.arrName[E_Language.Vietnamese]:="Lấy mô-đun Uc";
+_bEnable:=NOT GVL.stSetting.arrStationShield[E_Station.TakeUc_M];
+A_Auto();
+A_Home();
+
+]]></ST>
+    </Implementation>
+    <Action Name="A_Auto" Id="{ab7cd815-6b89-463f-a3bd-74e1d6e7351c}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	1000:
+		_station.arrInfo[E_Language.Chinese]:="初始化完成等待启动";
+		IF _bEnable THEN
+			_station.iStepNext:=1101;
+		END_IF
+	1101:
+			_station.arrInfo[E_Language.Chinese]:="Z模组至取Uc位";
+		IF GVL_Data.stRecipe.eMachineType=E_MachineType._367 THEN
+			IF M_ZTakeUc() THEN
+				_station.iStepNext:=1111;
+			END_IF
+		ELSE
+			_station.iStepNext:=1111;
+		END_IF
+	1111:
+		_station.arrInfo[E_Language.Chinese]:="等待取Uc站请求取料1";
+		IF GVL.stHandshake.bTakeUcToTakeUc_M THEN
+			 GVL.stHandshake.bTakeUc_MToTakeUc:=TRUE;
+			 _station.iStepNext:=1151;
+		END_IF	
+	1151:
+	    _station.arrInfo[E_Language.Chinese]:="Y气缸至前位";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Y].M_HomeRequest()THEN
+			_station.iStepNext:=SEL(GVL_Data.stRecipe.eMachineType=E_MachineType._311,1201,1161);			
+		END_IF	
+	1161:	
+		_station.arrInfo[E_Language.Chinese]:="等待复位取Uc请求1";
+		IF NOT  GVL.stHandshake.bTakeUcToTakeUc_M THEN
+			 GVL.stHandshake.bTakeUc_MToTakeUc:=FALSE;			
+			 _station.iStepNext:=1171;				 
+		END_IF 
+		
+	1171:
+		_station.arrInfo[E_Language.Chinese]:="等待取Uc站请求取料2";
+		IF GVL.stHandshake.bTakeUcToTakeUc_M_2 THEN
+			 GVL.stHandshake.bTakeUc_MToTakeUc_2:=TRUE;
+			 _station.iStepNext:=1201;
+		END_IF	
+		
+	1201:
+		_station.arrInfo[E_Language.Chinese]:="Z模组至取Uc位";
+		IF M_ZTakeUc() THEN
+			_station.iStepNext:=1301;
+		END_IF
+	1301:
+		_station.arrInfo[E_Language.Chinese]:="夹紧气缸夹紧";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Clamp].M_WorkRequest() THEN
+			_station.iStepNext:=1401;
+		END_IF
+	1401:
+		_station.arrInfo[E_Language.Chinese]:="Z模组上升";
+		IF M_ZHome() THEN
+			_station.iStepNext:=1451;
+		END_IF
+	1451:
+		_station.arrInfo[E_Language.Chinese]:="Y气缸至后位";
+		G_arrFbCylinder[E_Cylinder.TakeUc1Y].M_WorkRequest();
+		 _station.iStepNext:=1471;
+	1471:
+		_station.arrInfo[E_Language.Chinese]:="等待气缸到达安全点";
+		IF GVL.I.bTakeUc1Y_Cyl_Safe OR GVL.I.bTakeUc1Y_Cyl_W THEN		
+			_station.iStepNext:=1501;
+		END_IF
+	1501:
+		_station.arrInfo[E_Language.Chinese]:="等待复位取Uc请求2";
+		IF E_MachineType._311 = GVL_Data.stRecipe.eMachineType THEN
+			IF NOT  GVL.stHandshake.bTakeUcToTakeUc_M_2 THEN
+				GVL.stHandshake.bTakeUc_MToTakeUc_2:=FALSE;
+				_station.iStepNext:=1601;
+			END_IF
+		ELSE
+			IF NOT  GVL.stHandshake.bTakeUcToTakeUc_M THEN		
+			  GVL.stHandshake.bTakeUc_MToTakeUc:=FALSE;			
+				_station.iStepNext:=1551;
+			END_IF	 
+		END_IF 
+	1551:
+		_station.arrInfo[E_Language.Chinese]:="旋转气缸旋转";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Rotate].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Y].M_WorkRequest() THEN
+			_station.iStepNext:=1601;
+		END_IF
+	1601:
+		_station.arrInfo[E_Language.Chinese]:="向下Uc皮带请求放料";
+		GVL.stHandshake.bTakeUc_MToUnloadUcConveyor:=TRUE;
+		IF GVL.stHandshake.bUnloadUcConveyorToTakeUc_M THEN
+			_station.iStepNext:=1701;
+		END_IF
+	1701:
+		_station.arrInfo[E_Language.Chinese]:="Z气缸下降放Uc";
+		IF M_ZPlaceUc() THEN
+			_station.iStepNext:=1801;
+		END_IF
+	1801:
+		_station.arrInfo[E_Language.Chinese]:="夹紧气缸松开";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Clamp].M_HomeRequest() THEN
+			_station.iStepNext:=1901;
+		END_IF
+	1901:
+		_station.arrInfo[E_Language.Chinese]:="气缸上升";
+		IF M_ZHome() THEN
+			_station.iStepNext:=2001;
+		END_IF
+	2001:
+	    _station.arrInfo[E_Language.Chinese]:="复位放料请求";
+		GVL.stHandshake.bTakeUc_MToUnloadUcConveyor:=FALSE;
+		IF NOT GVL.stHandshake.bUnloadUcConveyorToTakeUc_M THEN
+		   	_station.iStepNext:=2101;
+		END_IF
+	2101:
+		_station.arrInfo[E_Language.Chinese]:="旋转气缸复位";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Rotate].M_HomeRequest() THEN
+			_station.iStepNext:=1101;
+		END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Home" Id="{75ccedda-6c6d-4548-a876-520a7a237c9e}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	0:
+		_station.arrInfo[E_Language.Chinese]:="等待初始化";
+		_station.iStepNext:=SEL(_bEnable,1000,100);
+	100:
+		_station.arrInfo[E_Language.Chinese]:="夹紧气缸松开";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Clamp].M_HomeRequest() THEN
+			_station.iStepNext:=200;
+		END_IF
+	200:
+		_station.arrInfo[E_Language.Chinese]:="Z模组至待料位";
+		IF M_ZHome() THEN
+			_station.iStepNext:=300;
+		END_IF		
+	300:
+		_station.arrInfo[E_Language.Chinese]:="旋转气缸复位";
+		IF G_arrFbCylinder[E_Cylinder.TakeUc1Rotate].M_HomeRequest() THEN
+			_station.iStepNext:=400;
+		END_IF
+	400:
+		_station.arrInfo[E_Language.Chinese]:="Y气缸至后位";
+	    IF G_arrFbCylinder[E_Cylinder.TakeUc1Y].M_WorkRequest() THEN
+		    _station.iStepNext:=1000;
+		END_IF
+END_CASE
+		]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="M_ZHome" Id="{1c7956ae-7f85-4601-afda-50e98237db43}">
+      <Declaration><![CDATA[METHOD M_ZHome : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._373:
+	M_ZHome:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_HomeRequest();		
+	ELSE
+	M_ZHome:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_HomeRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_HomeRequest();
+END_CASE
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ZPlaceUc" Id="{52f2b1eb-36bb-4be8-8b9c-264fecdf9406}">
+      <Declaration><![CDATA[METHOD M_ZPlaceUc : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._373:
+	        M_ZPlaceUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest();
+	E_MachineType._069: 
+		    M_ZPlaceUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_WorkRequest();	
+    E_MachineType._311:
+			M_ZPlaceUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest();
+	E_MachineType._367:
+			M_ZPlaceUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_WorkRequest();
+	E_MachineType._200:
+	        M_ZPlaceUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_WorkRequest();
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ZTakeUc" Id="{694b15bc-54a4-4191-a11d-c6aff4439698}">
+      <Declaration><![CDATA[METHOD M_ZTakeUc : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE GVL_Data.stRecipe.eMachineType OF
+	E_MachineType._373:
+	    M_ZTakeUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest();	
+	E_MachineType._069:
+		    M_ZTakeUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest();
+	E_MachineType._311:
+	    M_ZTakeUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_WorkRequest();
+	E_MachineType._367:
+			M_ZTakeUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_WorkRequest();
+	E_MachineType._200:
+		   M_ZTakeUc:=G_arrFbCylinder[E_Cylinder.TakeUc1Z1].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.TakeUc1Z2].M_WorkRequest();
+END_CASE
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="P_StationTakeUc_M">
+      <LineId Id="5" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="46" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationTakeUc_M.A_Auto">
+      <LineId Id="2" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="69" Count="2" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="344" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="342" Count="1" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="345" Count="1" />
+      <LineId Id="340" Count="0" />
+      <LineId Id="333" Count="4" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="312" Count="2" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="311" Count="0" />
+      <LineId Id="296" Count="1" />
+      <LineId Id="300" Count="3" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="12" Count="6" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="23" Count="4" />
+      <LineId Id="80" Count="1" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="268" Count="1" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="320" Count="2" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="325" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="157" Count="2" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="41" Count="6" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="250" Count="2" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="284" Count="3" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="281" Count="2" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationTakeUc_M.A_Home">
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="3" />
+      <LineId Id="8" Count="2" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="88" Count="2" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="45" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="91" Count="2" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationTakeUc_M.M_ZHome">
+      <LineId Id="15" Count="1" />
+      <LineId Id="19" Count="2" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationTakeUc_M.M_ZPlaceUc">
+      <LineId Id="13" Count="0" />
+      <LineId Id="50" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationTakeUc_M.M_ZTakeUc">
+      <LineId Id="25" Count="2" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

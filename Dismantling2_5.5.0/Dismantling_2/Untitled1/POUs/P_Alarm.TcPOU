@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_Alarm" Id="{ba2b5592-2d71-4257-a1e3-13dd845129c8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_Alarm
+VAR
+	_arrFbErrorTag1:				ARRAY[0..20] OF  FB_ErrorTag;
+	_arrFbErrorTag2:				ARRAY[0..20] OF  FB_ErrorTag;
+	_arrFbErrorTag3:				ARRAY[0..20] OF  FB_ErrorTag;
+	_arrFbErrorTag4:				ARRAY[0..20] OF  FB_ErrorTag;
+	_arrFbErrorTag5:				ARRAY[0..20] OF  FB_ErrorTag;
+	
+	_i:								INT;
+	
+	_bFirstRun:						BOOL:=true;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[G_stError.bSaveLog:=TRUE;
+G_stError.sFileLogPath:='D:\PLC\Log\Error';
+
+A_Alarm1();
+A_Alarm2();
+A_Alarm3();
+A_Alarm4();
+A_Alarm5();]]></ST>
+    </Implementation>
+    <Action Name="A_Alarm1" Id="{44ef8c86-2a6e-4e12-9241-425b76890171}">
+      <Implementation>
+        <ST><![CDATA[
+_i:=0;
+_arrFbErrorTag1[_i].Enable:=NOT GVL.I.bEStop;
+_arrFbErrorTag1[_i].Language[E_Language.Chinese]:="急停被按下";
+
+
+_i:=1;
+_arrFbErrorTag1[_i].Enable:=GVL_Data.stRecipe.eMachineType=E_MachineType.None;
+_arrFbErrorTag1[_i].Language[E_Language.Chinese]:="设备类型未选择";
+
+_i:=2;
+_arrFbErrorTag1[_i].Enable:=GVL_Data.stRecipe.eProductType=E_ProductType.None;
+_arrFbErrorTag1[_i].Language[E_Language.Chinese]:="产品类型未选择";
+
+
+
+FOR _i:=0 TO 20 BY 1 DO
+_arrFbErrorTag1[_i](
+	System:=G_stSystem , 
+	Error:=G_stError , 
+	ID:=TO_BYTE(_i+50) , 
+	Category:=E_ErrorCategory.Safety , 
+	InfoIndex:= , 
+	Enable:= , 
+	Message:= , 
+	Level:=1 , 
+	Position:="P_Alarm:A_Alarm1" , 
+	ErrorTime:= , 
+	Language:= , 
+	Erroring=> , 
+	ErrorCode=> );
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Alarm2" Id="{d368f3d1-2707-4300-ac87-3fdde3096134}">
+      <Implementation>
+        <ST><![CDATA[_i:=0;
+_arrFbErrorTag2[_i].Enable:=G_arrCylinder[E_Cylinder.TakeUc1Clamp].stOutput.bWork AND NOT G_stSystem.stMode.bHomeDone;
+_arrFbErrorTag2[_i].Language[E_Language.Chinese]:="请将夹紧气缸松开后再初始化";
+
+
+FOR _i:=0 TO 20 BY 1 DO
+_arrFbErrorTag2[_i](
+	System:=G_stSystem , 
+	Error:=G_stError , 
+	ID:=TO_BYTE(52) , 
+	Category:=E_ErrorCategory.Other , 
+	InfoIndex:=TO_BYTE(_i) , 
+	Enable:= , 
+	Message:= , 
+	Level:=2 , 
+	Position:="P_Alarm:A_Alarm2" , 
+	ErrorTime:= , 
+	Language:= , 
+	Erroring=> , 
+	ErrorCode=> );
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Alarm3" Id="{fcf3d148-27e0-4bbe-b801-e4ea1fa57f0c}">
+      <Implementation>
+        <ST><![CDATA[_i:=0;
+_arrFbErrorTag3[_i].Enable:=(G_stSystem.stMode.bHomeDone AND G_arrStation[E_Station.OpenLock].iStepNow = 1000) 
+AND (GVL_IO.I_Temp[6,4](*接驳线到位光电*) OR GVL_IO.I_Temp[6,2](*主流线到位光电*) OR GVL_IO.I_Temp[6,6](*解锁站到位光电*) OR 
+GVL_IO.I_Temp[6,5](*转向站到位光电*) OR GVL_IO.I_Temp[6,7](*取UC站到位光电*) OR GVL_IO.I_Temp[6,8](*下工装站到位光电*) OR GVL_IO.I_Temp[6,10](*下UC皮带到位光电*) OR GVL_IO.I_Temp[6,12](*下工装皮带到位光电*)) ;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="机台中有残余物料，请手动清料";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="There is a residue in the machine. Please clean the material manually";
+
+_i:=1;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bAcquireCheck2 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="接驳线光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="Relay line photoelectric detection timeout";
+
+_i:=2;
+_arrFbErrorTag3[_i].ErrorTime:=T#20S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bLine0Check3 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="主流线到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The mainstream line is in place to photoelectric test timeout";
+
+_i:=3;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bLine0Check2 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="主流线阻挡光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The main line blocks the photoelectric detection timeout";
+
+_i:=4;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bUnloadFrockConveyorCheck2 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="下工装皮带到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The next working belt is in the photoelectric detection timeout";
+
+_i:=5;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bUnloadUcCheck2 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="下UC皮带到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The lower uc belt is in place to photoelectric test timeout";
+
+_i:=6;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=NOT P_StationSteering._bManual AND GVL.stOverTime.bOpenLockCheck AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="解锁站到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The solution lock station is in place for photoelectric detection timeout";
+
+_i:=7;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bSteeringCheck1 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="转向站到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="Turn to the station to photoelectric test timeout";
+
+_i:=8;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bTakeUcCheck1 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="取UC站到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The uc station is in place for photoelectric detection timeout";
+
+_i:=9;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bUnloadUcCheck1 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="翻转气缸到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The inverted cylinder is in place for photoelectric detection timeout";
+
+_i:=10;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bUnloadFrockCheck1 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="下工装站到位光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The next working station is in place for photoelectric detection timeout";
+
+_i:=11;
+_arrFbErrorTag3[_i].ErrorTime:=T#5S;
+_arrFbErrorTag3[_i].Enable:=G_arrStation[E_Station.OpenLock].iStepNow=1100 AND GVL.I.bLine0Check1 AND NOT GVL.I.bLine0Check2 AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="IN61 主流线阻挡光电检测超时";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The IN61 Line0Check2 detection timeout";
+
+_i:=12;
+_arrFbErrorTag3[_i].ErrorTime:=T#0S;
+_arrFbErrorTag3[_i].Enable:=GVL.stOverTime.bLine0PushElevatorUp AND GVL_P.G_stSystem.stMode.bAutoRunning;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="拨料升降气缸上升速度过慢报警";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="The IN61 Line0Check2 detection timeout";
+
+_i:=13;
+_arrFbErrorTag3[_i].ErrorTime:=T#0S;
+_arrFbErrorTag3[_i].Enable:=NOT GVL.I.bDoor AND GVL_P.G_stSystem.stMode.bAutoRunning AND NOT GVL.stSetting.bSafeDoorShield;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="设备运行中安全门被打开";
+_arrFbErrorTag3[_i].Language[E_Language.English]:="Safe door open in running";
+
+
+(*_i:=10;
+_arrFbErrorTag3[_i].Enable:=NOT GVL.I.bDoor;
+_arrFbErrorTag3[_i].Language[E_Language.Chinese]:="安全门打开";*)
+
+IF gvl_p.G_stSystem.stInput.bResetAlarm THEN
+	GVL.stOverTime.bAcquireCheck2:=FALSE;
+	GVL.stOverTime.bLine0Check2:=FALSE;
+	GVL.stOverTime.bOpenLockCheck:=FALSE;
+	GVL.stOverTime.bSteeringCheck1:=FALSE;
+	GVL.stOverTime.bTakeUcCheck1:=FALSE;
+	GVL.stOverTime.bUnloadFrockCheck1:=FALSE;
+	GVL.stOverTime.bUnloadFrockConveyorCheck2:=FALSE;
+	GVL.stOverTime.bUnloadUcCheck1:=FALSE;
+	GVL.stOverTime.bUnloadUcCheck2:=FALSE;
+	IF GVL.stOverTime.bLine0PushElevatorUp THEN
+		GVL.stOverTime.bLine0PushElevatorUp:=FALSE;
+		GVL.AlarmResetMark:=TRUE;
+	END_IF
+END_IF
+
+FOR _i:=0 TO 20 BY 1 DO
+_arrFbErrorTag3[_i](
+	System:=G_stSystem , 
+	Error:=G_stError , 
+	ID:=TO_BYTE(53) , 
+	Category:=E_ErrorCategory.Other , 
+	InfoIndex:=TO_BYTE(_i) , 
+	Enable:= , 
+	Message:= , 
+	Level:=3 , 
+	Position:="P_Alarm:A_Alarm3" , 
+	ErrorTime:= , 
+	Language:= , 
+	Erroring=> , 
+	ErrorCode=> );
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Alarm4" Id="{693d08a1-8e1e-4159-a3b4-aa31b66c36ec}">
+      <Implementation>
+        <ST><![CDATA[
+
+
+
+
+
+
+
+FOR _i:=0 TO 20 BY 1 DO
+_arrFbErrorTag4[_i](
+	System:=G_stSystem , 
+	Error:=G_stError , 
+	ID:=TO_BYTE(54) , 
+	Category:=E_ErrorCategory.Other , 
+	InfoIndex:=TO_BYTE(_i) , 
+	Enable:= , 
+	Message:= , 
+	Level:=4 , 
+	Position:="P_Alarm:A_Alarm4" , 
+	ErrorTime:= , 
+	Language:= , 
+	Erroring=> , 
+	ErrorCode=> );
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Alarm5" Id="{9dda870a-23b5-4393-a11d-d7a023d96eef}">
+      <Implementation>
+        <ST><![CDATA[_i:=0;
+_arrFbErrorTag5[_i].Enable:=(G_stSystem.stMode.bHomeDone AND G_arrStation[E_Station.OpenLock].iStepNow = 1000) ;
+_arrFbErrorTag5[_i].Language[E_Language.Chinese]:="请确认机台是否有残余物料,点击启动继续流程";
+_arrFbErrorTag5[_i].Language[E_Language.English]:="Please confirm whether there is any residual material . Click the start continue process";
+
+//_i:=1;
+//_arrFbErrorTag5[_i].ErrorTime:=T#5S;
+//_arrFbErrorTag5[_i].Enable:=NOT P_StationSteering._bManual AND GVL.stOverTime.bOpenLockCheck;
+//_arrFbErrorTag5[_i].Language[E_Language.Chinese]:="解锁站到位光电检测超时";
+//_arrFbErrorTag5[_i].Language[E_Language.English]:="The solution lock station is in place for photoelectric detection timeout";
+
+//_i:=2;
+//_arrFbErrorTag5[_i].ErrorTime:=T#5S;
+//_arrFbErrorTag5[_i].Enable:=GVL.stOverTime.bSteeringCheck1;
+//_arrFbErrorTag5[_i].Language[E_Language.Chinese]:="转向站到位光电检测超时";
+//_arrFbErrorTag5[_i].Language[E_Language.English]:="Turn to the station to photoelectric test timeout";
+
+//_i:=3;
+//_arrFbErrorTag5[_i].ErrorTime:=T#5S;
+//_arrFbErrorTag5[_i].Enable:=GVL.stOverTime.bTakeUcCheck1;
+//_arrFbErrorTag5[_i].Language[E_Language.Chinese]:="取UC站到位光电检测超时";
+//_arrFbErrorTag5[_i].Language[E_Language.English]:="The uc station is in place for photoelectric detection timeout";
+
+//_i:=4;
+//_arrFbErrorTag5[_i].ErrorTime:=T#5S;
+//_arrFbErrorTag5[_i].Enable:=GVL.stOverTime.bUnloadUcCheck1;
+//_arrFbErrorTag5[_i].Language[E_Language.Chinese]:="翻转气缸到位光电检测超时";
+//_arrFbErrorTag5[_i].Language[E_Language.English]:="The inverted cylinder is in place for photoelectric detection timeout";
+
+//_i:=5;
+//_arrFbErrorTag5[_i].ErrorTime:=T#5S;
+//_arrFbErrorTag5[_i].Enable:=GVL.stOverTime.bUnloadFrockCheck1;
+//_arrFbErrorTag5[_i].Language[E_Language.Chinese]:="下工装站到位光电检测超时";
+//_arrFbErrorTag5[_i].Language[E_Language.English]:="The next working station is in place for photoelectric detection timeout";
+
+
+
+FOR _i:=0 TO 20 BY 1 DO
+_arrFbErrorTag5[_i](
+	System:=G_stSystem , 
+	Error:=G_stError , 
+	ID:=TO_BYTE(55) , 
+	Category:=E_ErrorCategory.Other , 
+	InfoIndex:=TO_BYTE(_i) , 
+	Enable:= , 
+	Message:= , 
+	Level:=5 , 
+	Position:="P_Alarm:A_Alarm5" , 
+	ErrorTime:= , 
+	Language:= , 
+	Erroring=> , 
+	ErrorCode=> );
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P_Alarm">
+      <LineId Id="62" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="2" />
+    </LineIds>
+    <LineIds Name="P_Alarm.A_Alarm1">
+      <LineId Id="30" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="50" Count="2" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="4" Count="12" />
+      <LineId Id="2" Count="1" />
+    </LineIds>
+    <LineIds Name="P_Alarm.A_Alarm2">
+      <LineId Id="25" Count="1" />
+      <LineId Id="2" Count="1" />
+      <LineId Id="9" Count="15" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Alarm.A_Alarm3">
+      <LineId Id="26" Count="3" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="32" Count="9" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="3" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="67" Count="11" />
+      <LineId Id="84" Count="28" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="152" Count="3" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="178" Count="3" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="170" Count="5" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="80" Count="2" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="156" Count="13" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="9" Count="15" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Alarm.A_Alarm4">
+      <LineId Id="2" Count="22" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Alarm.A_Alarm5">
+      <LineId Id="30" Count="1" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="3" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="51" Count="3" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="3" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="63" Count="3" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="95" Count="5" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="10" Count="15" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

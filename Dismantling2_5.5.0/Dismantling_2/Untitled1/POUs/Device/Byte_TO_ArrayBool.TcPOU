@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="Byte_TO_ArrayBool" Id="{e0119a86-969b-4355-9f17-dd0ab8f12d6f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION Byte_TO_ArrayBool :ARRAY[0..7] OF BOOL;
+VAR_INPUT
+	In:				POINTER TO	BYTE;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Byte_TO_ArrayBool[0]:=In^.0;
+Byte_TO_ArrayBool[1]:=In^.1;
+Byte_TO_ArrayBool[2]:=In^.2;
+Byte_TO_ArrayBool[3]:=In^.3;
+Byte_TO_ArrayBool[4]:=In^.4;
+Byte_TO_ArrayBool[5]:=In^.5;
+Byte_TO_ArrayBool[6]:=In^.6;
+Byte_TO_ArrayBool[7]:=In^.7;
+]]></ST>
+    </Implementation>
+    <LineIds Name="Byte_TO_ArrayBool">
+      <LineId Id="10" Count="7" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

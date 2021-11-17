@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <GlobalTextList Name="GlobalTextList" Id="{0a2001fa-0f7d-4586-b405-0c34c8a727d8}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="GlobalTextListObject">
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"827"</v>
+              <v n="TextDefault">"Acquire"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"972"</v>
+              <v n="TextDefault">"Dismantling"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"258"</v>
+              <v n="TextDefault">"DryRun"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"75"</v>
+              <v n="TextDefault">"LineAxis"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"978"</v>
+              <v n="TextDefault">"LUX"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"108"</v>
+              <v n="TextDefault">"UnloadForck"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"971"</v>
+              <v n="TextDefault">"UnloadUc"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"852"</v>
+              <v n="TextDefault">"有杆气缸		无杆气缸(前后)
+工作位:伸出	工作位:后面
+初始位:缩回	初始位:前面
+
+无杆气缸(上下)	旋转气缸
+工作位:下面	工作位:右边
+初始位:上面	初始位:左边
+
+夹紧气缸
+工作位:夹紧
+初始位:松开"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"393"</v>
+              <v n="TextDefault">"有杆气缸
+工作位:伸出
+初始位:缩回
+
+无杆气缸(前后)
+工作位:后面
+初始位:前面
+
+无杆气缸(上下)
+工作位:下面
+初始位:上面
+
+旋转气缸
+工作位:右边
+初始位:左边
+
+夹紧气缸
+工作位:夹紧
+初始位:松开"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{3ece85cc-d32e-41d6-8a46-90d80730b006}</v>
+          <v n="GuidReInit">{84349648-8620-4519-9723-4bdd6c58fa3d}</v>
+          <v n="GuidExitX">{b215a251-c231-4b0a-a8f9-c6b255997ee7}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="GlobalTextListObject">{63784cbb-9ba0-45e6-9d69-babf3f040511}</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </GlobalTextList>
+</TcPlcObject>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <GVL Name="GVL_Data" Id="{a57ac5b4-b88f-4f32-b310-f321c62c5734}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	stRecipe:					ST_Recipe;// 配方文件
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

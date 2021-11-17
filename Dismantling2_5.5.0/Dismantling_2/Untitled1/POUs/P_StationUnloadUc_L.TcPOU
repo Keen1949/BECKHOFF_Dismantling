@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="P_StationUnloadUc_L" Id="{16a8a67b-f8aa-4469-b532-ba02277058e1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_StationUnloadUc_L
+VAR
+	_station:					REFERENCE TO ST_SystemStation;
+	_bEnable: 					BOOL;
+	
+	_ton:                       ARRAY [0..20] OF TON;;
+	_frig:                      ARRAY [0..20] OF R_TRIG;
+	_PreBelt:                   BOOL;
+	
+	_bManual:                   BOOL;//  手动下料
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_station REF= G_arrStation[E_Station.UnloadUc_L];
+_station.arrName[E_Language.Chinese]:="下Uc线体";
+_station.arrName[E_Language.Vietnamese]:="Ống dẫn dưới UC";
+_bEnable:=NOT GVL.stSetting.arrStationShield[E_Station.UnloadUc_L];
+
+_bManual:=GVL.stSetting.bManualUnloadUc;
+
+A_Auto();
+A_Home();
+
+
+]]></ST>
+    </Implementation>
+    <Action Name="A_Auto" Id="{523c501f-8523-42bd-97a4-0af1be4db246}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	1000:
+		_station.arrInfo[E_Language.Chinese]:="初始化完成等待启动";
+		IF _bEnable THEN
+			_station.iStepNext:=1101;
+		END_IF
+	1101:
+		_station.arrInfo[E_Language.Chinese]:="判断是否有料";
+		IF NOT GVL.I.bUnloadUcCheck2 THEN
+			_station.iStepNext:=SEL(GVL_Data.stRecipe.eMachineType=E_MachineType._200,1201,1111);
+		END_IF
+	1111:
+		_station.arrInfo[E_Language.Chinese]:="顶升气缸伸出";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcBeltLift].M_WorkRequest() THEN
+			_station.iStepNext:=1201;
+		END_IF
+	1201:
+		_station.arrInfo[E_Language.Chinese]:="等待请求上料";
+		IF GVL.stHandshake.bTakeUc_MToUnloadUcConveyor THEN
+			GVL.stHandshake.bUnloadUcConveyorToTakeUc_M:=TRUE;
+			_station.iStepNext:=1301;
+		END_IF
+	1301:
+		_station.arrInfo[E_Language.Chinese]:="等待复位请求信号";
+		IF NOT GVL.stHandshake.bTakeUc_MToUnloadUcConveyor THEN
+			GVL.stHandshake.bUnloadUcConveyorToTakeUc_M:=FALSE;
+			_station.iStepNext:=1351;
+		END_IF
+	1351:
+	     _station.arrInfo[E_Language.Chinese]:="开启下UC皮带线";
+		 IF GVL.arrFbLine[E_LineAxis.UnloadUc].M_Jog(1) THEN
+			IF  _bManual AND GVL.I.bUnloadUcCheck2 THEN
+				GVL.arrFbLine[E_LineAxis.UnloadUc].M_Jog(0);
+				_station.iStepNext:=1101;
+			END_IF
+			IF NOT _bManual THEN
+				_station.iStepNext:=SEL(GVL_Data.stRecipe.eMachineType=E_MachineType._200,1501,1401);
+			END_IF
+		 END_IF
+	1401:
+		_station.arrInfo[E_Language.Chinese]:="等待产品到顶升位";
+		GVL.stOverTime.bUnloadUcCheck1:=TRUE;
+		IF gvl.I.bUnloadUcCheck1   THEN
+			GVL.stOverTime.bUnloadUcCheck1:=FALSE;
+			_station.iStepNext:=1451;
+		END_IF
+	1451:
+		_station.arrInfo[E_Language.Chinese]:="翻转气缸动作";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcBeltTipper].M_WorkRequest() THEN
+			_station.iStepNext:=1471;
+		END_IF
+	1471:
+		_station.arrInfo[E_Language.Chinese]:="顶升气缸缩回";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcBeltLift].M_HomeRequest() THEN
+			_station.iStepNext:=1501;
+		END_IF 
+	1501:
+		_station.arrInfo[E_Language.Chinese]:="等待产品到拨料位";
+		GVL.stOverTime.bUnloadUcCheck2 :=TRUE;
+		IF GVL.I.bUnloadUcCheck2 THEN
+			GVL.stOverTime.bUnloadUcCheck2 :=FALSE;
+			GVL.arrFbLine[E_LineAxis.UnloadUc].M_Jog(0);
+			_station.iStepNext:=1551;
+		END_IF
+	1551:
+		_station.arrInfo[E_Language.Chinese]:="升降气缸伸出";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcElevator].M_WorkRequest() THEN
+			_station.iStepNext:=1601;
+		END_IF
+	1601:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸拨料 翻转气缸复位";
+		IF GVL_Data.stRecipe.eMachineType<>E_MachineType._200 THEN
+			IF G_arrFbCylinder[E_Cylinder.UnloadUcConveyorPush].M_WorkRequest() THEN
+				_station.iStepNext:=1701;
+			END_IF
+		ELSE
+			IF G_arrFbCylinder[E_Cylinder.UnloadUcConveyorPush].M_WorkRequest() AND G_arrFbCylinder[E_Cylinder.UnloadUcBeltTipper].M_HomeRequest() THEN
+				_station.iStepNext:=1701;
+			END_IF
+		END_IF
+	1701:
+		_station.arrInfo[E_Language.Chinese]:="升降气缸缩回 拨料气缸缩回";
+		IF  G_arrFbCylinder[E_Cylinder.UnloadUcElevator].M_HomeRequest() AND G_arrFbCylinder[E_Cylinder.UnloadUcConveyorPush].M_HomeRequest() THEN
+			_station.iStepNext:=1101;
+		END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Home" Id="{e4df3dba-050c-47c0-b382-2205cc6b1632}">
+      <Implementation>
+        <ST><![CDATA[CASE _station.iStepNow OF
+	0:
+		_station.arrInfo[E_Language.Chinese]:="等待初始化";
+		_station.iStepNext:=SEL(_bEnable AND NOT _bManual,1000,200);
+	200:
+		_station.arrInfo[E_Language.Chinese]:="升降气缸缩回";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcElevator].M_HomeRequest() THEN
+			_station.iStepNext:=300;
+		END_IF
+	300:
+		_station.arrInfo[E_Language.Chinese]:="拨料气缸缩回";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcConveyorPush].M_HomeRequest() THEN
+			_station.iStepNext:=SEL(GVL_Data.stRecipe.eMachineType=E_MachineType._200,1000,500);
+		END_IF
+	500:
+		_station.arrInfo[E_Language.Chinese]:="翻转气缸复位";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcBeltTipper].M_HomeRequest() THEN
+			_station.iStepNext:=600;
+		END_IF
+	600:
+		_station.arrInfo[E_Language.Chinese]:="顶升气缸缩回";
+		IF G_arrFbCylinder[E_Cylinder.UnloadUcBeltLift].M_HomeRequest() THEN
+			_station.iStepNext:=1000;
+		END_IF
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P_StationUnloadUc_L">
+      <LineId Id="8" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="41" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadUc_L.A_Auto">
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="6" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="221" Count="2" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="17" Count="4" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="177" Count="2" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="209" Count="1" />
+      <LineId Id="212" Count="2" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="201" Count="3" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="157" Count="3" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="168" Count="1" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="172" Count="2" />
+      <LineId Id="34" Count="5" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="196" Count="2" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="199" Count="1" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="43" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="P_StationUnloadUc_L.A_Home">
+      <LineId Id="2" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="5" Count="8" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="33" Count="8" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

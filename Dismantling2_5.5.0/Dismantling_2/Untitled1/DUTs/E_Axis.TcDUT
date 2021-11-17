@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="E_Axis" Id="{01fcef8c-72ff-43b6-bcb1-c16d690312c1}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_Axis :
+(
+	Z := 1// Z轴
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

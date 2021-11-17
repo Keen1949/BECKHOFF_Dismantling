@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="ST_TimeOut" Id="{36f00b79-7f5a-4aac-a89d-ab413c2ceb42}">
+    <Declaration><![CDATA[TYPE ST_TimeOut :
+STRUCT
+	bAcquireCheck2:             BOOL;//接驳线光电检测超时
+    bLine0Check3:               BOOL;//主流线到位光电检测超时	
+	bOpenLockCheck:             BOOL;//解锁站到位光电检测超时
+	bSteeringCheck1:            BOOL;//转向站到位光电检测超时
+	bTakeUcCheck1:              BOOL;//取UC站到位光电检测超时
+	bUnloadUcCheck1:			BOOL;//翻转气缸到位光电检测超时
+	bUnloadFrockCheck1:         BOOL;//下工装站到位光电检测超时
+	bUnloadFrockConveyorCheck2: BOOL;//下工装皮带到位光电检测超时
+	bUnloadUcCheck2:            BOOL;//下UC皮带到位光电检测超时
+	bLine0Check2:               BOOL;//主流线阻挡光电检测超时
+	bLine0PushElevatorUp:       BOOL;//主流线拨料升降气缸上升速度过慢
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="ArrayByte_TO_ArrayBool" Id="{a6cc22d4-d759-4383-a6cc-7bc40d184f06}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ArrayByte_TO_ArrayBool 
+VAR_INPUT
+	In:					POINTER TO BYTE;// Byte数组
+	InLen:				INT;// Sizeof(In)
+	Out:				POINTER TO BOOL;// Bool数组
+	OutLen:				INT;// sizeof(Out)
+END_VAR
+VAR
+	i:					INT;
+	t:					INT;
+	outCount:			INT;
+	temp:				ARRAY[0..7] OF BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:=0 TO InLen-1 BY 1 DO
+	temp:=Byte_TO_ArrayBool(ADR(In[i]));
+	FOR t:=0 TO 7 BY 1 DO
+		IF outCount<OutLen THEN
+			Out[outCount]:=temp[t];
+			outCount:=outCount+1;
+		END_IF
+	END_FOR
+END_FOR]]></ST>
+    </Implementation>
+    <LineIds Name="ArrayByte_TO_ArrayBool">
+      <LineId Id="7" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

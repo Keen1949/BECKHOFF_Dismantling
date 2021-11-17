@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <TextList Name="StationName" Id="{9a8a1e43-7121-4581-9c4a-1d71fa957470}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">"接驳上料"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>接驳上料</v>
+                <v>AcquireLoad</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"1"</v>
+              <v n="TextDefault">"转向站"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>转向站</v>
+                <v>Steering</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"2"</v>
+              <v n="TextDefault">"解锁站"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>解锁站</v>
+                <v>OpenLock</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"3"</v>
+              <v n="TextDefault">"取UC站"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>取UC站</v>
+                <v>TakeUc</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"4"</v>
+              <v n="TextDefault">"取Uc模组"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>取Uc模组</v>
+                <v>TakeUc_M</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"5"</v>
+              <v n="TextDefault">"下工装站"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下工装站</v>
+                <v>UnloadFrock</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"6"</v>
+              <v n="TextDefault">"下料皮带线"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>下料皮带线</v>
+                <v>Unload_L</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"7"</v>
+              <v n="TextDefault">"其他"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>其他</v>
+                <v>Other</v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>Chinese</v>
+            <v>English</v>
+            <v>Vietnamese</v>
+          </l>
+          <v n="GuidInit">{71366c7d-8ee4-4a19-9e73-f0ba66eff18a}</v>
+          <v n="GuidReInit">{0df72d98-dbf9-42a5-baef-0e6f6e4df019}</v>
+          <v n="GuidExitX">{f905c7ad-bf55-47b5-a524-b2a02859a2a1}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+  </TextList>
+</TcPlcObject>

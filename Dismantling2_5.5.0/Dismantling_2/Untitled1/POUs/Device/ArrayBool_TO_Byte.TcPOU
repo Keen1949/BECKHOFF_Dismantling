@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="ArrayBool_TO_Byte" Id="{c150da52-2745-4d62-9caa-e584d5ca1659}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION ArrayBool_TO_Byte : BYTE
+VAR_INPUT
+	In:				POINTER TO	BOOL;
+	InLen:			INT;// sizeof(In)
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF InLen<>8 THEN
+	RETURN;
+END_IF
+
+ArrayBool_TO_Byte.0:=In[0];
+ArrayBool_TO_Byte.1:=In[1];
+ArrayBool_TO_Byte.2:=In[2];
+ArrayBool_TO_Byte.3:=In[3];
+ArrayBool_TO_Byte.4:=In[4];
+ArrayBool_TO_Byte.5:=In[5];
+ArrayBool_TO_Byte.6:=In[6];
+ArrayBool_TO_Byte.7:=In[7];
+]]></ST>
+    </Implementation>
+    <LineIds Name="ArrayBool_TO_Byte">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="7" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

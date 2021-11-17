@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <DUT Name="ST_Handshake" Id="{54d18259-6067-4e5a-845c-7cf1a3850103}">
+    <Declaration><![CDATA[TYPE ST_Handshake :
+STRUCT
+	bBufferToLoad:				BOOL;// 上料缓存站 请求 上料站 放料
+	bLoadToBuffer:				BOOL;// 上料站 收到 缓存站请求
+	
+	bLine1ToAcquire:			BOOL;// 接驳线 请求 接驳站 收料
+	bAcquireToLine1:			BOOL;// 接驳站 收到 接驳线请求
+	
+	bBufferToAcquire:			BOOL;// 上料缓存站 请求 接驳站收料
+	bAcquireToBuffer:			BOOL;// 接驳站收 上料缓存站请求
+	
+	bSteering:					BOOL;// 转向站 请求 放料
+	bSteeringOk:				BOOL;// 收到 转向站请求信号
+	
+	bOpenToSteering:			BOOL;// 解锁站 请求 转向站放料
+	bSteeringToOpen:			BOOL;// 转向站 收到 解锁站请求
+	
+	bTakeUcToOpen:				BOOL;// 取U站 请求 解锁站放料
+	bOpenToTakeUc:				BOOL;// 解锁站 收到 取Uc站请求
+	
+	bTakeUcToTakeUc_M:			BOOL;// 取UC站 请求 取UC模组取料
+	bTakeUc_MToTakeUc:			BOOL;// 取Uc模组 收到取Uc站请求
+	
+	bTakeUcToTakeUc_M_2:			BOOL;// 取UC站 请求 取UC模组取料
+	bTakeUc_MToTakeUc_2:			BOOL;// 取Uc模组 收到取Uc站请求
+	
+	
+	bUnloadFrockToTakeUc:		BOOL;//	下工装站 请求 取Uc站放料
+	bTakeUcToUnloadFrock:		BOOL;// 取Uc站 收到 下工装站请求
+	
+	bTakeUc_MToUnloadUcConveyor:BOOL;// 下Uc模组 请求 下Uc线体放料
+	bUnloadUcConveyorToTakeUc_M:BOOL;// 下Uc线体 收到 下Uc模组请求
+	
+	bUnloadFrockToUnloadFrock_L:BOOL;// 下工装站 请求 下工装线体放料
+	bUnloadFrock_LToUnloadFrock:BOOL;// 下工装线体 收到 下工装站请求   
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
